@@ -1,0 +1,30 @@
+/* 
+    Document   : stats
+    Created on : Oct 23, 2011, 4:17:35 PM
+    Author     : North
+    Description:
+        stylesheet for the stats page
+*/
+
+.skillBack {
+    background: #27668e;
+    position: relative;
+    height: 20px;
+    padding: 0;
+    width: 450px;
+    margin: 5px;
+    color: white;
+    font-weight: bold
+}
+.skillFront {
+    background: #071E4A url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAKCAIAAAD6sKMdAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAMElEQVR42gXBiQoAEBBAQfvKj/tXkXKkHFvEjLHuIWNAbVAL0jPMgKjHaOSuxNn5A21aFILfIZVwAAAAAElFTkSuQmCC) repeat-x left top;
+    height: 20px;
+}
+.skillText {
+    color: white;
+    position: absolute; top: 0;
+    left: 3px;
+}
+.skillText a {
+    color: white;
+}
