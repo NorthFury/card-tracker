@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,9 +18,19 @@ import javax.persistence.TemporalType;
  *
  * @author North
  */
+@NamedQueries({
+    @NamedQuery(name = "Expansion.findByName",
+    query = "select c from Expansion c where c.name = ?1"),
+    @NamedQuery(name = "Expansion.findByCode",
+    query = "select c from Expansion c where c.code = ?1")
+})
 @Entity
 public class Expansion implements Serializable {
 
+    // Named Queries
+    public static final String FIND_BY_NAME = "Expansion.findByName";
+    public static final String FIND_BY_CODE = "Expansion.findByCode";
+    // Columns
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

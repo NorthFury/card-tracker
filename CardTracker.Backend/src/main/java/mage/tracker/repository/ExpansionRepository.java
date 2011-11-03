@@ -18,7 +18,7 @@ public class ExpansionRepository extends GenericRepository<Expansion> {
     private EntityManager em;
 
     public Expansion findByName(String name) {
-        TypedQuery query = em.createQuery("select c from Expansion c where c.name = ?1", Expansion.class);
+        TypedQuery query = em.createNamedQuery(Expansion.FIND_BY_NAME, Expansion.class);
         query.setParameter(1, name);
         List<Expansion> resultList = query.getResultList();
         if (resultList.isEmpty()) {
@@ -29,7 +29,7 @@ public class ExpansionRepository extends GenericRepository<Expansion> {
     }
 
     public Expansion findByCode(String code) {
-        TypedQuery query = em.createQuery("select c from Expansion c where c.code = ?1", Expansion.class);
+        TypedQuery query = em.createNamedQuery(Expansion.FIND_BY_CODE, Expansion.class);
         query.setParameter(1, code);
         List<Expansion> resultList = query.getResultList();
         if (resultList.isEmpty()) {

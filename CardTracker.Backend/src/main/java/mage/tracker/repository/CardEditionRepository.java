@@ -18,7 +18,7 @@ public class CardEditionRepository extends GenericRepository<CardEdition> {
     private EntityManager em;
 
     public CardEdition findByNameAndExpansion(String name, String expansion) {
-        TypedQuery query = em.createQuery("select c from CardEdition c where c.card.name = ?1 and c.expansion.name = ?2", CardEdition.class);
+        TypedQuery query = em.createNamedQuery(CardEdition.FIND_BY_NAME_AND_EXPANSION, CardEdition.class);
         query.setParameter(1, name);
         query.setParameter(2, expansion);
         List<CardEdition> resultList = query.getResultList();

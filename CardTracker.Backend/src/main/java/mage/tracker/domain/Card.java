@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -16,9 +18,16 @@ import javax.persistence.OneToOne;
  *
  * @author North
  */
+@NamedQueries({
+    @NamedQuery(name = "Card.findByName",
+    query = "select c from Card c where c.name = ?1")
+})
 @Entity
 public class Card implements Serializable {
 
+    // Named Queries
+    public static final String FIND_BY_NAME = "Card.findByName";
+    // Columns
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -36,7 +45,7 @@ public class Card implements Serializable {
     private String power;
     @Column(length = 8)
     private String toughness;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private CardStatus cardStatus;
     @OneToMany(mappedBy = "card")
     private List<CardEdition> editions;

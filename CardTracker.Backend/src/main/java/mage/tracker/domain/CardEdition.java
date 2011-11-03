@@ -9,14 +9,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author North
  */
+@NamedQueries({
+    @NamedQuery(name = "CardEdition.findByNameAndExpansion",
+    query = "select c from CardEdition c where c.card.name = ?1 and c.expansion.name = ?2")
+})
 @Entity
 public class CardEdition implements Serializable {
 
+    // Named Queries
+    public static final String FIND_BY_NAME_AND_EXPANSION = "CardEdition.findByNameAndExpansion";
+    // Columns
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

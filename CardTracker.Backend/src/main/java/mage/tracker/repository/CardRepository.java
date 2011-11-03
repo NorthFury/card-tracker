@@ -18,7 +18,7 @@ public class CardRepository extends GenericRepository<Card> {
     private EntityManager em;
 
     public Card findByName(String name) {
-        TypedQuery query = em.createQuery("select c from Card c where c.name = ?1", Card.class);
+        TypedQuery query = em.createNamedQuery(Card.FIND_BY_NAME, Card.class);
         query.setParameter(1, name);
         List<Card> resultList = query.getResultList();
         if (resultList.isEmpty()) {
