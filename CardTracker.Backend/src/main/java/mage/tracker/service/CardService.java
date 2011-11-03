@@ -11,6 +11,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import mage.tracker.domain.Card;
 import mage.tracker.domain.CardEdition;
 import mage.tracker.domain.CardRarity;
@@ -46,7 +48,7 @@ public class CardService {
     @Qualifier("expansionRepository")
     private ExpansionRepository expansionRepository;
     @Autowired
-    @Qualifier("genericRepositoryImpl")
+    @Qualifier("genericRepository")
     private GenericRepository<CardStatus> cardStatusRepository;
 
     public List<Card> getCards() {
@@ -187,19 +189,13 @@ public class CardService {
             expansionsData.add(new ExpansionStatus((String) object[0], (String) object[1], ((BigInteger) object[2]).intValue(), ((BigInteger) object[3]).intValue()));
         }
         return expansionsData;
-//        List<ExpansionStatus> expansionsData = new LinkedList<ExpansionStatus>();
-//
-//        List<Expansion> expansions = expansionRepository.findAll(Expansion.class);
-//        for (Expansion expansion : expansions) {
-//            List<CardEdition> editions = expansion.getEditions();
-//            int implemented = 0;
-//            for (CardEdition edition : editions) {
-//                if (edition.getCard().getCardStatus().getImplemented()) {
-//                    implemented++;
-//                }
-//            }
-//            expansionsData.add(new ExpansionStatus(expansion.getName(), editions.size(), implemented));
-//        }
-//        return expansionsData;
+    }
+
+    public List<Card> getCardsByExpansion(String expansion) {
+        Query query = em.createQuery("select c from Card c inner join c.editions ce where ce.expansion.code = ?1", Card.class);
+        query.setParameter(1, expansion);
+//        CriteriaBuilder cb = em.getCriteriaBuilder();
+//        CriteriaQuery<Card> cq = cb.createQuery(Card.class);
+        return query.getResultList();
     }
 }

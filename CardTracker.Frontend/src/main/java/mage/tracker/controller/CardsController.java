@@ -27,6 +27,7 @@ public class CardsController {
         ModelAndView modelAndView = new ModelAndView("expansion");
 
         modelAndView.addObject("expansion", expansion);
+        modelAndView.addObject("cards", cardService.getCardsByExpansion(expansion));
         return modelAndView;
     }
 }
