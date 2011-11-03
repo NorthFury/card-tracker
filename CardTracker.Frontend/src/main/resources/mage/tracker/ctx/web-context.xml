@@ -35,5 +35,5 @@
         <property name="suffix" value=".jsp" />
     </bean>
 
-    <bean id="SpringTestFilter" class="mage.tracker.filter.AuthenticationFilter" />
+    <bean id="AuthenticationFilter" class="mage.tracker.filter.AuthenticationFilter" />
 </beans>

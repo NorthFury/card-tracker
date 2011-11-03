@@ -46,12 +46,12 @@
     </servlet-mapping>
 
     <filter>
-        <filter-name>SpringTestFilter</filter-name>
+        <filter-name>AuthenticationFilter</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
     </filter>
 
     <filter-mapping>
-        <filter-name>SpringTestFilter</filter-name>
+        <filter-name>AuthenticationFilter</filter-name>
         <servlet-name>appServlet</servlet-name>
     </filter-mapping>
 </web-app>

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  * @author North
  */
 @Repository
-public class CardRepository extends GenericRepositoryImpl<Card> {
+public class CardRepository extends GenericRepository<Card> {
 
     @PersistenceContext
     private EntityManager em;
