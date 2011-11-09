@@ -123,6 +123,13 @@
                 <version>2.0</version>
             </dependency>
 
+            <!-- Jackson JSON Mapper -->
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>1.6.4</version>
+            </dependency>
+
 			<!-- database -->
             <dependency>
                 <groupId>commons-dbcp</groupId>

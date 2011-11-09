@@ -2,14 +2,18 @@
     var pushData = function(action){
         if($('#dataInput').val().length > 0) {
             $.ajax({
-                type: 'POST',
+                type: 'GET',
+                dataType: 'json',
                 url: 'admin',
                 data: {
                     action: action,
                     data: $('#dataInput').val()
                 },
-                success: function(){
-                    alert('Cards data imported');
+                success: function(data){
+                    if(data.success)
+                        alert('Success');
+                    else
+                        alert('Failure');
                 }
             });
         }

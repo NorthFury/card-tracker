@@ -2,6 +2,7 @@ package mage.tracker.controller;
 
 import java.security.Principal;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import mage.tracker.domain.Card;
 import mage.tracker.domain.CardStatus;
 import mage.tracker.domain.Expansion;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -40,13 +42,16 @@ public class AdminController {
      * @return success message
      */
     @RequestMapping(value = "/admin", params = "action=importCardsData")
-    public String importCardsData(@RequestParam("data") String data) {
-        System.out.println("importing cards data");
+    @ResponseBody
+    public HashMap<String, Object> importCardsData(@RequestParam("data") String data) {
         String[] cards = data.split("\n");
         for (int i = 0; i < cards.length; i++) {
             cardService.updateCardData(cards[i]);
         }
-        return "success";
+
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("success", Boolean.TRUE);
+        return model;
     }
 
     /**
@@ -55,8 +60,8 @@ public class AdminController {
      * @return success message
      */
     @RequestMapping(value = "/admin", params = "action=importExpansionData")
-    public String importExpansionData(@RequestParam("data") String data) {
-        System.out.println("importing expansion data");
+    @ResponseBody
+    public HashMap<String, Object> importExpansionData(@RequestParam("data") String data) {
         String[] expansions = data.split("\n");
         for (int i = 0; i < expansions.length; i++) {
             String[] expansionData = expansions[i].split("\\|");
@@ -67,7 +72,10 @@ public class AdminController {
             expansion.setReleaseDate(new GregorianCalendar(Integer.parseInt(expansionData[0]), Integer.parseInt(expansionData[1]), Integer.parseInt(expansionData[2])).getTime());
             cardService.saveExpansion(expansion);
         }
-        return "success";
+
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("success", Boolean.TRUE);
+        return model;
     }
 
     /**
@@ -76,8 +84,8 @@ public class AdminController {
      * @return success message
      */
     @RequestMapping(value = "/admin", params = "action=importImplementedCards")
-    public String importImplementedCards(@RequestParam("data") String data) {
-        System.out.println("importing implemented cards");
+    @ResponseBody
+    public HashMap<String, Object> importImplementedCards(@RequestParam("data") String data) {
         String[] cards = data.split("\n");
         for (int i = 0; i < cards.length; i++) {
             Card card = cardService.findCardByName(cards[i]);
@@ -87,6 +95,9 @@ public class AdminController {
                 cardService.updateCardStatus(cardStatus);
             }
         }
-        return "success";
+
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("success", Boolean.TRUE);
+        return model;
     }
 }
