@@ -44,6 +44,14 @@
         </repository>
     </repositories>
 
+      <!-- Plugin Repositories  -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven-annotation-plugin</id>
+            <url>http://maven-annotation-plugin.googlecode.com/svn/trunk/mavenrepo</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -134,18 +142,19 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
-                <version>3.6.7.Final</version>
+                <version>${hibernate.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
-                <version>3.6.7.Final</version>
+                <version>${hibernate.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <properties>
         <springframework.version>3.0.6.RELEASE</springframework.version>
+        <hibernate.version>3.6.8.Final</hibernate.version>
     </properties>
 
     <build>

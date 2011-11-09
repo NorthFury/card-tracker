@@ -13,8 +13,12 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
 import mage.tracker.domain.Card;
+import mage.tracker.domain.Card_;
 import mage.tracker.domain.CardEdition;
+import mage.tracker.domain.CardEdition_;
 import mage.tracker.domain.CardRarity;
 import mage.tracker.domain.CardStatus;
 import mage.tracker.domain.Expansion;
@@ -191,11 +195,24 @@ public class CardService {
         return expansionsData;
     }
 
-    public List<Card> getCardsByExpansion(String expansion) {
-        Query query = em.createQuery("select c from Card c inner join c.editions ce where ce.expansion.code = ?1", Card.class);
-        query.setParameter(1, expansion);
-//        CriteriaBuilder cb = em.getCriteriaBuilder();
-//        CriteriaQuery<Card> cq = cb.createQuery(Card.class);
-        return query.getResultList();
+    public List<Card> getCardsByExpansion(String expansionCode) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Card> cq = cb.createQuery(Card.class);
+
+        Root<Card> card = cq.from(Card.class);
+        Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
+        Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
+        cq.select(card);
+
+        cq.where(cb.equal(expansion.get("code"), expansionCode));
+
+        cq.orderBy(cb.asc(card.get("name")));
+
+        TypedQuery<Card> q = em.createQuery(cq);
+
+        q.setFirstResult(60);
+        q.setMaxResults(30);
+
+        return q.getResultList();
     }
 }
