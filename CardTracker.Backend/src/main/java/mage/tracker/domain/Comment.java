@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -30,6 +31,8 @@ public class Comment implements Serializable {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Card card;
+    @OneToOne
+    private Account account;
 
     public Card getCard() {
         return card;
@@ -61,5 +64,13 @@ public class Comment implements Serializable {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

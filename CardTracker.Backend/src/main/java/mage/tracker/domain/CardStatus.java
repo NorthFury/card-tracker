@@ -27,8 +27,6 @@ public class CardStatus implements Serializable {
     @Column(nullable = false)
     private Boolean implemented;
     @OneToOne
-    private Comment issue;
-    @OneToOne
     private Account account;
 
     public CardStatus() {
@@ -59,14 +57,6 @@ public class CardStatus implements Serializable {
 
     public void setImplemented(Boolean implemented) {
         this.implemented = implemented;
-    }
-
-    public Comment getIssue() {
-        return issue;
-    }
-
-    public void setIssue(Comment issue) {
-        this.issue = issue;
     }
 
     public Boolean getRequested() {

@@ -42,7 +42,7 @@ public class Expansion implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date releaseDate;
     @OneToMany(mappedBy = "expansion")
-    private List<CardEdition> editions;
+    private List<CardEdition> cards;
 
     public String getCode() {
         return code;
@@ -52,12 +52,12 @@ public class Expansion implements Serializable {
         this.code = code;
     }
 
-    public List<CardEdition> getEditions() {
-        return editions;
+    public List<CardEdition> getCards() {
+        return cards;
     }
 
-    public void setEditions(List<CardEdition> editions) {
-        this.editions = editions;
+    public void setCards(List<CardEdition> cards) {
+        this.cards = cards;
     }
 
     public Long getId() {
