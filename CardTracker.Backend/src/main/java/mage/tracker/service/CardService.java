@@ -23,6 +23,7 @@ import mage.tracker.domain.CardRarity;
 import mage.tracker.domain.CardStatus;
 import mage.tracker.domain.Expansion;
 import mage.tracker.dto.ExpansionStatus;
+import mage.tracker.dto.PaginatedResult;
 import mage.tracker.repository.CardEditionRepository;
 import mage.tracker.repository.CardRepository;
 import mage.tracker.repository.ExpansionRepository;
@@ -81,7 +82,7 @@ public class CardService {
         } else {
             CardStatus cardStatus = new CardStatus();
             cardStatus = cardStatusRepository.persist(cardStatus);
-            card.setCardStatus(cardStatus);
+            card.setStatus(cardStatus);
             return cardRepository.persist(card);
         }
     }
@@ -127,7 +128,7 @@ public class CardService {
 
             CardStatus cardStatus = new CardStatus();
             cardStatus = cardStatusRepository.persist(cardStatus);
-            card.setCardStatus(cardStatus);
+            card.setStatus(cardStatus);
 
             card.setAbilities(cardAttributes[5]);
 
@@ -195,24 +196,36 @@ public class CardService {
         return expansionsData;
     }
 
-    public List<Card> getCardsByExpansion(String expansionCode) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Card> cq = cb.createQuery(Card.class);
+    public PaginatedResult<Card> getCardsByCriteria(String expansionCode, int page, int rows) {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Card> criteriaQuery = criteriaBuilder.createQuery(Card.class);
 
-        Root<Card> card = cq.from(Card.class);
+        Root<Card> card = criteriaQuery.from(Card.class);
         Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
         Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
-        cq.select(card);
 
-        cq.where(cb.equal(expansion.get("code"), expansionCode));
+        criteriaQuery.where(criteriaBuilder.equal(expansion.get("code"), expansionCode));
+        criteriaQuery.orderBy(criteriaBuilder.asc(card.get("name")));
 
-        cq.orderBy(cb.asc(card.get("name")));
+        criteriaQuery.select(card);
 
-        TypedQuery<Card> q = em.createQuery(cq);
+        TypedQuery<Card> query = em.createQuery(criteriaQuery);
+        query.setFirstResult(page * rows);
+        query.setMaxResults(rows);
 
-        q.setFirstResult(60);
-        q.setMaxResults(30);
+        List<Card> cards = query.getResultList();
 
-        return q.getResultList();
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+
+        card = countQuery.from(Card.class);
+        cardEdition = card.join(Card_.editions);
+        expansion = cardEdition.join(CardEdition_.expansion);
+        countQuery.where(criteriaBuilder.equal(expansion.get("code"), expansionCode));
+
+        countQuery.select(criteriaBuilder.count(card));
+        TypedQuery<Long> cq = em.createQuery(countQuery);
+        Long count = cq.getSingleResult();
+
+        return new PaginatedResult<Card>(count, cards);
     }
 }

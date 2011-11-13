@@ -90,7 +90,7 @@ public class AdminController {
         for (int i = 0; i < cards.length; i++) {
             Card card = cardService.findCardByName(cards[i]);
             if (card != null) {
-                CardStatus cardStatus = card.getCardStatus();
+                CardStatus cardStatus = card.getStatus();
                 cardStatus.setImplemented(Boolean.TRUE);
                 cardService.updateCardStatus(cardStatus);
             }

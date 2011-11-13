@@ -2,7 +2,7 @@
     var pushData = function(action){
         if($('#dataInput').val().length > 0) {
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 dataType: 'json',
                 url: 'admin',
                 data: {

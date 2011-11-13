@@ -12,9 +12,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>Card Tracker Administration Page</title>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js" type="text/javascript"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
-        <script  src="/js/admin.js" type="text/javascript"></script>
+        <script  src="/resources/js/admin.js" type="text/javascript"></script>
     </head>
     <body>
         <a id="importExpansionData">Import Expansion data</a>
