@@ -100,4 +100,27 @@ public class AdminController {
         model.put("success", Boolean.TRUE);
         return model;
     }
+
+    /**
+     * Handler for the import Requested Cards request
+     *
+     * @return success message
+     */
+    @RequestMapping(value = "/admin", params = "action=importRequestedCards")
+    @ResponseBody
+    public HashMap<String, Object> importRequestedCards(@RequestParam("data") String data) {
+        String[] cards = data.split("\n");
+        for (int i = 0; i < cards.length; i++) {
+            Card card = cardService.findCardByName(cards[i]);
+            if (card != null) {
+                CardStatus cardStatus = card.getStatus();
+                cardStatus.setRequested(Boolean.TRUE);
+                cardService.updateCardStatus(cardStatus);
+            }
+        }
+
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("success", Boolean.TRUE);
+        return model;
+    }
 }

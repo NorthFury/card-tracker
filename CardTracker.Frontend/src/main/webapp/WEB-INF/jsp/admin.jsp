@@ -23,6 +23,8 @@
         <br/>
         <a id="importImplementedCards">Import Implemented Cards</a>
         <br/>
+        <a id="importRequestedCards">Import Requested Cards</a>
+        <br/>
         <textarea id="dataInput" rows="20" cols="100"></textarea>
     </body>
 </html>

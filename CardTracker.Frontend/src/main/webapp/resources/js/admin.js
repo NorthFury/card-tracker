@@ -29,6 +29,9 @@
         $("#importImplementedCards").click(function() {
             pushData('importImplementedCards');
         });
+        $("#importRequestedCards").click(function() {
+            pushData('importRequestedCards');
+        });
     };
 
     $(document).ready(onAdminLoad);
