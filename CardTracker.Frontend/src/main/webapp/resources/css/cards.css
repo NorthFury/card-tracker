@@ -1,0 +1,17 @@
+/* 
+    Document   : cards
+    Created on : Oct 23, 2011, 4:17:35 PM
+    Author     : North
+    Description:
+        stylesheet for the cards page
+*/
+
+.implementedCard td {
+    background-color: #d0ffad;
+}
+.requestedCard td {
+    background-color: #afdee4;
+}
+.inProgressCard td {
+    background-color: #fff3a8;
+}

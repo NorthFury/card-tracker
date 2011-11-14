@@ -9,23 +9,43 @@ import mage.tracker.domain.CardStatus;
  */
 public class CardData {
 
+    private long id;
     private String name;
+    private String cost;
+    private String type;
+    private String subType;
+    private String power;
+    private String toughness;
     private Boolean implemented;
     private Boolean requested;
 
     public CardData(Card card) {
+        this.id = card.getId();
         this.name = card.getName();
+        this.cost = card.getCost();
+        this.type = card.getType();
+        this.subType = card.getSubType();
+        this.power = card.getPower();
+        this.toughness = card.getToughness();
         CardStatus status = card.getStatus();
         this.implemented = status.getImplemented();
         this.requested = status.getRequested();
     }
 
-    public String getName() {
-        return name;
+    public String getCost() {
+        return cost;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCost(String cost) {
+        this.cost = cost;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Boolean getImplemented() {
@@ -36,11 +56,51 @@ public class CardData {
         this.implemented = implemented;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPower() {
+        return power;
+    }
+
+    public void setPower(String power) {
+        this.power = power;
+    }
+
     public Boolean getRequested() {
         return requested;
     }
 
     public void setRequested(Boolean requested) {
         this.requested = requested;
+    }
+
+    public String getSubType() {
+        return subType;
+    }
+
+    public void setSubType(String subType) {
+        this.subType = subType;
+    }
+
+    public String getToughness() {
+        return toughness;
+    }
+
+    public void setToughness(String toughness) {
+        this.toughness = toughness;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

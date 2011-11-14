@@ -45,9 +45,8 @@ public class Card implements Serializable {
     private String power;
     @Column(length = 8)
     private String toughness;
-    // TODO: refactor cardStatus to status
     @OneToOne(fetch = FetchType.EAGER)
-    private CardStatus cardStatus;
+    private CardStatus status;
     @OneToMany(mappedBy = "card")
     private List<CardEdition> editions;
     @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -62,11 +61,11 @@ public class Card implements Serializable {
     }
 
     public CardStatus getStatus() {
-        return cardStatus;
+        return status;
     }
 
     public void setStatus(CardStatus status) {
-        this.cardStatus = status;
+        this.status = status;
     }
 
     public List<Comment> getComments() {

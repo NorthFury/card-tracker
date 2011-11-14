@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import mage.tracker.domain.Card;
+import mage.tracker.domain.CardEdition;
 import mage.tracker.dto.CardData;
 import mage.tracker.dto.PaginatedResult;
 import mage.tracker.service.CardService;
@@ -36,7 +37,7 @@ public class CardsController {
 
     @RequestMapping(value = "/cards", params = "action=load")
     @ResponseBody
-    public HashMap<String, Object> importImplementedCards(@RequestParam("page") int page, @RequestParam("rows") int rows, HttpServletRequest request) {
+    public HashMap<String, Object> loadCards(@RequestParam("page") int page, @RequestParam("rows") int rows, HttpServletRequest request) {
         String expansionCode = request.getParameter("expansion");
         if (expansionCode == null) {
             expansionCode = "M12";
@@ -52,6 +53,16 @@ public class CardsController {
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("cards", cardsData);
         model.put("totalRows", searchResult.getTotalCount());
+        return model;
+    }
+
+    @RequestMapping(value = "/cards", params = "action=getEdition")
+    @ResponseBody
+    public HashMap<String, Object> getCardEdition(@RequestParam("cardId") long cardId) {
+        List<CardEdition> cardEditions = cardService.getCardEditions(cardId);
+
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("gathererId", cardEditions.get(0).getGathererId());
         return model;
     }
 }

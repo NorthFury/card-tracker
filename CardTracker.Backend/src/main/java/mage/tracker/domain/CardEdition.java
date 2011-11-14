@@ -18,13 +18,16 @@ import javax.persistence.NamedQuery;
  */
 @NamedQueries({
     @NamedQuery(name = "CardEdition.findByNameAndExpansion",
-    query = "select c from CardEdition c where c.card.name = ?1 and c.expansion.name = ?2")
+    query = "select c from CardEdition c where c.card.name = ?1 and c.expansion.name = ?2"),
+    @NamedQuery(name = "CardEdition.findByCardId",
+    query = "select c from CardEdition c where c.card.id = ?1")
 })
 @Entity
 public class CardEdition implements Serializable {
 
     // Named Queries
     public static final String FIND_BY_NAME_AND_EXPANSION = "CardEdition.findByNameAndExpansion";
+    public static final String FIND_BY_CARD_ID = "CardEdition.findByCardId";
     // Columns
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

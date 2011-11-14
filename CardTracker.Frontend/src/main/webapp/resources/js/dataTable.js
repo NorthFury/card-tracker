@@ -31,11 +31,12 @@ function DataTable($) {
         var data = {
             page: pageToLoad,
             rows: settings.rows,
+            action: 'load',
             expansion: "CON"
         };
 
         var onSuccess = function (data) {
-            var i, j, row, cell, cards, table, tbody;
+            var i, j, row, cell, cards, table, tbody, value;
 
             cards = data.cards;
             table = $(settings.container).find('table');
@@ -44,9 +45,15 @@ function DataTable($) {
             for (i = 0; i < cards.length; i++) {
                 row = $('<tr/>').addClass('ui-widget-content').addClass((i % 2 === 0 ? 'ui-datatable-even' : 'ui-datatable-odd'));
                 for (j = 0; j < settings.columnModel.length; j++) {
-                    cell = $('<td><div class="ui-dt-c">' + cards[i][settings.columnModel[j].key] + '</div></td>');
+                    value = cards[i][settings.columnModel[j].key];
+                    if (settings.columnModel[j].format) {
+                        value = settings.columnModel[j].format(cards[i]);
+                    }
+                    cell = $('<td><div class="ui-dt-c">' + value + '</div></td>');
                     row.append(cell);
                 }
+                row.addClass(settings.rowClass(cards[i]));
+                row.attr('id', cards[i].id);
                 tbody.append(row);
             }
 
@@ -129,6 +136,19 @@ function DataTable($) {
         container.on('click', '.ui-paginator-prev:not(.ui-state-disabled)', prevPage);
         container.on('click', '.ui-paginator-next:not(.ui-state-disabled)', nextPage);
         container.on('click', '.ui-paginator-last:not(.ui-state-disabled)', lastPage);
+        container.on('click', '.ui-datatable-data tr', function (){
+            $.ajax({
+                url: settings.url,
+                dataType: 'json',
+                data: {
+                    action: 'getEdition',
+                    cardId: this.id
+                },
+                success: function (data){
+                    $('#dialog').html('<img src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + data.gathererId + '&type=card"/>').dialog();
+                }
+            });
+        });
     }
 
     var init = function (options) {

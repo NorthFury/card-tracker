@@ -122,7 +122,7 @@ public class CardService {
                 card.setToughness(pt[1]);
             }
             // TODO: Add loyalty
-            if (pt.length == 1) {
+            if (pt.length == 1 && pt[0].length() > 0) {
                 card.setToughness(pt[0]);
             }
 
@@ -183,6 +183,12 @@ public class CardService {
 
     public Card findCardByName(String cardName) {
         return cardRepository.findByName(cardName);
+    }
+
+    public List<CardEdition> getCardEditions(long cardId) {
+        TypedQuery query = em.createNamedQuery(CardEdition.FIND_BY_CARD_ID, CardEdition.class);
+        query.setParameter(1, cardId);
+        return query.getResultList();
     }
 
     public List<ExpansionStatus> getExpansionStatus() {
