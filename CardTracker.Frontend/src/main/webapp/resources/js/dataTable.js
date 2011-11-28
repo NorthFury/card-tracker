@@ -1,14 +1,14 @@
 function DataTable($) {
     "use strict";
     var settings = {
-        rows: 30
+        rows: 30,
+        pageToLoad: 0,
+        maxPage: 0
     };
-    var pageToLoad = 0;
-    var maxPage = 7;
 
     function updatePaginator() {
         var container = $(settings.container);
-        if (pageToLoad === 0) {
+        if (settings.pageToLoad === 0) {
             container.find('.ui-paginator-first').addClass('ui-state-disabled');
             container.find('.ui-paginator-prev').addClass('ui-state-disabled');
         } else {
@@ -16,7 +16,7 @@ function DataTable($) {
             container.find('.ui-paginator-prev').removeClass('ui-state-disabled');
         }
 
-        if (pageToLoad === maxPage) {
+        if (settings.pageToLoad === settings.maxPage) {
             container.find('.ui-paginator-last').addClass('ui-state-disabled');
             container.find('.ui-paginator-next').addClass('ui-state-disabled');
         } else {
@@ -24,16 +24,19 @@ function DataTable($) {
             container.find('.ui-paginator-next').removeClass('ui-state-disabled');
         }
 
-        container.find('.ui-paginator-current').html('(' + (pageToLoad + 1) + ' of ' + (maxPage + 1) + ')');
+        container.find('.ui-paginator-current').html('(' + (settings.pageToLoad + 1) + ' of ' + (settings.maxPage + 1) + ')');
     }
 
     function updateTable() {
         var data = {
-            page: pageToLoad,
+            page: settings.pageToLoad,
             rows: settings.rows,
-            action: 'load',
-            expansion: "CON"
+            action: 'load'
         };
+
+        if (settings.filter) {
+            $.extend(data, settings.filter.getFilter());
+        }
 
         var onSuccess = function (data) {
             var i, j, row, cell, cards, table, tbody, value;
@@ -63,13 +66,14 @@ function DataTable($) {
                 table.find('tbody').replaceWith(tbody);
             }
 
-            maxPage = Math.floor(data.totalRows / settings.rows);
+            settings.maxPage = Math.floor(data.totalRows / settings.rows);
             updatePaginator();
         };
 
         $.ajax({
             url: settings.url,
             dataType: 'json',
+            type: 'POST',
             data: data,
             success: onSuccess
         });
@@ -116,19 +120,19 @@ function DataTable($) {
     function attachEvents() {
         var container = $(settings.container);
         var firstPage = function () {
-            pageToLoad = 0;
+            settings.pageToLoad = 0;
             updateTable();
         };
         var prevPage = function () {
-            pageToLoad--;
+            settings.pageToLoad--;
             updateTable();
         };
         var nextPage = function () {
-            pageToLoad++;
+            settings.pageToLoad++;
             updateTable();
         };
         var lastPage = function () {
-            pageToLoad = maxPage;
+            settings.pageToLoad = settings.maxPage;
             updateTable();
         };
 

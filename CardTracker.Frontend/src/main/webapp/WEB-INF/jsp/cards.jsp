@@ -17,14 +17,59 @@
         <link type="text/css" rel="stylesheet" href="/resources/css/cards.css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js" type="text/javascript"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="/resources/js/filter.js" type="text/javascript"></script>
         <script src="/resources/js/dataTable.js" type="text/javascript"></script>
     </head>
     <body>
-        <div id="myDataTable" style="width: 600px;"></div>
+        <div id="cardsFilter" class="ui-widget" style="width: 400px;">
+            <div class="ui-widget-header" style="padding:5px;">Filter Settings</div>
+            <div class="ui-widget-content">
+                <table>
+                    <tr>
+                        <td>Implemented</td>
+                        <td>
+                            <select id="implementedFilter" name="implemented">
+                                <option value="any">Any</option>
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Requested</td>
+                        <td>
+                            <select id="requestedFilter" name="requested">
+                                <option value="any">Any</option>
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Edition</td>
+                        <td>
+                            <select id="editionFilter" name="edition">
+                                <option value="any">Any</option>
+                                <c:forEach var = "expansion" items="${expansions}">
+                                    <option value="${expansion.code}">${expansion.name}</option>
+                                </c:forEach>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="cardsContainer" style="width: 600px;"></div>
         <div id="dialog" title="Card"></div>
         <script type="text/javascript">
             (function(){
                 $('#dialog').hide();
+
+                var filter = CardsFilter(jQuery);
+                filter.init({
+                    container: '#cardsFilter'
+                });
+
                 var rowClass = function (rowData) {
                     if(rowData.implemented){
                         return 'implementedCard';
@@ -32,12 +77,15 @@
                     if(rowData.requested){
                         return 'requestedCard';
                     }
+                    if(rowData.bugged){
+                        return 'buggedCard';
+                    }
                     return '';
                 }
                 var dt = DataTable(jQuery);
                 dt.init({
                     url: 'http://localhost:8080/cards',
-                    container:  '#myDataTable',
+                    container: '#cardsContainer',
                     rows: 30,
                     columnModel: [
                         {name: 'Name', key: 'name', sortable: false},
@@ -46,7 +94,8 @@
                         {name: 'Power', key: 'power', sortable: false, format: function(row){return row.power || '';}},
                         {name: 'Toughness', key: 'toughness', sortable: false, format: function(row){return row.toughness || '';}}
                     ],
-                    rowClass: rowClass
+                    rowClass: rowClass,
+                    filter: filter
                 });
             })();
         </script>

@@ -192,7 +192,7 @@ public class CardService {
     }
 
     public List<ExpansionStatus> getExpansionStatus() {
-        Query query = em.createNativeQuery("select e.name, e.code, count(*), (select count(*) from cardedition cei inner join card ci on ci.id = cei.card_id inner join cardstatus csi on csi.id = ci.cardStatus_id where cei.expansion_id = e.id and csi.implemented=1) from expansion e inner join cardedition ce on e.id = ce.expansion_id group by e.id order by e.releaseDate desc");
+        Query query = em.createNativeQuery("select e.name, e.code, count(*), (select count(*) from cardedition cei inner join card ci on ci.id = cei.card_id inner join cardstatus csi on csi.id = ci.status_id where cei.expansion_id = e.id and csi.implemented=1) from expansion e inner join cardedition ce on e.id = ce.expansion_id group by e.id order by e.releaseDate desc");
         List<Object[]> resultList = query.getResultList();
 
         List<ExpansionStatus> expansionsData = new LinkedList<ExpansionStatus>();
@@ -207,10 +207,14 @@ public class CardService {
         CriteriaQuery<Card> criteriaQuery = criteriaBuilder.createQuery(Card.class);
 
         Root<Card> card = criteriaQuery.from(Card.class);
-        Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
-        Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
 
-        criteriaQuery.where(criteriaBuilder.equal(expansion.get("code"), expansionCode));
+        Join<Card, CardEdition> cardEdition;
+        Join<CardEdition, Expansion> expansion;
+        if (expansionCode != null) {
+            cardEdition = card.join(Card_.editions);
+            expansion = cardEdition.join(CardEdition_.expansion);
+            criteriaQuery.where(criteriaBuilder.equal(expansion.get("code"), expansionCode));
+        }
         criteriaQuery.orderBy(criteriaBuilder.asc(card.get("name")));
 
         criteriaQuery.select(card);
@@ -221,12 +225,15 @@ public class CardService {
 
         List<Card> cards = query.getResultList();
 
+        // Rows count
         CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
 
         card = countQuery.from(Card.class);
-        cardEdition = card.join(Card_.editions);
-        expansion = cardEdition.join(CardEdition_.expansion);
-        countQuery.where(criteriaBuilder.equal(expansion.get("code"), expansionCode));
+        if (expansionCode != null) {
+            cardEdition = card.join(Card_.editions);
+            expansion = cardEdition.join(CardEdition_.expansion);
+            countQuery.where(criteriaBuilder.equal(expansion.get("code"), expansionCode));
+        }
 
         countQuery.select(criteriaBuilder.count(card));
         TypedQuery<Long> cq = em.createQuery(countQuery);
