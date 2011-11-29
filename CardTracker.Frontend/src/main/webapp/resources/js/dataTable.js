@@ -27,7 +27,10 @@ function DataTable($) {
         container.find('.ui-paginator-current').html('(' + (settings.pageToLoad + 1) + ' of ' + (settings.maxPage + 1) + ')');
     }
 
-    function updateTable() {
+    function updateTable(page) {
+        if (typeof(page) !== 'undefined') {
+            settings.pageToLoad = page;
+        }
         var data = {
             page: settings.pageToLoad,
             rows: settings.rows,
@@ -72,8 +75,9 @@ function DataTable($) {
 
         $.ajax({
             url: settings.url,
+            traditional: true,
             dataType: 'json',
-            type: 'POST',
+//            type: 'POST',
             data: data,
             success: onSuccess
         });
@@ -172,6 +176,7 @@ function DataTable($) {
     };
 
     return {
-        init: init
+        init: init,
+        update: updateTable
     };
 }

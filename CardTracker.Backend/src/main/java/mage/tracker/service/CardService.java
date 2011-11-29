@@ -12,8 +12,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import mage.tracker.domain.Card;
 import mage.tracker.domain.Card_;
@@ -21,7 +23,10 @@ import mage.tracker.domain.CardEdition;
 import mage.tracker.domain.CardEdition_;
 import mage.tracker.domain.CardRarity;
 import mage.tracker.domain.CardStatus;
+import mage.tracker.domain.CardStatus_;
 import mage.tracker.domain.Expansion;
+import mage.tracker.domain.Expansion_;
+import mage.tracker.dto.CardCriteria;
 import mage.tracker.dto.ExpansionStatus;
 import mage.tracker.dto.PaginatedResult;
 import mage.tracker.repository.CardEditionRepository;
@@ -202,24 +207,46 @@ public class CardService {
         return expansionsData;
     }
 
-    public PaginatedResult<Card> getCardsByCriteria(String expansionCode, int page, int rows) {
+    public PaginatedResult<Card> getCardsByCriteria(CardCriteria cardCriteria) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Card> criteriaQuery = criteriaBuilder.createQuery(Card.class);
 
         Root<Card> card = criteriaQuery.from(Card.class);
-
-        Join<Card, CardEdition> cardEdition;
-        Join<CardEdition, Expansion> expansion;
-        if (expansionCode != null) {
-            cardEdition = card.join(Card_.editions);
-            expansion = cardEdition.join(CardEdition_.expansion);
-            criteriaQuery.where(criteriaBuilder.equal(expansion.get("code"), expansionCode));
+        List<Predicate> restrictions = new LinkedList<Predicate>();
+        if (cardCriteria.getAbilities() != null) {
+            restrictions.add(criteriaBuilder.like(card.get(Card_.abilities), "%" + cardCriteria.getAbilities() + "%"));
         }
+        if (cardCriteria.getExpansions() != null && !cardCriteria.getExpansions().isEmpty()) {
+            Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
+            Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
+            In<String> inExpansion = criteriaBuilder.in(expansion.get(Expansion_.code));
+            for (String value : cardCriteria.getExpansions()) {
+                inExpansion.value(value);
+            }
+            restrictions.add(inExpansion);
+        }
+        if (cardCriteria.getImplemented() != null || cardCriteria.getRequested() != null || cardCriteria.getBugged() != null) {
+            Join<Card, CardStatus> cardStatus = card.join(Card_.status);
+            if (cardCriteria.getImplemented() != null) {
+                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.implemented), cardCriteria.getImplemented()));
+            }
+            if (cardCriteria.getRequested() != null) {
+                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.requested), cardCriteria.getRequested()));
+            }
+            if (cardCriteria.getBugged() != null) {
+//                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.bugged), cardCriteria.getBuggged()));
+            }
+        }
+        criteriaQuery.where(restrictions.toArray(new Predicate[0]));
+
         criteriaQuery.orderBy(criteriaBuilder.asc(card.get("name")));
 
         criteriaQuery.select(card);
 
         TypedQuery<Card> query = em.createQuery(criteriaQuery);
+
+        int page = cardCriteria.getPage();
+        int rows = cardCriteria.getRows();
         query.setFirstResult(page * rows);
         query.setMaxResults(rows);
 
@@ -227,13 +254,33 @@ public class CardService {
 
         // Rows count
         CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
-
         card = countQuery.from(Card.class);
-        if (expansionCode != null) {
-            cardEdition = card.join(Card_.editions);
-            expansion = cardEdition.join(CardEdition_.expansion);
-            countQuery.where(criteriaBuilder.equal(expansion.get("code"), expansionCode));
+        restrictions = new LinkedList<Predicate>();
+        if (cardCriteria.getAbilities() != null) {
+            restrictions.add(criteriaBuilder.like(card.get(Card_.abilities), "%" + cardCriteria.getAbilities() + "%"));
         }
+        if (cardCriteria.getExpansions() != null && !cardCriteria.getExpansions().isEmpty()) {
+            Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
+            Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
+            In<String> inExpansion = criteriaBuilder.in(expansion.get(Expansion_.code));
+            for (String value : cardCriteria.getExpansions()) {
+                inExpansion.value(value);
+            }
+            restrictions.add(inExpansion);
+        }
+        if (cardCriteria.getImplemented() != null || cardCriteria.getRequested() != null || cardCriteria.getBugged() != null) {
+            Join<Card, CardStatus> cardStatus = card.join(Card_.status);
+            if (cardCriteria.getImplemented() != null) {
+                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.implemented), cardCriteria.getImplemented()));
+            }
+            if (cardCriteria.getRequested() != null) {
+                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.requested), cardCriteria.getRequested()));
+            }
+            if (cardCriteria.getBugged() != null) {
+//                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.bugged), cardCriteria.getBugged()));
+            }
+        }
+        countQuery.where(restrictions.toArray(new Predicate[0]));
 
         countQuery.select(criteriaBuilder.count(card));
         TypedQuery<Long> cq = em.createQuery(countQuery);

@@ -21,10 +21,16 @@
         <script src="/resources/js/dataTable.js" type="text/javascript"></script>
     </head>
     <body>
-        <div id="cardsFilter" class="ui-widget" style="width: 400px;">
+        <div id="cardsFilter" class="ui-widget" style="width: 400px; float:right">
             <div class="ui-widget-header" style="padding:5px;">Filter Settings</div>
             <div class="ui-widget-content">
                 <table>
+                    <tr>
+                        <td>Rules text</td>
+                        <td>
+                            <input id="abilitiesFilter" name="abilities" />
+                        </td>
+                    </tr>
                     <tr>
                         <td>Implemented</td>
                         <td>
@@ -48,7 +54,7 @@
                     <tr>
                         <td>Edition</td>
                         <td>
-                            <select id="editionFilter" name="edition">
+                            <select id="editionFilter" name="expansion" multiple="multiple">
                                 <option value="any">Any</option>
                                 <c:forEach var = "expansion" items="${expansions}">
                                     <option value="${expansion.code}">${expansion.name}</option>
@@ -97,6 +103,8 @@
                     rowClass: rowClass,
                     filter: filter
                 });
+
+                filter.setPaginator(dt);
             })();
         </script>
     </body>

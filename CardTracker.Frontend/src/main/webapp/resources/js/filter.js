@@ -22,17 +22,47 @@ function CardsFilter($) {
         var onChangeTriState = function (e) {
             if (e.target.value != 'any') {
                 filter[e.target.name] = e.target.value;
+            } else {
+                delete filter[e.target.name];
             }
+            settings.paginator.update(0);
+        }
+        var onExpansionChange = function (e) {
+            if (e.target.value != 'any') {
+                var selected = [];
+                var options = e.target.options;
+                for (var i = 0; i < options.length; i++) {
+                    if (options[i].selected) {
+                        selected.push(options[i].value);
+                    }
+                }
+                filter[e.target.name] = selected;
+            } else {
+                delete filter[e.target.name];
+            }
+            settings.paginator.update(0);
+        }
+        var onAbilitiesChange = function (e) {
+            if (e.target.value != '') {
+                filter[e.target.name] = e.target.value;
+            } else {
+                delete filter[e.target.name];
+            }
+            settings.paginator.update(0);
         }
         $('#implementedFilter').on('change', onChangeTriState);
         $('#requestedFilter').on('change', onChangeTriState);
-        $('#editionFilter').on('change', onChangeTriState);
+        $('#editionFilter').on('change', onExpansionChange);
+        $('#abilitiesFilter').on('blur', onAbilitiesChange);
     }
 
     return {
         init: init,
         getFilter: function () {
             return filter;
+        },
+        setPaginator: function (paginator) {
+            settings.paginator = paginator;
         }
     };
 }
