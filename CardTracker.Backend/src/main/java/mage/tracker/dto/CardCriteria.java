@@ -10,7 +10,7 @@ public class CardCriteria {
 
     private Integer page;
     private Integer rows;
-    private List<String> expansions;
+    private List<String> expansion;
     private Boolean implemented;
     private Boolean requested;
     private Boolean bugged;
@@ -32,12 +32,12 @@ public class CardCriteria {
         this.bugged = bugged;
     }
 
-    public List<String> getExpansions() {
-        return expansions;
+    public List<String> getExpansion() {
+        return expansion;
     }
 
-    public void setExpansions(List<String> expansions) {
-        this.expansions = expansions;
+    public void setExpansion(List<String> expansion) {
+        this.expansion = expansion;
     }
 
     public Boolean getImplemented() {

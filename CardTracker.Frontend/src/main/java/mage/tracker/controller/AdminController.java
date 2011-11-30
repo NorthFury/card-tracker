@@ -1,15 +1,15 @@
 package mage.tracker.controller;
 
-import java.security.Principal;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import mage.tracker.domain.Account;
 import mage.tracker.domain.Card;
 import mage.tracker.domain.CardStatus;
 import mage.tracker.domain.Expansion;
 import mage.tracker.service.CardService;
-import mage.tracker.util.AuthenticationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,8 +31,6 @@ public class AdminController {
      */
     @RequestMapping(value = "/admin")
     public String viewAdmin() {
-        Principal principal = AuthenticationContext.getPrincipal();
-        System.out.println(principal.getName());
         return "admin";
     }
 
@@ -92,6 +90,7 @@ public class AdminController {
             if (card != null) {
                 CardStatus cardStatus = card.getStatus();
                 cardStatus.setImplemented(Boolean.TRUE);
+                cardStatus.setRequested(Boolean.FALSE);
                 cardService.updateCardStatus(cardStatus);
             }
         }
@@ -114,13 +113,30 @@ public class AdminController {
             Card card = cardService.findCardByName(cards[i]);
             if (card != null) {
                 CardStatus cardStatus = card.getStatus();
-                cardStatus.setRequested(Boolean.TRUE);
-                cardService.updateCardStatus(cardStatus);
+                if (cardStatus.getImplemented()) {
+                    cardStatus.setRequested(Boolean.TRUE);
+                    cardService.updateCardStatus(cardStatus);
+                }
             }
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("success", Boolean.TRUE);
+        return model;
+    }
+
+    /**
+     * Handler for the register user request
+     *
+     * @return success message
+     */
+    @RequestMapping(value = "/admin", params = "action=registerAccount")
+    @ResponseBody
+    public HashMap<String, Object> registerAccount(@ModelAttribute Account account) {
+        Boolean success = cardService.saveAccount(account);
+
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("success", success);
         return model;
     }
 }

@@ -17,6 +17,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import mage.tracker.domain.Account;
 import mage.tracker.domain.Card;
 import mage.tracker.domain.Card_;
 import mage.tracker.domain.CardEdition;
@@ -29,6 +30,7 @@ import mage.tracker.domain.Expansion_;
 import mage.tracker.dto.CardCriteria;
 import mage.tracker.dto.ExpansionStatus;
 import mage.tracker.dto.PaginatedResult;
+import mage.tracker.repository.AccountRepository;
 import mage.tracker.repository.CardEditionRepository;
 import mage.tracker.repository.CardRepository;
 import mage.tracker.repository.ExpansionRepository;
@@ -49,6 +51,9 @@ public class CardService {
     @PersistenceContext
     private EntityManager em;
     @Autowired
+    @Qualifier("accountRepository")
+    private AccountRepository accountRepository;
+    @Autowired
     @Qualifier("cardRepository")
     private CardRepository cardRepository;
     @Autowired
@@ -61,35 +66,8 @@ public class CardService {
     @Qualifier("genericRepository")
     private GenericRepository<CardStatus> cardStatusRepository;
 
-    public List<Card> getCards() {
-        return cardRepository.findAll(Card.class);
-    }
-
     public List<Expansion> getExpansions() {
-        return expansionRepository.findAll(Expansion.class);
-    }
-
-    public List<Card> getCards(int page, int pageSize) {
-        TypedQuery query = em.createQuery("select c from Card c", Card.class);
-
-        query.setFirstResult(page * pageSize);
-        query.setMaxResults(pageSize);
-
-        return query.getResultList();
-    }
-
-    @Transactional(readOnly = false)
-    public Card saveCard(Card card) {
-        Card result = cardRepository.findByName(card.getName());
-        if (result != null) {
-            result.setAbilities(card.getAbilities());
-            return cardRepository.merge(result);
-        } else {
-            CardStatus cardStatus = new CardStatus();
-            cardStatus = cardStatusRepository.persist(cardStatus);
-            card.setStatus(cardStatus);
-            return cardRepository.persist(card);
-        }
+        return expansionRepository.findAll();
     }
 
     @Transactional(readOnly = false)
@@ -99,6 +77,24 @@ public class CardService {
             return expansionRepository.persist(expansion);
         }
         return result;
+    }
+
+    @Transactional(readOnly = false)
+    public Boolean saveAccount(Account account) {
+        Account result = accountRepository.findByName(account.getName());
+        if (result == null) {
+            accountRepository.persist(account);
+            return true;
+        }
+        return false;
+    }
+
+    public Account authenticateAccount(String name, String password) {
+        Account account = accountRepository.findByName(name);
+        if (account != null && account.getPassword().equals(password)) {
+            return account;
+        }
+        return null;
     }
 
     /**
@@ -176,16 +172,6 @@ public class CardService {
         return cardStatusRepository.merge(cardStatus);
     }
 
-    @Transactional(readOnly = false)
-    public Card updateCard(Card card) {
-        return cardRepository.merge(card);
-    }
-
-    @Transactional(readOnly = false)
-    public void removeCard(Long CardId) {
-        cardRepository.remove(cardRepository.find(Card.class, CardId));
-    }
-
     public Card findCardByName(String cardName) {
         return cardRepository.findByName(cardName);
     }
@@ -197,7 +183,13 @@ public class CardService {
     }
 
     public List<ExpansionStatus> getExpansionStatus() {
-        Query query = em.createNativeQuery("select e.name, e.code, count(*), (select count(*) from cardedition cei inner join card ci on ci.id = cei.card_id inner join cardstatus csi on csi.id = ci.status_id where cei.expansion_id = e.id and csi.implemented=1) from expansion e inner join cardedition ce on e.id = ce.expansion_id group by e.id order by e.releaseDate desc");
+        StringBuilder sb = new StringBuilder();
+        sb.append("select e.name, e.code, count(*), ");
+        sb.append("(select count(*)");
+        sb.append(" from cardedition cei inner join card ci on ci.id = cei.card_id inner join cardstatus csi on csi.id = ci.status_id");
+        sb.append(" where cei.expansion_id = e.id and csi.implemented=1)");
+        sb.append(" from expansion e inner join cardedition ce on e.id = ce.expansion_id group by e.id order by e.releaseDate desc");
+        Query query = em.createNativeQuery(sb.toString());
         List<Object[]> resultList = query.getResultList();
 
         List<ExpansionStatus> expansionsData = new LinkedList<ExpansionStatus>();
@@ -216,11 +208,11 @@ public class CardService {
         if (cardCriteria.getAbilities() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.abilities), "%" + cardCriteria.getAbilities() + "%"));
         }
-        if (cardCriteria.getExpansions() != null && !cardCriteria.getExpansions().isEmpty()) {
+        if (cardCriteria.getExpansion() != null && !cardCriteria.getExpansion().isEmpty()) {
             Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
             Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
             In<String> inExpansion = criteriaBuilder.in(expansion.get(Expansion_.code));
-            for (String value : cardCriteria.getExpansions()) {
+            for (String value : cardCriteria.getExpansion()) {
                 inExpansion.value(value);
             }
             restrictions.add(inExpansion);
@@ -259,11 +251,11 @@ public class CardService {
         if (cardCriteria.getAbilities() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.abilities), "%" + cardCriteria.getAbilities() + "%"));
         }
-        if (cardCriteria.getExpansions() != null && !cardCriteria.getExpansions().isEmpty()) {
+        if (cardCriteria.getExpansion() != null && !cardCriteria.getExpansion().isEmpty()) {
             Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
             Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
             In<String> inExpansion = criteriaBuilder.in(expansion.get(Expansion_.code));
-            for (String value : cardCriteria.getExpansions()) {
+            for (String value : cardCriteria.getExpansion()) {
                 inExpansion.value(value);
             }
             restrictions.add(inExpansion);

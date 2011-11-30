@@ -38,4 +38,9 @@ public class ExpansionRepository extends GenericRepository<Expansion> {
             return resultList.get(0);
         }
     }
+
+    public List<Expansion> findAll() {
+        TypedQuery query = em.createNamedQuery(Expansion.FIND_ALL, Expansion.class);
+        return query.getResultList();
+    }
 }

@@ -6,14 +6,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author North
  */
+@NamedQueries({
+    @NamedQuery(name = "Account.findByName",
+    query = "select a from Account a where a.name = ?1")
+})
 @Entity
 public class Account implements Serializable {
 
+    // Named Queries
+    public static final String FIND_BY_NAME = "Account.findByName";
+    // Columns
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
