@@ -52,6 +52,26 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Bugged</td>
+                        <td>
+                            <select id="buggedFilter" name="bugged">
+                                <option value="any">Any</option>
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Tested</td>
+                        <td>
+                            <select id="testedFilter" name="tested">
+                                <option value="any">Any</option>
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Edition</td>
                         <td>
                             <select id="editionFilter" name="expansion" multiple="multiple">

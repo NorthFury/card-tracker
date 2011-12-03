@@ -52,6 +52,8 @@ function CardsFilter($) {
         }
         $('#implementedFilter').on('change', onChangeTriState);
         $('#requestedFilter').on('change', onChangeTriState);
+        $('#buggedFilter').on('change', onChangeTriState);
+        $('#testedFilter').on('change', onChangeTriState);
         $('#editionFilter').on('change', onExpansionChange);
         $('#abilitiesFilter').on('blur', onAbilitiesChange);
     }

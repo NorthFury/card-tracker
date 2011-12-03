@@ -18,6 +18,8 @@ public class CardData {
     private String toughness;
     private Boolean implemented;
     private Boolean requested;
+    private Boolean tested;
+    private Boolean bugged;
 
     public CardData(Card card) {
         this.id = card.getId();
@@ -27,9 +29,12 @@ public class CardData {
         this.subType = card.getSubType();
         this.power = card.getPower();
         this.toughness = card.getToughness();
+
         CardStatus status = card.getStatus();
         this.implemented = status.getImplemented();
         this.requested = status.getRequested();
+        this.tested = status.getTested();
+        this.bugged = status.getTested();
     }
 
     public String getCost() {
@@ -78,6 +83,22 @@ public class CardData {
 
     public void setRequested(Boolean requested) {
         this.requested = requested;
+    }
+
+    public Boolean getTested() {
+        return tested;
+    }
+
+    public void setTested(Boolean tested) {
+        this.tested = tested;
+    }
+
+    public Boolean getBugged() {
+        return bugged;
+    }
+
+    public void setBugged(Boolean bugged) {
+        this.bugged = bugged;
     }
 
     public String getSubType() {

@@ -226,7 +226,7 @@ public class CardService {
                 restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.requested), cardCriteria.getRequested()));
             }
             if (cardCriteria.getBugged() != null) {
-//                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.bugged), cardCriteria.getBuggged()));
+                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.bugged), cardCriteria.getBugged()));
             }
         }
         criteriaQuery.where(restrictions.toArray(new Predicate[0]));
@@ -269,7 +269,7 @@ public class CardService {
                 restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.requested), cardCriteria.getRequested()));
             }
             if (cardCriteria.getBugged() != null) {
-//                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.bugged), cardCriteria.getBugged()));
+                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.bugged), cardCriteria.getBugged()));
             }
         }
         countQuery.where(restrictions.toArray(new Predicate[0]));

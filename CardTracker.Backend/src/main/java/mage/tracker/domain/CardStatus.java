@@ -26,6 +26,8 @@ public class CardStatus implements Serializable {
     private Boolean tested;
     @Column(nullable = false)
     private Boolean implemented;
+    @Column(nullable = false)
+    private Boolean bugged;
     @OneToOne
     private Account account;
 
@@ -73,5 +75,13 @@ public class CardStatus implements Serializable {
 
     public void setTested(Boolean tested) {
         this.tested = tested;
+    }
+
+    public Boolean getBugged() {
+        return bugged;
+    }
+
+    public void setBugged(Boolean bugged) {
+        this.bugged = bugged;
     }
 }
