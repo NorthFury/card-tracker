@@ -4,6 +4,7 @@ function CardsFilter($) {
     var filter = {};
 
     var init = function (options) {
+        filter.changed = true;
         var params, pair, i;
         if (options) {
             $.extend(settings, options);
@@ -19,13 +20,17 @@ function CardsFilter($) {
         }
 
         // atachEvents
+        var updatePaginator = function () {
+            filter.changed = true;
+            settings.paginator.update(0);
+        }
         var onChangeTriState = function (e) {
             if (e.target.value != 'any') {
                 filter[e.target.name] = e.target.value;
             } else {
                 delete filter[e.target.name];
             }
-            settings.paginator.update(0);
+            updatePaginator();
         }
         var onExpansionChange = function (e) {
             if (e.target.value != 'any') {
@@ -40,7 +45,7 @@ function CardsFilter($) {
             } else {
                 delete filter[e.target.name];
             }
-            settings.paginator.update(0);
+            updatePaginator();
         }
         var onAbilitiesChange = function (e) {
             if (e.target.value != '') {
@@ -48,7 +53,7 @@ function CardsFilter($) {
             } else {
                 delete filter[e.target.name];
             }
-            settings.paginator.update(0);
+            updatePaginator();
         }
         $('#implementedFilter').on('change', onChangeTriState);
         $('#requestedFilter').on('change', onChangeTriState);

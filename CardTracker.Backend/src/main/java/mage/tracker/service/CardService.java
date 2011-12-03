@@ -29,7 +29,6 @@ import mage.tracker.domain.Expansion;
 import mage.tracker.domain.Expansion_;
 import mage.tracker.dto.CardCriteria;
 import mage.tracker.dto.ExpansionStatus;
-import mage.tracker.dto.PaginatedResult;
 import mage.tracker.repository.AccountRepository;
 import mage.tracker.repository.CardEditionRepository;
 import mage.tracker.repository.CardRepository;
@@ -199,7 +198,7 @@ public class CardService {
         return expansionsData;
     }
 
-    public PaginatedResult<Card> getCardsByCriteria(CardCriteria cardCriteria) {
+    public List<Card> getCardsByCriteria(CardCriteria cardCriteria) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Card> criteriaQuery = criteriaBuilder.createQuery(Card.class);
 
@@ -242,12 +241,17 @@ public class CardService {
         query.setFirstResult(page * rows);
         query.setMaxResults(rows);
 
-        List<Card> cards = query.getResultList();
+        return query.getResultList();
+    }
 
-        // Rows count
-        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
-        card = countQuery.from(Card.class);
-        restrictions = new LinkedList<Predicate>();
+    public Long getCardsCountByCriteria(CardCriteria cardCriteria) {
+        System.out.println("counting >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+
+        Root<Card> card = criteriaQuery.from(Card.class);
+        List<Predicate> restrictions = new LinkedList<Predicate>();
         if (cardCriteria.getAbilities() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.abilities), "%" + cardCriteria.getAbilities() + "%"));
         }
@@ -272,12 +276,10 @@ public class CardService {
                 restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.bugged), cardCriteria.getBugged()));
             }
         }
-        countQuery.where(restrictions.toArray(new Predicate[0]));
+        criteriaQuery.where(restrictions.toArray(new Predicate[0]));
 
-        countQuery.select(criteriaBuilder.count(card));
-        TypedQuery<Long> cq = em.createQuery(countQuery);
-        Long count = cq.getSingleResult();
-
-        return new PaginatedResult<Card>(count, cards);
+        criteriaQuery.select(criteriaBuilder.count(card));
+        TypedQuery<Long> query = em.createQuery(criteriaQuery);
+        return query.getSingleResult();
     }
 }

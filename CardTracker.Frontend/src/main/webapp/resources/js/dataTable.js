@@ -7,24 +7,49 @@ function DataTable($) {
     };
 
     function updatePaginator() {
-        var container = $(settings.container);
-        if (settings.pageToLoad === 0) {
-            container.find('.ui-paginator-first').addClass('ui-state-disabled');
-            container.find('.ui-paginator-prev').addClass('ui-state-disabled');
-        } else {
-            container.find('.ui-paginator-first').removeClass('ui-state-disabled');
-            container.find('.ui-paginator-prev').removeClass('ui-state-disabled');
-        }
+        if (settings.filter && settings.filter.getFilter().changed) {
+            settings.filter.getFilter().changed = false;
+            var data = {
+                page: settings.pageToLoad,
+                rows: settings.rows,
+                action: 'getCount'
+            };
 
-        if (settings.pageToLoad === settings.maxPage) {
-            container.find('.ui-paginator-last').addClass('ui-state-disabled');
-            container.find('.ui-paginator-next').addClass('ui-state-disabled');
+            $.extend(data, settings.filter.getFilter());
+            delete data.changed;
+            
+            $.ajax({
+                url: settings.url,
+                traditional: true,
+                dataType: 'json',
+                type: 'POST',
+                data: data,
+                success: function (data) {
+                    settings.totalRows = data.totalRows;
+                    settings.maxPage = Math.floor(data.totalRows / settings.rows);
+                    updatePaginator();
+                }
+            });
         } else {
-            container.find('.ui-paginator-last').removeClass('ui-state-disabled');
-            container.find('.ui-paginator-next').removeClass('ui-state-disabled');
-        }
+            var container = $(settings.container);
+            if (settings.pageToLoad === 0) {
+                container.find('.ui-paginator-first').addClass('ui-state-disabled');
+                container.find('.ui-paginator-prev').addClass('ui-state-disabled');
+            } else {
+                container.find('.ui-paginator-first').removeClass('ui-state-disabled');
+                container.find('.ui-paginator-prev').removeClass('ui-state-disabled');
+            }
 
-        container.find('.ui-paginator-current').html('(' + (settings.pageToLoad + 1) + ' of ' + (settings.maxPage + 1) + ')');
+            if (settings.pageToLoad === settings.maxPage) {
+                container.find('.ui-paginator-last').addClass('ui-state-disabled');
+                container.find('.ui-paginator-next').addClass('ui-state-disabled');
+            } else {
+                container.find('.ui-paginator-last').removeClass('ui-state-disabled');
+                container.find('.ui-paginator-next').removeClass('ui-state-disabled');
+            }
+
+            container.find('.ui-paginator-current').html('(' + (settings.pageToLoad + 1) + ' of ' + (settings.maxPage + 1) + ')');
+        }
     }
 
     function updateTable(page) {
@@ -39,6 +64,7 @@ function DataTable($) {
 
         if (settings.filter) {
             $.extend(data, settings.filter.getFilter());
+            delete data.changed;
         }
 
         var onSuccess = function (data) {
@@ -68,8 +94,6 @@ function DataTable($) {
             } else {
                 table.find('tbody').replaceWith(tbody);
             }
-
-            settings.maxPage = Math.floor(data.totalRows / settings.rows);
             updatePaginator();
         };
 
@@ -77,7 +101,7 @@ function DataTable($) {
             url: settings.url,
             traditional: true,
             dataType: 'json',
-//            type: 'POST',
+            type: 'POST',
             data: data,
             success: onSuccess
         });

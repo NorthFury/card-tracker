@@ -7,7 +7,6 @@ import mage.tracker.domain.Card;
 import mage.tracker.domain.CardEdition;
 import mage.tracker.dto.CardCriteria;
 import mage.tracker.dto.CardData;
-import mage.tracker.dto.PaginatedResult;
 import mage.tracker.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,8 +41,8 @@ public class CardsController {
     @RequestMapping(value = "/cards", params = "action=load")
     @ResponseBody
     public HashMap<String, Object> loadCards(@ModelAttribute CardCriteria cardCriteria) {
-        PaginatedResult<Card> searchResult = cardService.getCardsByCriteria(cardCriteria);
-        List<Card> cards = searchResult.getRows();
+        List<Card> cards = cardService.getCardsByCriteria(cardCriteria);
+
         List<CardData> cardsData = new LinkedList<CardData>();
         for (Card card : cards) {
             cardsData.add(new CardData(card));
@@ -51,7 +50,16 @@ public class CardsController {
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("cards", cardsData);
-        model.put("totalRows", searchResult.getTotalCount());
+        return model;
+    }
+
+    @RequestMapping(value = "/cards", params = "action=getCount")
+    @ResponseBody
+    public HashMap<String, Object> getCount(@ModelAttribute CardCriteria cardCriteria) {
+        Long count = cardService.getCardsCountByCriteria(cardCriteria);
+
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("totalRows", count);
         return model;
     }
 
