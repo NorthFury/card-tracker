@@ -116,6 +116,17 @@
                     }
                     return '';
                 }
+
+                var costFormat = function (row) {
+                    var split = row.cost.split('$');
+                    var html = '';
+                    for (var i = 0; i < split.length; i++) {
+                        if (split[i].length)
+                        html += '<img src="http://gatherer.wizards.com/handlers/image.ashx?size=small&amp;type=symbol&amp;name=' + split[i] + '">';
+                    }
+                    return html;
+                }
+
                 var dt = DataTable(jQuery);
                 dt.init({
                     url: 'cards',
@@ -123,7 +134,7 @@
                     rows: 30,
                     columnModel: [
                         {name: 'Name', key: 'name', sortable: false},
-                        {name: 'Cost', key: 'cost', sortable: false, format: function(row){return row.cost ? row.cost.replace(/\\$/g, '') : '';}},
+                        {name: 'Cost', key: 'cost', sortable: false, format: costFormat},
                         {name: 'Type', key: 'type', sortable: false},
                         {name: 'Power', key: 'power', sortable: false, format: function(row){return row.power || '';}},
                         {name: 'Toughness', key: 'toughness', sortable: false, format: function(row){return row.toughness || '';}}
