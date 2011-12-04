@@ -245,8 +245,6 @@ public class CardService {
     }
 
     public Long getCardsCountByCriteria(CardCriteria cardCriteria) {
-        System.out.println("counting >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 

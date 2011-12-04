@@ -139,4 +139,19 @@ public class AdminController {
         model.put("success", success);
         return model;
     }
+
+    /**
+     * Handler for the login request
+     *
+     * @return success message
+     */
+    @RequestMapping(value = "/admin", params = "action=login")
+    @ResponseBody
+    public HashMap<String, Object> login(@RequestParam("name") String name, @RequestParam("password") String password) {
+        Boolean success = cardService.authenticateAccount(name, password) != null;
+
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("success", success);
+        return model;
+    }
 }

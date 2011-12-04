@@ -17,6 +17,8 @@
         <link type="text/css" rel="stylesheet" href="/resources/css/cards.css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js" type="text/javascript"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="http://crypto-js.googlecode.com/files/2.3.0-crypto-md5.js" type="text/javascript"></script>
+        <script src="/resources/js/login.js" type="text/javascript"></script>
         <script src="/resources/js/filter.js" type="text/javascript"></script>
         <script src="/resources/js/dataTable.js" type="text/javascript"></script>
     </head>
@@ -86,10 +88,16 @@
             </div>
         </div>
         <div id="cardsContainer" style="width: 600px;"></div>
+        <div id="loginContainer"></div>
         <div id="dialog" title="Card"></div>
         <script type="text/javascript">
             (function(){
                 $('#dialog').hide();
+
+                var login = Login(jQuery);
+                login.init({
+                    container: '#loginContainer'
+                });
 
                 var filter = CardsFilter(jQuery);
                 filter.init({
@@ -110,7 +118,7 @@
                 }
                 var dt = DataTable(jQuery);
                 dt.init({
-                    url: 'http://localhost:8080/cards',
+                    url: 'cards',
                     container: '#cardsContainer',
                     rows: 30,
                     columnModel: [
