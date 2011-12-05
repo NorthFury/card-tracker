@@ -16,20 +16,25 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
         <script src="http://crypto-js.googlecode.com/files/2.3.0-crypto-md5.js" type="text/javascript"></script>
         <script  src="/resources/js/admin.js" type="text/javascript"></script>
+        <style>
+            .aButton {
+                background: #79bbff;
+                border: 2px outset #79bbff;
+                padding-left: 5px;
+                padding-right: 5px;
+                cursor: pointer;
+            }
+        </style>
     </head>
     <body>
-        <a id="importExpansionData">Import Expansion data</a>
-        <br/>
-        <a id="importCardsData">Import Cards data</a>
-        <br/>
-        <a id="importImplementedCards">Import Implemented Cards</a>
-        <br/>
-        <a id="importRequestedCards">Import Requested Cards</a>
-        <br/>
-        <textarea id="dataInput" rows="20" cols="100"></textarea>
+        <a id="importExpansionData" class="aButton">Import Expansion data</a>
+        <a id="importCardsData" class="aButton">Import Cards data</a>
+        <a id="importImplementedCards" class="aButton">Import Implemented Cards</a>
+        <a id="importRequestedCards" class="aButton">Import Requested Cards</a>
+        <textarea id="dataInput" rows="20" cols="100" style="margin-top: 5px;"></textarea>
         <br/>
         <br/>
-        <a id="registerAccount">Register Account</a>
+        <a id="registerAccount" class="aButton">Register Account</a>
         <table>
             <tr>
                 <td>Name</td>

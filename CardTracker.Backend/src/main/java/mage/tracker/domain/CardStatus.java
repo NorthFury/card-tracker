@@ -35,6 +35,7 @@ public class CardStatus implements Serializable {
         this.requested = false;
         this.implemented = false;
         this.tested = false;
+        this.bugged = false;
     }
 
     public Account getAccount() {

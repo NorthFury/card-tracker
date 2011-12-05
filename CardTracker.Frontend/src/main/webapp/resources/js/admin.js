@@ -1,22 +1,30 @@
 (function($) {
     var pushData = function(action){
-        if($('#dataInput').val().length > 0) {
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url: 'admin',
-                data: {
-                    action: action,
-                    data: $('#dataInput').val()
-                },
-                success: function(data){
-                    if(data.success)
-                        alert('Success');
-                    else
-                        alert('Failure');
-                }
-            });
+        var data = $('#dataInput').val();
+
+        function sendData(start) {
+            var end = data.indexOf("\n", start + 500000);
+            var toSend = (end != -1) ? data.slice(start, end) : data. slice(start);
+            if (toSend.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: 'admin',
+                    data: {
+                        action: action,
+                        data: toSend
+                    },
+                    success: function(){
+                        if (end != -1)
+                            sendData(end + 1);
+                        else
+                            alert('Finished');
+                    }
+                });
+            }
         }
+
+        sendData(0);
     }
 
     var onAdminLoad = function() {

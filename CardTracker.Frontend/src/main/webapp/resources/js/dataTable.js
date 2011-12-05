@@ -26,7 +26,7 @@ function DataTable($) {
                 data: data,
                 success: function (data) {
                     settings.totalRows = data.totalRows;
-                    settings.maxPage = Math.floor(data.totalRows / settings.rows);
+                    settings.maxPage = Math.floor(Math.max(0, data.totalRows - 1) / settings.rows);
                     updatePaginator();
                 }
             });

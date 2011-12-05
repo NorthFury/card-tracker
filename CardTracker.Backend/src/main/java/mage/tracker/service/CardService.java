@@ -116,6 +116,11 @@ public class CardService {
             }
 
             card.setCost(cardAttributes[2]);
+            try {
+                card.setCmc(Integer.parseInt(cardAttributes[3]));
+            } catch (NumberFormatException e) {
+                card.setCmc(0);
+            }
             String[] pt = cardAttributes[7].split(" / ");
             if (pt.length == 2) {
                 card.setPower(pt[0]);

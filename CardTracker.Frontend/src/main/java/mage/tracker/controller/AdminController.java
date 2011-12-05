@@ -91,6 +91,7 @@ public class AdminController {
                 CardStatus cardStatus = card.getStatus();
                 cardStatus.setImplemented(Boolean.TRUE);
                 cardStatus.setRequested(Boolean.FALSE);
+                cardStatus.setAccount(null);
                 cardService.updateCardStatus(cardStatus);
             }
         }
@@ -113,7 +114,7 @@ public class AdminController {
             Card card = cardService.findCardByName(cards[i]);
             if (card != null) {
                 CardStatus cardStatus = card.getStatus();
-                if (cardStatus.getImplemented()) {
+                if (!cardStatus.getImplemented()) {
                     cardStatus.setRequested(Boolean.TRUE);
                     cardService.updateCardStatus(cardStatus);
                 }

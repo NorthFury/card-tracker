@@ -37,6 +37,8 @@ public class Card implements Serializable {
     private String abilities;
     @Column(length = 64, nullable = false)
     private String cost;
+    @Column(nullable = false)
+    private int cmc;
     @Column(length = 64, nullable = false)
     private String type;
     @Column(length = 64)
@@ -82,6 +84,14 @@ public class Card implements Serializable {
 
     public void setCost(String cost) {
         this.cost = cost;
+    }
+
+    public int getCmc() {
+        return cmc;
+    }
+
+    public void setCmc(int cmc) {
+        this.cmc = cmc;
     }
 
     public List<CardEdition> getEditions() {
