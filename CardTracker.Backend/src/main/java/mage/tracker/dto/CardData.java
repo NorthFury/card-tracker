@@ -1,5 +1,6 @@
 package mage.tracker.dto;
 
+import mage.tracker.domain.Account;
 import mage.tracker.domain.Card;
 import mage.tracker.domain.CardStatus;
 
@@ -20,6 +21,7 @@ public class CardData {
     private Boolean requested;
     private Boolean tested;
     private Boolean bugged;
+    private String developer;
 
     public CardData(Card card) {
         this.id = card.getId();
@@ -34,7 +36,12 @@ public class CardData {
         this.implemented = status.getImplemented();
         this.requested = status.getRequested();
         this.tested = status.getTested();
-        this.bugged = status.getTested();
+        this.bugged = status.getBugged();
+
+        Account account = status.getAccount();
+        if (account != null) {
+            this.developer = account.getName();
+        }
     }
 
     public String getCost() {
@@ -123,5 +130,13 @@ public class CardData {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(String developer) {
+        this.developer = developer;
     }
 }

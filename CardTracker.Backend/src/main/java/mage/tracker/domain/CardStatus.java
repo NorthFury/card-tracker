@@ -3,6 +3,7 @@ package mage.tracker.domain;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +29,7 @@ public class CardStatus implements Serializable {
     private Boolean implemented;
     @Column(nullable = false)
     private Boolean bugged;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Account account;
 
     public CardStatus() {

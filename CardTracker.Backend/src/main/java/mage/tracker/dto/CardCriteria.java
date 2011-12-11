@@ -14,6 +14,7 @@ public class CardCriteria {
     private Boolean implemented;
     private Boolean requested;
     private Boolean bugged;
+    private Boolean tested;
     private String abilities;
 
     public String getAbilities() {
@@ -30,6 +31,14 @@ public class CardCriteria {
 
     public void setBugged(Boolean bugged) {
         this.bugged = bugged;
+    }
+
+    public Boolean getTested() {
+        return tested;
+    }
+
+    public void setTested(Boolean tested) {
+        this.tested = tested;
     }
 
     public List<String> getExpansion() {

@@ -180,6 +180,10 @@ public class CardService {
         return cardRepository.findByName(cardName);
     }
 
+    public Card findCardById(long id) {
+        return cardRepository.find(Card.class, id);
+    }
+
     public List<CardEdition> getCardEditions(long cardId) {
         TypedQuery query = em.createNamedQuery(CardEdition.FIND_BY_CARD_ID, CardEdition.class);
         query.setParameter(1, cardId);
@@ -221,7 +225,8 @@ public class CardService {
             }
             restrictions.add(inExpansion);
         }
-        if (cardCriteria.getImplemented() != null || cardCriteria.getRequested() != null || cardCriteria.getBugged() != null) {
+        if (cardCriteria.getImplemented() != null || cardCriteria.getRequested() != null
+                || cardCriteria.getBugged() != null || cardCriteria.getTested() != null) {
             Join<Card, CardStatus> cardStatus = card.join(Card_.status);
             if (cardCriteria.getImplemented() != null) {
                 restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.implemented), cardCriteria.getImplemented()));
@@ -231,6 +236,9 @@ public class CardService {
             }
             if (cardCriteria.getBugged() != null) {
                 restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.bugged), cardCriteria.getBugged()));
+            }
+            if (cardCriteria.getTested() != null) {
+                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.tested), cardCriteria.getTested()));
             }
         }
         criteriaQuery.where(restrictions.toArray(new Predicate[0]));
@@ -267,7 +275,8 @@ public class CardService {
             }
             restrictions.add(inExpansion);
         }
-        if (cardCriteria.getImplemented() != null || cardCriteria.getRequested() != null || cardCriteria.getBugged() != null) {
+        if (cardCriteria.getImplemented() != null || cardCriteria.getRequested() != null
+                || cardCriteria.getBugged() != null || cardCriteria.getTested() != null) {
             Join<Card, CardStatus> cardStatus = card.join(Card_.status);
             if (cardCriteria.getImplemented() != null) {
                 restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.implemented), cardCriteria.getImplemented()));
@@ -277,6 +286,9 @@ public class CardService {
             }
             if (cardCriteria.getBugged() != null) {
                 restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.bugged), cardCriteria.getBugged()));
+            }
+            if (cardCriteria.getTested() != null) {
+                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.tested), cardCriteria.getTested()));
             }
         }
         criteriaQuery.where(restrictions.toArray(new Predicate[0]));

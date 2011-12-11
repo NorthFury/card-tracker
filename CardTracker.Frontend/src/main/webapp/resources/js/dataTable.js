@@ -52,7 +52,7 @@ function DataTable($) {
         }
     }
 
-    function updateTable(page) {
+    var updateTable = function (page) {
         if (typeof(page) !== 'undefined') {
             settings.pageToLoad = page;
         }
@@ -77,9 +77,10 @@ function DataTable($) {
             for (i = 0; i < cards.length; i++) {
                 row = $('<tr/>').addClass('ui-widget-content').addClass((i % 2 === 0 ? 'ui-datatable-even' : 'ui-datatable-odd'));
                 for (j = 0; j < settings.columnModel.length; j++) {
-                    value = cards[i][settings.columnModel[j].key];
                     if (settings.columnModel[j].format) {
                         value = settings.columnModel[j].format(cards[i]);
+                    } else {
+                        value = cards[i][settings.columnModel[j].key] || '';
                     }
                     cell = $('<td><div class="ui-dt-c">' + value + '</div></td>');
                     row.append(cell);
@@ -168,19 +169,6 @@ function DataTable($) {
         container.on('click', '.ui-paginator-prev:not(.ui-state-disabled)', prevPage);
         container.on('click', '.ui-paginator-next:not(.ui-state-disabled)', nextPage);
         container.on('click', '.ui-paginator-last:not(.ui-state-disabled)', lastPage);
-        container.on('click', '.ui-datatable-data tr', function (){
-            $.ajax({
-                url: settings.url,
-                dataType: 'json',
-                data: {
-                    action: 'getEdition',
-                    cardId: this.id
-                },
-                success: function (data){
-                    $('#dialog').html('<img src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + data.gathererId + '&type=card"/>').dialog();
-                }
-            });
-        });
     }
 
     var init = function (options) {

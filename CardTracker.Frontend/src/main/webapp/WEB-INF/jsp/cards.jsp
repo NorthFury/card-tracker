@@ -21,6 +21,8 @@
         <script src="/resources/js/login.js" type="text/javascript"></script>
         <script src="/resources/js/filter.js" type="text/javascript"></script>
         <script src="/resources/js/dataTable.js" type="text/javascript"></script>
+        <script  src="/resources/js/tooltip.js" type="text/javascript"></script>
+        <script  src="/resources/js/cards.js" type="text/javascript"></script>
     </head>
     <body>
         <div id="cardsFilter" class="ui-widget" style="width: 400px; float:right">
@@ -87,64 +89,7 @@
                 </table>
             </div>
         </div>
-        <div id="cardsContainer" style="width: 600px;"></div>
+        <div id="cardsContainer" style="width: 800px;"></div>
         <div id="loginContainer"></div>
-        <div id="dialog" title="Card"></div>
-        <script type="text/javascript">
-            (function(){
-                $('#dialog').hide();
-
-                var login = Login(jQuery);
-                login.init({
-                    container: '#loginContainer'
-                });
-
-                var filter = CardsFilter(jQuery);
-                filter.init({
-                    container: '#cardsFilter'
-                });
-
-                var rowClass = function (rowData) {
-                    if(rowData.implemented){
-                        return 'implementedCard';
-                    }
-                    if(rowData.requested){
-                        return 'requestedCard';
-                    }
-                    if(rowData.bugged){
-                        return 'buggedCard';
-                    }
-                    return '';
-                }
-
-                var costFormat = function (row) {
-                    var split = row.cost.split('$');
-                    var html = '';
-                    for (var i = 0; i < split.length; i++) {
-                        if (split[i].length)
-                        html += '<img src="http://gatherer.wizards.com/handlers/image.ashx?size=small&amp;type=symbol&amp;name=' + split[i] + '">';
-                    }
-                    return html;
-                }
-
-                var dt = DataTable(jQuery);
-                dt.init({
-                    url: 'cards',
-                    container: '#cardsContainer',
-                    rows: 30,
-                    columnModel: [
-                        {name: 'Name', key: 'name', sortable: false},
-                        {name: 'Cost', key: 'cost', sortable: false, format: costFormat},
-                        {name: 'Type', key: 'type', sortable: false},
-                        {name: 'Power', key: 'power', sortable: false, format: function(row){return row.power || '';}},
-                        {name: 'Toughness', key: 'toughness', sortable: false, format: function(row){return row.toughness || '';}}
-                    ],
-                    rowClass: rowClass,
-                    filter: filter
-                });
-
-                filter.setPaginator(dt);
-            })();
-        </script>
     </body>
 </html>
