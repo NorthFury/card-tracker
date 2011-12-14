@@ -194,9 +194,9 @@ public class CardService {
         StringBuilder sb = new StringBuilder();
         sb.append("select e.name, e.code, count(*), ");
         sb.append("(select count(*)");
-        sb.append(" from cardedition cei inner join card ci on ci.id = cei.card_id inner join cardstatus csi on csi.id = ci.status_id");
+        sb.append(" from CardEdition cei inner join Card ci on ci.id = cei.card_id inner join CardStatus csi on csi.id = ci.status_id");
         sb.append(" where cei.expansion_id = e.id and csi.implemented=1)");
-        sb.append(" from expansion e inner join cardedition ce on e.id = ce.expansion_id group by e.id order by e.releaseDate desc");
+        sb.append(" from Expansion e inner join CardEdition ce on e.id = ce.expansion_id group by e.id order by e.releaseDate desc");
         Query query = em.createNativeQuery(sb.toString());
         List<Object[]> resultList = query.getResultList();
 
