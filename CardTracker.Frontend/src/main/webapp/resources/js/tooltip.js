@@ -2,6 +2,20 @@ function Tooltip($) {
     "use strict";
     var settings = {};
     var element;
+    var image = null;
+
+    function posX(e) {
+        return e.pageX + 10;
+    }
+
+    function posY(e) {
+        var offset = 50;
+        var posY = e.pageY - offset;
+        var height = $(window).height();
+        if(e.clientY + element.outerHeight() + 5 - offset> height)
+            posY -= e.clientY + element.outerHeight() + 5 - offset - height;
+        return posY;
+    }
 
     var init = function (options) {
         if (options) {
@@ -14,8 +28,8 @@ function Tooltip($) {
         var onMouseEnter = function (e) {
             element.html('Loading...');
             element.css({
-                left: e.pageX + 5,
-                top: e.pageY - 50
+                left: posX(e),
+                top: posY(e)
             });
             element.show();
 
@@ -27,7 +41,10 @@ function Tooltip($) {
                     cardId: $(e.target).parents('tr')[0].id
                 },
                 success: function (data){
-                    var image = document.createElement('img');
+                    if (image !== null) {
+                        image.onload = null;
+                    }
+                    image = document.createElement('img');
                     image.src= 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=' + data.gathererId;
 
                     if (image.complete) {
@@ -38,6 +55,7 @@ function Tooltip($) {
                             image.onload = null;
                             element.html('');
                             element.append(image);
+                            image = null;
                         }
                     }
                 }
@@ -50,8 +68,8 @@ function Tooltip($) {
 
         var onMouseMove = function (e) {
             element.css({
-                left: e.pageX + 10,
-                top: e.pageY - 50
+                left: posX(e),
+                top: posY(e)
             });
         }
 
