@@ -42,7 +42,9 @@ public class AuthenticationFilter implements Filter {
         }
 
         AuthenticationContext.setAccount(account);
-        chain.doFilter(request, response);
+        if ( chain != null ) {
+        	chain.doFilter(request, response);
+        }
     }
 
     @Override
