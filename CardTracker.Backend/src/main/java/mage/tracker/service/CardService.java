@@ -96,6 +96,19 @@ public class CardService {
         return null;
     }
 
+    @Transactional(readOnly = false)
+    public boolean updateCardEditionMtgoImageId(String cardData) {
+        String[] cardAttributes = cardData.split("\\|");
+        CardEdition edition = cardEditionRepository.findByNameAndExpansionCode(cardAttributes[1], cardAttributes[0]);
+        if (edition != null) {
+            edition.setMtgoImageId(cardAttributes[3]);
+            cardEditionRepository.persist(edition);
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Used to add a new card or update its data if it already exists
      *

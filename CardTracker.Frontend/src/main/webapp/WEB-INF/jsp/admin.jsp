@@ -31,6 +31,7 @@
         <a id="importCardsData" class="aButton">Import Cards data</a>
         <a id="importImplementedCards" class="aButton">Import Implemented Cards</a>
         <a id="importRequestedCards" class="aButton">Import Requested Cards</a>
+        <a id="importMtgoData" class="aButton">Import MTGO Data</a>
         <textarea id="dataInput" rows="20" cols="100" style="margin-top: 5px;"></textarea>
         <br/>
         <br/>

@@ -127,6 +127,24 @@ public class AdminController {
     }
 
     /**
+     * Handler for the import MTGO data request
+     *
+     * @return success message
+     */
+    @RequestMapping(value = "/admin", params = "action=importMtgoData")
+    @ResponseBody
+    public HashMap<String, Object> importMtgoData(@RequestParam("data") String data) {
+        String[] cards = data.split("\n");
+        for (int i = 0; i < cards.length; i++) {
+            cardService.updateCardEditionMtgoImageId(cards[i]);
+        }
+
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("success", Boolean.TRUE);
+        return model;
+    }
+
+    /**
      * Handler for the register user request
      *
      * @return success message

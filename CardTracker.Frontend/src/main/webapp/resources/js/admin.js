@@ -40,6 +40,9 @@
         $('#importRequestedCards').click(function() {
             pushData('importRequestedCards');
         });
+        $('#importMtgoData').click(function() {
+            pushData('importMtgoData');
+        });
 
         $('#registerAccount').click(function() {
             var name, password, email;

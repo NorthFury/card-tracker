@@ -28,4 +28,16 @@ public class CardEditionRepository extends GenericRepository<CardEdition> {
             return resultList.get(0);
         }
     }
+
+    public CardEdition findByNameAndExpansionCode(String name, String code) {
+        TypedQuery query = em.createNamedQuery(CardEdition.FIND_BY_NAME_AND_EXPANSION_CODE, CardEdition.class);
+        query.setParameter(1, name);
+        query.setParameter(2, code);
+        List<CardEdition> resultList = query.getResultList();
+        if (resultList.isEmpty()) {
+            return null;
+        } else {
+            return resultList.get(0);
+        }
+    }
 }
