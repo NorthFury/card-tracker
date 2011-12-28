@@ -229,8 +229,8 @@ public class CardService {
         if (cardCriteria.getAbilities() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.abilities), "%" + cardCriteria.getAbilities() + "%"));
         }
+        Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
         if (cardCriteria.getExpansion() != null && !cardCriteria.getExpansion().isEmpty()) {
-            Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
             Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
             In<String> inExpansion = criteriaBuilder.in(expansion.get(Expansion_.code));
             for (String value : cardCriteria.getExpansion()) {
@@ -257,6 +257,7 @@ public class CardService {
         criteriaQuery.where(restrictions.toArray(new Predicate[0]));
 
         criteriaQuery.orderBy(criteriaBuilder.asc(card.get("name")));
+        criteriaQuery.groupBy(card.get("name"));
 
         criteriaQuery.select(card);
 
@@ -279,8 +280,8 @@ public class CardService {
         if (cardCriteria.getAbilities() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.abilities), "%" + cardCriteria.getAbilities() + "%"));
         }
+        Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
         if (cardCriteria.getExpansion() != null && !cardCriteria.getExpansion().isEmpty()) {
-            Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
             Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
             In<String> inExpansion = criteriaBuilder.in(expansion.get(Expansion_.code));
             for (String value : cardCriteria.getExpansion()) {
@@ -306,7 +307,7 @@ public class CardService {
         }
         criteriaQuery.where(restrictions.toArray(new Predicate[0]));
 
-        criteriaQuery.select(criteriaBuilder.count(card));
+        criteriaQuery.select(criteriaBuilder.countDistinct(card));
         TypedQuery<Long> query = em.createQuery(criteriaQuery);
         return query.getSingleResult();
     }
