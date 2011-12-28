@@ -1,5 +1,6 @@
 package mage.tracker.controller;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import mage.tracker.domain.Account;
@@ -84,6 +85,7 @@ public class AdminController {
     @RequestMapping(value = "/admin", params = "action=importImplementedCards")
     @ResponseBody
     public HashMap<String, Object> importImplementedCards(@RequestParam("data") String data) {
+        ArrayList<Integer> failed = new ArrayList<Integer>();
         String[] cards = data.split("\n");
         for (int i = 0; i < cards.length; i++) {
             Card card = cardService.findCardByName(cards[i]);
@@ -93,11 +95,14 @@ public class AdminController {
                 cardStatus.setRequested(Boolean.FALSE);
                 cardStatus.setAccount(null);
                 cardService.updateCardStatus(cardStatus);
+            } else {
+                failed.add(i);
             }
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("success", Boolean.TRUE);
+        model.put("failed", failed);
         return model;
     }
 
@@ -109,6 +114,7 @@ public class AdminController {
     @RequestMapping(value = "/admin", params = "action=importRequestedCards")
     @ResponseBody
     public HashMap<String, Object> importRequestedCards(@RequestParam("data") String data) {
+        ArrayList<Integer> failed = new ArrayList<Integer>();
         String[] cards = data.split("\n");
         for (int i = 0; i < cards.length; i++) {
             Card card = cardService.findCardByName(cards[i]);
@@ -118,11 +124,14 @@ public class AdminController {
                     cardStatus.setRequested(Boolean.TRUE);
                     cardService.updateCardStatus(cardStatus);
                 }
+            } else {
+                failed.add(i);
             }
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("success", Boolean.TRUE);
+        model.put("failed", failed);
         return model;
     }
 
@@ -134,13 +143,17 @@ public class AdminController {
     @RequestMapping(value = "/admin", params = "action=importMtgoData")
     @ResponseBody
     public HashMap<String, Object> importMtgoData(@RequestParam("data") String data) {
+        ArrayList<Integer> failed = new ArrayList<Integer>();
         String[] cards = data.split("\n");
         for (int i = 0; i < cards.length; i++) {
-            cardService.updateCardEditionMtgoImageId(cards[i]);
+            if (!cardService.updateCardEditionMtgoImageId(cards[i])) {
+                failed.add(i);
+            }
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("success", Boolean.TRUE);
+        model.put("failed", failed);
         return model;
     }
 
