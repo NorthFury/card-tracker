@@ -11,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>Stats Page</title>
-        <link type="text/css" rel="stylesheet" href="/resources/css/stats.css" />
+        <link type="text/css" rel="stylesheet" href="resources/css/stats.css" />
     </head>
     <body>
         <h2>Implementation status by set:</h2>

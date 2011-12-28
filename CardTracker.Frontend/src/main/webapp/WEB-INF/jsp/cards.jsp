@@ -14,15 +14,15 @@
         <link type="text/css" rel="stylesheet" href="http://www.primefaces.org/showcase-labs/javax.faces.resource/theme.css.jsf?ln=primefaces-cupertino" />
         <link type="text/css" rel="stylesheet" href="http://www.primefaces.org/showcase-labs/javax.faces.resource/primefaces.css.jsf?ln=primefaces&amp;v=3.0.RC1-SNAPSHOT" />
         <link type="text/css" rel="stylesheet" href="http://www.primefaces.org/showcase-labs/css/default.css" />
-        <link type="text/css" rel="stylesheet" href="/resources/css/cards.css" />
+        <link type="text/css" rel="stylesheet" href="resources/css/cards.css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js" type="text/javascript"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
         <script src="http://crypto-js.googlecode.com/files/2.3.0-crypto-md5.js" type="text/javascript"></script>
-        <script src="/resources/js/login.js" type="text/javascript"></script>
-        <script src="/resources/js/filter.js" type="text/javascript"></script>
-        <script src="/resources/js/dataTable.js" type="text/javascript"></script>
-        <script  src="/resources/js/tooltip.js" type="text/javascript"></script>
-        <script  src="/resources/js/cards.js" type="text/javascript"></script>
+        <script src="resources/js/login.js" type="text/javascript"></script>
+        <script src="resources/js/filter.js" type="text/javascript"></script>
+        <script src="resources/js/dataTable.js" type="text/javascript"></script>
+        <script  src="resources/js/tooltip.js" type="text/javascript"></script>
+        <script  src="resources/js/cards.js" type="text/javascript"></script>
     </head>
     <body>
         <div id="cardsFilter" class="ui-widget" style="width: 400px; float:right">
