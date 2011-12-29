@@ -11,11 +11,14 @@ function CardsFilter($) {
         }
 
         // sets filter based on url params
-        if(location.search.length > 1){
+        if (location.search.length > 1) {
             params = decodeURI(location.search.substr(1)).split('&');
-            for (i = 0; i<params.length; i++) {
+            for (i = 0; i < params.length; i++) {
                 pair = params[i].split('=');
                 filter[pair[0]] = pair[1];
+                if (pair[0] === 'expansion') {
+                    $("#editionFilter option[value='" + pair[1] + "']").attr('selected', true);
+                }
             }
         }
 
@@ -23,20 +26,20 @@ function CardsFilter($) {
         var updatePaginator = function () {
             filter.changed = true;
             settings.paginator.update(0);
-        }
+        };
         var onChangeTriState = function (e) {
-            if (e.target.value != 'any') {
+            if (e.target.value !== 'any') {
                 filter[e.target.name] = e.target.value;
             } else {
                 delete filter[e.target.name];
             }
             updatePaginator();
-        }
-        var onExpansionChange = function (e) {
-            if (e.target.value != 'any') {
-                var selected = [];
+        };
+        var onMultiselectChange = function (e) {
+            if (e.target.value !== 'any') {
+                var i, selected = [];
                 var options = e.target.options;
-                for (var i = 0; i < options.length; i++) {
+                for (i = 0; i < options.length; i++) {
                     if (options[i].selected) {
                         selected.push(options[i].value);
                     }
@@ -46,22 +49,23 @@ function CardsFilter($) {
                 delete filter[e.target.name];
             }
             updatePaginator();
-        }
+        };
         var onAbilitiesChange = function (e) {
-            if (e.target.value != '') {
+            if (e.target.value !== '') {
                 filter[e.target.name] = e.target.value;
             } else {
                 delete filter[e.target.name];
             }
             updatePaginator();
-        }
+        };
         $('#implementedFilter').on('change', onChangeTriState);
         $('#requestedFilter').on('change', onChangeTriState);
         $('#buggedFilter').on('change', onChangeTriState);
         $('#testedFilter').on('change', onChangeTriState);
-        $('#editionFilter').on('change', onExpansionChange);
+        $('#editionFilter').on('change', onMultiselectChange);
+        $('#developerFilter').on('change', onMultiselectChange);
         $('#abilitiesFilter').on('blur', onAbilitiesChange);
-    }
+    };
 
     return {
         init: init,

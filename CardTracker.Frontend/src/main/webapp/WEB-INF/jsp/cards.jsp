@@ -76,6 +76,17 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Developer</td>
+                        <td>
+                            <select id="developerFilter" name="developer" multiple="multiple">
+                                <option value="any">Any</option>
+                                <c:forEach var = "account" items="${accounts}">
+                                    <option value="${account.id}">${account.name}</option>
+                                </c:forEach>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Edition</td>
                         <td>
                             <select id="editionFilter" name="expansion" multiple="multiple">

@@ -11,6 +11,7 @@ public class CardCriteria {
     private Integer page;
     private Integer rows;
     private List<String> expansion;
+    private List<Integer> developer;
     private Boolean implemented;
     private Boolean requested;
     private Boolean bugged;
@@ -47,6 +48,14 @@ public class CardCriteria {
 
     public void setExpansion(List<String> expansion) {
         this.expansion = expansion;
+    }
+
+    public List<Integer> getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(List<Integer> developer) {
+        this.developer = developer;
     }
 
     public Boolean getImplemented() {

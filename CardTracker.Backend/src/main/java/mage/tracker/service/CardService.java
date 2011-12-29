@@ -18,6 +18,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import mage.tracker.domain.Account;
+import mage.tracker.domain.Account_;
 import mage.tracker.domain.Card;
 import mage.tracker.domain.Card_;
 import mage.tracker.domain.CardEdition;
@@ -64,6 +65,10 @@ public class CardService {
     @Autowired
     @Qualifier("genericRepository")
     private GenericRepository<CardStatus> cardStatusRepository;
+
+    public List<Account> getAccounts() {
+        return accountRepository.findAll();
+    }
 
     public List<Expansion> getExpansions() {
         return expansionRepository.findAll();
@@ -239,7 +244,8 @@ public class CardService {
             restrictions.add(inExpansion);
         }
         if (cardCriteria.getImplemented() != null || cardCriteria.getRequested() != null
-                || cardCriteria.getBugged() != null || cardCriteria.getTested() != null) {
+                || cardCriteria.getBugged() != null || cardCriteria.getTested() != null
+                || cardCriteria.getDeveloper() != null) {
             Join<Card, CardStatus> cardStatus = card.join(Card_.status);
             if (cardCriteria.getImplemented() != null) {
                 restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.implemented), cardCriteria.getImplemented()));
@@ -252,6 +258,14 @@ public class CardService {
             }
             if (cardCriteria.getTested() != null) {
                 restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.tested), cardCriteria.getTested()));
+            }
+            if (cardCriteria.getDeveloper() != null) {
+                Join<CardStatus, Account> account = cardStatus.join(CardStatus_.account);
+                In<Integer> inDeveloper = criteriaBuilder.in(account.get(Account_.id));
+                for (Integer value : cardCriteria.getDeveloper()) {
+                    inDeveloper.value(value);
+                }
+                restrictions.add(inDeveloper);
             }
         }
         criteriaQuery.where(restrictions.toArray(new Predicate[0]));
@@ -290,7 +304,8 @@ public class CardService {
             restrictions.add(inExpansion);
         }
         if (cardCriteria.getImplemented() != null || cardCriteria.getRequested() != null
-                || cardCriteria.getBugged() != null || cardCriteria.getTested() != null) {
+                || cardCriteria.getBugged() != null || cardCriteria.getTested() != null
+                || cardCriteria.getDeveloper() != null) {
             Join<Card, CardStatus> cardStatus = card.join(Card_.status);
             if (cardCriteria.getImplemented() != null) {
                 restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.implemented), cardCriteria.getImplemented()));
@@ -303,6 +318,14 @@ public class CardService {
             }
             if (cardCriteria.getTested() != null) {
                 restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.tested), cardCriteria.getTested()));
+            }
+            if (cardCriteria.getDeveloper() != null) {
+                Join<CardStatus, Account> account = cardStatus.join(CardStatus_.account);
+                In<Integer> inDeveloper = criteriaBuilder.in(account.get(Account_.id));
+                for (Integer value : cardCriteria.getDeveloper()) {
+                    inDeveloper.value(value);
+                }
+                restrictions.add(inDeveloper);
             }
         }
         criteriaQuery.where(restrictions.toArray(new Predicate[0]));

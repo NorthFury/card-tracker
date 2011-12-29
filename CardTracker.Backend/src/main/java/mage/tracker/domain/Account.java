@@ -15,13 +15,16 @@ import javax.persistence.NamedQuery;
  */
 @NamedQueries({
     @NamedQuery(name = "Account.findByName",
-    query = "select a from Account a where a.name = ?1")
+    query = "select a from Account a where a.name = ?1"),
+    @NamedQuery(name = "Account.findAll",
+    query = "select a from Account a order by a.name")
 })
 @Entity
 public class Account implements Serializable {
 
     // Named Queries
     public static final String FIND_BY_NAME = "Account.findByName";
+    public static final String FIND_ALL = "Account.findAll";
     // Columns
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

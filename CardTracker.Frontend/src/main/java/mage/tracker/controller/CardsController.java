@@ -33,6 +33,7 @@ public class CardsController {
     public ModelAndView viewCards() {
         ModelAndView modelAndView = new ModelAndView("cards");
         modelAndView.addObject("expansions", cardService.getExpansions());
+        modelAndView.addObject("accounts", cardService.getAccounts());
         return modelAndView;
     }
 

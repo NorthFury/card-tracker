@@ -27,4 +27,9 @@ public class AccountRepository extends GenericRepository<Account> {
             return resultList.get(0);
         }
     }
+
+    public List<Account> findAll() {
+        TypedQuery query = em.createNamedQuery(Account.FIND_ALL, Account.class);
+        return query.getResultList();
+    }
 }
