@@ -144,7 +144,7 @@ $(document).ready(function () {
     filter.setPaginator(cardsTable);
 
     Tooltip(jQuery).init({
-        url: 'cards',
+        cardsTable: cardsTable,
         container: '#cardsContainer'
     });
 

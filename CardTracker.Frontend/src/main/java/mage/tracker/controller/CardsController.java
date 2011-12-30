@@ -62,16 +62,6 @@ public class CardsController {
         return model;
     }
 
-    @RequestMapping(value = "/cards", params = "action=getEdition")
-    @ResponseBody
-    public HashMap<String, Object> getCardEdition(@RequestParam("cardId") long cardId) {
-        List<CardEdition> cardEditions = cardService.getCardEditions(cardId);
-
-        HashMap<String, Object> model = new HashMap<String, Object>();
-        model.put("gathererId", cardEditions.get(0).getGathererId());
-        return model;
-    }
-
     @RequestMapping(value = "/cards", params = "action=markIp")
     @ResponseBody
     public HashMap<String, Object> markIp(@RequestParam("cardId") long cardId) {
