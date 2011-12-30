@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,7 +38,7 @@ public class CardEdition implements Serializable {
     private Long id;
     @ManyToOne
     private Card card;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Expansion expansion;
     @Column(length = 64)
     private String gathererId;

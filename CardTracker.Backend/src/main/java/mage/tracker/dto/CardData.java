@@ -1,7 +1,11 @@
 package mage.tracker.dto;
 
+import java.util.LinkedList;
+import java.util.List;
 import mage.tracker.domain.Account;
 import mage.tracker.domain.Card;
+import mage.tracker.domain.CardEdition;
+import mage.tracker.domain.CardRarity;
 import mage.tracker.domain.CardStatus;
 
 /**
@@ -10,6 +14,42 @@ import mage.tracker.domain.CardStatus;
  */
 public class CardData {
 
+    public class EditionData {
+
+        private CardRarity rarity;
+        private String gathererId;
+        private String mtgoImageId;
+        private String expansionCode;
+        private String expansionName;
+
+        public EditionData(CardEdition edition) {
+            this.rarity = edition.getRarity();
+            this.gathererId = edition.getGathererId();
+            this.mtgoImageId = edition.getMtgoImageId();
+            this.expansionCode = edition.getExpansion().getCode();
+            this.expansionName = edition.getExpansion().getName();
+        }
+
+        public CardRarity getRarity() {
+            return rarity;
+        }
+
+        public String getGathererId() {
+            return gathererId;
+        }
+
+        public String getMtgoImageId() {
+            return mtgoImageId;
+        }
+
+        public String getExpansionCode() {
+            return expansionCode;
+        }
+
+        public String getExpansionName() {
+            return expansionName;
+        }
+    }
     private long id;
     private String name;
     private String cost;
@@ -22,6 +62,7 @@ public class CardData {
     private Boolean tested;
     private Boolean bugged;
     private String developer;
+    private List<EditionData> editions;
 
     public CardData(Card card) {
         this.id = card.getId();
@@ -41,6 +82,12 @@ public class CardData {
         Account account = status.getAccount();
         if (account != null) {
             this.developer = account.getName();
+        }
+
+        editions = new LinkedList<EditionData>();
+        List<CardEdition> cardEditions = card.getEditions();
+        for (CardEdition edition : cardEditions) {
+            editions.add(new EditionData(edition));
         }
     }
 
@@ -138,5 +185,13 @@ public class CardData {
 
     public void setDeveloper(String developer) {
         this.developer = developer;
+    }
+
+    public List<EditionData> getEditions() {
+        return editions;
+    }
+
+    public void setEditions(List<EditionData> editions) {
+        this.editions = editions;
     }
 }

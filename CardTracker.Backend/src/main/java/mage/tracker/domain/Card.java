@@ -49,7 +49,7 @@ public class Card implements Serializable {
     private String toughness;
     @OneToOne(fetch = FetchType.EAGER)
     private CardStatus status;
-    @OneToMany(mappedBy = "card")
+    @OneToMany(mappedBy = "card", fetch = FetchType.EAGER)
     private List<CardEdition> editions;
     @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<Comment> comments;
