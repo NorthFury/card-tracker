@@ -18,7 +18,7 @@
         <c:forEach var = "expansionStatus" items="${expansionData}">
             <div class="skillBack">
                 <div class="skillFront" style="width:${expansionStatus.implemented * 100 / expansionStatus.total}%">
-                    <div class="skillText" style="z-index: 10;"><a href="/cards?expansion=${expansionStatus.code}">${expansionStatus.name}</a></div>
+                    <div class="skillText" style="z-index: 10;"><a href="cards?expansion=${expansionStatus.code}">${expansionStatus.name}</a></div>
                     <div class="skillText" style="right:50px; text-align:right;">${expansionStatus.implemented} / ${expansionStatus.total}</div>
                     <div class="skillText" style="right:3px; text-align:right;">(${expansionStatus.total - expansionStatus.implemented})</div>
                 </div>

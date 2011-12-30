@@ -6,11 +6,9 @@
 
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-<!--        <property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver" />-->
-        <property name="url" value="jdbc:mysql://localhost:3306/tracker" />
-<!--        <property name="url" value="jdbc:derby://localhost:1527/mtgdb" />-->
-        <property name="username" value="root" />
-        <property name="password" value="root" />
+        <property name="url" value="jdbc:mysql://localhost:3306/cardtracker" />
+        <property name="username" value="mage" />
+        <property name="password" value="magepass" />
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -25,9 +23,7 @@
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
-<!--                <prop key="hibernate.dialect">org.hibernate.dialect.DerbyDialect</prop>-->
-<!--                <prop key="hibernate.hbm2ddl.auto">create</prop>-->
-                <prop key="hibernate.show.sql">true</prop>
+                <prop key="hibernate.show.sql">false</prop>
             </props>
         </property>
     </bean>

@@ -6,7 +6,7 @@ function Login($) {
             $.extend(settings, options);
         }
 
-        container = $(settings.container)
+        container = $(settings.container);
         account = localStorage.getItem('account') || sessionStorage.getItem('account');
         loginHtml = '<table><tr><td>Name:</td><td><input id="name" type="text"/></td></tr><tr><td>Password</td><td><input id="password" type="password"/></td></tr></table>';
 
@@ -14,7 +14,7 @@ function Login($) {
             account = {
                 name: $('#name').val(),
                 password: Crypto.MD5($('#password').val())
-            }
+            };
             var onSuccess = function (data) {
                 if (data.success) {
                     localStorage.setItem('account', JSON.stringify(account));
@@ -22,8 +22,8 @@ function Login($) {
                 } else {
                     alert('Credidentials not valid. Please try again.');
                 }
-            }
-            if ((e.keyCode || e.which) == 13) {
+            };
+            if ((e.keyCode || e.which) === 13) {
                 $.ajax({
                     url: 'admin',
                     dataType: 'json',
@@ -35,13 +35,13 @@ function Login($) {
                     success: onSuccess
                 });
             }
-        }
+        };
         var logout = function () {
             localStorage.removeItem('account');
             sessionStorage.removeItem('account');
             container.html(loginHtml);
             $(settings.container + ' input').on('keyup', login);
-        }
+        };
 
         if (account) {
             account = JSON.parse(account);
@@ -52,8 +52,8 @@ function Login($) {
         }
 
         container.on('click', '.logout', logout);
-    }
+    };
     return {
         init: init
-    }
+    };
 }

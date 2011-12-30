@@ -17,7 +17,7 @@ function DataTable($) {
 
             $.extend(data, settings.filter.getFilter());
             delete data.changed;
-            
+
             $.ajax({
                 url: settings.url,
                 traditional: true,
@@ -48,12 +48,12 @@ function DataTable($) {
                 container.find('.ui-paginator-next').removeClass('ui-state-disabled');
             }
 
-            container.find('.ui-paginator-current').html('(' + (settings.pageToLoad + 1) + ' of ' + (settings.maxPage + 1) + ')');
+            container.find('.ui-paginator-current').html('(' + (settings.pageToLoad + 1) + ' of ' + (settings.maxPage + 1) + ') (Total: ' + settings.totalRows + ')');
         }
     }
 
     var updateTable = function (page) {
-        if (typeof(page) !== 'undefined') {
+        if (typeof (page) !== 'undefined') {
             settings.pageToLoad = page;
         }
         var data = {
@@ -70,6 +70,7 @@ function DataTable($) {
         var onSuccess = function (data) {
             var i, j, row, cell, cards, table, tbody, value;
 
+            settings.cardsData = data.cards;
             cards = data.cards;
             table = $(settings.container).find('table');
             tbody = $('<tbody/>').addClass('ui-datatable-data ui-widget-content');
@@ -106,7 +107,7 @@ function DataTable($) {
             data: data,
             success: onSuccess
         });
-    }
+    };
 
     function addPaginator() {
         var container, paginator;
@@ -187,8 +188,21 @@ function DataTable($) {
         updateTable();
     };
 
+    var getRowData = function (id) {
+        var cards, i;
+        cards = settings.cardsData;
+
+        for (i = 0; i < cards.length; i++) {
+            if (cards[i].id === id) {
+                return cards[i];
+            }
+        }
+        return null;
+    };
+
     return {
         init: init,
-        update: updateTable
+        update: updateTable,
+        getRowData: getRowData
     };
 }
