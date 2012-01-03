@@ -92,7 +92,7 @@ $(document).ready(function () {
         columnModel: [
             {
                 name: 'Name',
-                sortable: false,
+                sortable: true,
                 format: function (row) {
                     return '<div class="cardName">' + row.name + '</div>';
                 }
@@ -100,42 +100,35 @@ $(document).ready(function () {
             {
                 name: 'Mana Cost',
                 key: 'cost',
-                sortable: false,
                 format: costFormat
             },
             {
                 name: 'Type',
                 key: 'type',
-                sortable: false
+                sortable: true
             },
             {
                 name: 'Subtype',
                 key: 'subType',
-                sortable: false
             },
             {
                 name: 'P',
                 key: 'power',
-                sortable: false
             },
             {
                 name: 'T',
                 key: 'toughness',
-                sortable: false
             },
             {
                 name: 'Editions',
-                sortable: false,
                 format: editionsFormat
             },
             {
                 name: 'Dev',
                 key: 'developer',
-                sortable: false
             },
             {
                 name: 'Status/Actions',
-                sortable: false,
                 format: actionsFormat
             }
         ]

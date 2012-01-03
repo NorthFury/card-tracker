@@ -17,6 +17,8 @@ public class CardCriteria {
     private Boolean bugged;
     private Boolean tested;
     private String abilities;
+    private String sortColumn;
+    private Boolean sortAscending;
 
     public String getAbilities() {
         return abilities;
@@ -88,5 +90,21 @@ public class CardCriteria {
 
     public void setRows(Integer rows) {
         this.rows = rows;
+    }
+
+    public Boolean getSortAscending() {
+        return sortAscending;
+    }
+
+    public void setSortAscending(Boolean sortAscending) {
+        this.sortAscending = sortAscending;
+    }
+
+    public String getSortColumn() {
+        return sortColumn;
+    }
+
+    public void setSortColumn(String sortColumn) {
+        this.sortColumn = sortColumn;
     }
 }

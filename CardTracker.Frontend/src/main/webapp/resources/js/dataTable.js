@@ -62,6 +62,11 @@ function DataTable($) {
             action: 'load'
         };
 
+        if (settings.sortColumn) {
+            data.sortColumn = settings.sortColumn;
+            data.sortAscending = settings.sortAscending;
+        }
+
         if (settings.filter) {
             $.extend(data, settings.filter.getFilter());
             delete data.changed;
@@ -142,7 +147,7 @@ function DataTable($) {
                 }
                 htmlString += '<span>' + columnModel.name + '</span>';
                 htmlString += '</div>';
-                element.append($('<th/>').html(htmlString).addClass('ui-state-default' + (columnModel.sortable ? ' ui-sortable-column' : '')));
+                element.append($('<th/>').attr('name', columnModel.name).html(htmlString).addClass('ui-state-default' + (columnModel.sortable ? ' ui-sortable-column' : '')));
             }
         }
     }
@@ -165,11 +170,45 @@ function DataTable($) {
             settings.pageToLoad = settings.maxPage;
             updateTable();
         };
+        var sort = function (e) {
+            var $this = $(this);
+            var icon, active;
+
+            active = $('.ui-sortable-column.ui-state-active');
+            if (active.attr('name') !== $this.attr('name')) {
+                active.removeClass('ui-state-active');
+                active.find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s').addClass('ui-icon-carat-2-n-s');
+                $this.addClass('ui-state-active');
+            }
+
+            settings.sortColumn = $this.attr('name');
+
+            icon = $this.find('.ui-sortable-column-icon');
+            if (icon.hasClass('ui-icon-carat-2-n-s')) {
+                icon.removeClass('ui-icon-carat-2-n-s');
+                icon.addClass('ui-icon-triangle-1-n');
+                settings.sortAscending = true;
+            } else {
+                if (icon.hasClass('ui-icon-triangle-1-n')) {
+                    settings.sortAscending = false;
+                    icon.removeClass('ui-icon-triangle-1-n');
+                    icon.addClass('ui-icon-triangle-1-s');
+                } else {
+                    settings.sortAscending = true;
+                    icon.removeClass('ui-icon-triangle-1-s');
+                    icon.addClass('ui-icon-triangle-1-n');
+                }
+            }
+
+            updateTable();
+        };
 
         container.on('click', '.ui-paginator-first:not(.ui-state-disabled)', firstPage);
         container.on('click', '.ui-paginator-prev:not(.ui-state-disabled)', prevPage);
         container.on('click', '.ui-paginator-next:not(.ui-state-disabled)', nextPage);
         container.on('click', '.ui-paginator-last:not(.ui-state-disabled)', lastPage);
+
+        container.on('click', '.ui-sortable-column', sort);
     }
 
     var init = function (options) {

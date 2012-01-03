@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -270,7 +271,14 @@ public class CardService {
         }
         criteriaQuery.where(restrictions.toArray(new Predicate[0]));
 
-        criteriaQuery.orderBy(criteriaBuilder.asc(card.get("name")));
+        if (cardCriteria.getSortColumn() != null) {
+            Expression column = card.get(cardCriteria.getSortColumn().toLowerCase());
+            if (cardCriteria.getSortAscending()) {
+                criteriaQuery.orderBy(criteriaBuilder.asc(column));
+            } else {
+                criteriaQuery.orderBy(criteriaBuilder.desc(column));
+            }
+        }
         criteriaQuery.groupBy(card.get("name"));
 
         criteriaQuery.select(card);
