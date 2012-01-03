@@ -42,6 +42,8 @@ public class Card implements Serializable {
     @Column(length = 64, nullable = false)
     private String type;
     @Column(length = 64)
+    private String superType;
+    @Column(length = 64)
     private String subType;
     @Column(length = 8)
     private String power;
@@ -124,6 +126,14 @@ public class Card implements Serializable {
 
     public void setPower(String power) {
         this.power = power;
+    }
+
+    public String getSuperType() {
+        return superType;
+    }
+
+    public void setSuperType(String superType) {
+        this.superType = superType;
     }
 
     public String getSubType() {

@@ -69,7 +69,7 @@ public class CardData {
         this.id = card.getId();
         this.name = card.getName();
         this.cost = card.getCost();
-        this.type = card.getType();
+        this.type = (card.getSuperType() != null ? card.getSuperType() + " " : "") + card.getType();
         this.subType = card.getSubType();
         this.power = card.getPower();
         this.toughness = card.getToughness();

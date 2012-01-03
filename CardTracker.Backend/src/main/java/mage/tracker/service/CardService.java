@@ -129,6 +129,22 @@ public class CardService {
             card.setName(cardAttributes[1]);
 
             String[] cardType = cardAttributes[4].split(" - ");
+            if (cardType[0].contains("Legendary")) {
+                card.setSuperType("Legendary");
+                cardType[0] = cardType[0].replace("Legendary ", "");
+            }
+            if (cardType[0].contains("Basic")) {
+                card.setSuperType("Basic");
+                cardType[0] = cardType[0].replace("Basic ", "");
+            }
+            if (cardType[0].contains("Snow")) {
+                card.setSuperType("Snow");
+                cardType[0] = cardType[0].replace("Snow ", "");
+            }
+            if (cardType[0].contains("World")) {
+                card.setSuperType("World");
+                cardType[0] = cardType[0].replace("World ", "");
+            }
             card.setType(cardType[0]);
             if (cardType.length > 1) {
                 card.setSubType(cardType[1]);
