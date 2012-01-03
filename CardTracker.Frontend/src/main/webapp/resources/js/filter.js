@@ -50,7 +50,7 @@ function CardsFilter($) {
             }
             updatePaginator();
         };
-        var onAbilitiesChange = function (e) {
+        var onTextBlur = function (e) {
             if (e.target.value !== '') {
                 filter[e.target.name] = e.target.value;
             } else {
@@ -58,13 +58,26 @@ function CardsFilter($) {
             }
             updatePaginator();
         };
+        var onTextSubmit = function (e) {
+            if(e.which == 13){
+                if (e.target.value !== '') {
+                    filter[e.target.name] = e.target.value;
+                } else {
+                    delete filter[e.target.name];
+                }
+                updatePaginator();
+            }
+        };
         $('#implementedFilter').on('change', onChangeTriState);
         $('#requestedFilter').on('change', onChangeTriState);
         $('#buggedFilter').on('change', onChangeTriState);
         $('#testedFilter').on('change', onChangeTriState);
         $('#editionFilter').on('change', onMultiselectChange);
         $('#developerFilter').on('change', onMultiselectChange);
-        $('#abilitiesFilter').on('blur', onAbilitiesChange);
+        $('#abilitiesFilter').on('blur', onTextBlur);
+        $('#abilitiesFilter').on('keypress', onTextSubmit);
+        $('#subtypeFilter').on('blur', onTextBlur);
+        $('#subtypeFilter').on('keypress', onTextSubmit);
     };
 
     return {

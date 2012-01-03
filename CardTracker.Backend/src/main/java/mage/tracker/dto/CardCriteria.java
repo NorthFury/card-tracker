@@ -17,6 +17,7 @@ public class CardCriteria {
     private Boolean bugged;
     private Boolean tested;
     private String abilities;
+    private String subtype;
     private String sortColumn;
     private Boolean sortAscending;
 
@@ -106,5 +107,13 @@ public class CardCriteria {
 
     public void setSortColumn(String sortColumn) {
         this.sortColumn = sortColumn;
+    }
+
+    public String getSubtype() {
+        return subtype;
+    }
+
+    public void setSubtype(String subtype) {
+        this.subtype = subtype;
     }
 }

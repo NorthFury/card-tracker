@@ -235,6 +235,9 @@ public class CardService {
         if (cardCriteria.getAbilities() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.abilities), "%" + cardCriteria.getAbilities() + "%"));
         }
+        if (cardCriteria.getSubtype() != null) {
+            restrictions.add(criteriaBuilder.like(card.get(Card_.subType), "%" + cardCriteria.getSubtype() + "%"));
+        }
         Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
         if (cardCriteria.getExpansion() != null && !cardCriteria.getExpansion().isEmpty()) {
             Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
@@ -301,6 +304,9 @@ public class CardService {
         List<Predicate> restrictions = new LinkedList<Predicate>();
         if (cardCriteria.getAbilities() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.abilities), "%" + cardCriteria.getAbilities() + "%"));
+        }
+        if (cardCriteria.getSubtype() != null) {
+            restrictions.add(criteriaBuilder.like(card.get(Card_.subType), "%" + cardCriteria.getSubtype() + "%"));
         }
         Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
         if (cardCriteria.getExpansion() != null && !cardCriteria.getExpansion().isEmpty()) {

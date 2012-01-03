@@ -36,6 +36,12 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Subtype</td>
+                        <td>
+                            <input id="subtypeFilter" name="subtype" />
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Implemented</td>
                         <td>
                             <select id="implementedFilter" name="implemented">
