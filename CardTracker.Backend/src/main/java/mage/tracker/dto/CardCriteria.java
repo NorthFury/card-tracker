@@ -10,6 +10,7 @@ public class CardCriteria {
 
     private Integer page;
     private Integer rows;
+    private List<String> type;
     private List<String> expansion;
     private List<Integer> developer;
     private Boolean implemented;
@@ -39,6 +40,14 @@ public class CardCriteria {
 
     public Boolean getTested() {
         return tested;
+    }
+
+    public List<String> getType() {
+        return type;
+    }
+
+    public void setType(List<String> type) {
+        this.type = type;
     }
 
     public void setTested(Boolean tested) {

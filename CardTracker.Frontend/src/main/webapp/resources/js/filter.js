@@ -72,6 +72,7 @@ function CardsFilter($) {
         $('#requestedFilter').on('change', onChangeTriState);
         $('#buggedFilter').on('change', onChangeTriState);
         $('#testedFilter').on('change', onChangeTriState);
+        $('#typeFilter').on('change', onMultiselectChange);
         $('#editionFilter').on('change', onMultiselectChange);
         $('#developerFilter').on('change', onMultiselectChange);
         $('#abilitiesFilter').on('blur', onTextBlur);

@@ -82,6 +82,22 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Type</td>
+                        <td>
+                            <select id="typeFilter" name="type" multiple="multiple">
+                                <option value="any">Any</option>
+                                <option value="Artifact">Artifact</option>
+                                <option value="Creature">Creature</option>
+                                <option value="Enchantment">Enchantment</option>
+                                <option value="Instant">Instant</option>
+                                <option value="Sorcery">Sorcery</option>
+                                <option value="Planeswalker">Planeswalker</option>
+                                <option value="Land">Land</option>
+                                <option value="Tribal">Tribal</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Developer</td>
                         <td>
                             <select id="developerFilter" name="developer" multiple="multiple">

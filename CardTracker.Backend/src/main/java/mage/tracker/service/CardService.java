@@ -254,6 +254,13 @@ public class CardService {
         if (cardCriteria.getSubtype() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.subType), "%" + cardCriteria.getSubtype() + "%"));
         }
+        if (cardCriteria.getType() != null) {
+            List<Predicate> typeRestrictions = new LinkedList<Predicate>();
+            for (String type : cardCriteria.getType()) {
+                typeRestrictions.add(criteriaBuilder.like(card.get(Card_.type), "%" + type + "%"));
+            }
+            restrictions.add(criteriaBuilder.or(typeRestrictions.toArray(new Predicate[0])));
+        }
         Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
         if (cardCriteria.getExpansion() != null && !cardCriteria.getExpansion().isEmpty()) {
             Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
@@ -323,6 +330,13 @@ public class CardService {
         }
         if (cardCriteria.getSubtype() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.subType), "%" + cardCriteria.getSubtype() + "%"));
+        }
+        if (cardCriteria.getType() != null) {
+            List<Predicate> typeRestrictions = new LinkedList<Predicate>();
+            for (String type : cardCriteria.getType()) {
+                typeRestrictions.add(criteriaBuilder.like(card.get(Card_.type), "%" + type + "%"));
+            }
+            restrictions.add(criteriaBuilder.or(typeRestrictions.toArray(new Predicate[0])));
         }
         Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
         if (cardCriteria.getExpansion() != null && !cardCriteria.getExpansion().isEmpty()) {
