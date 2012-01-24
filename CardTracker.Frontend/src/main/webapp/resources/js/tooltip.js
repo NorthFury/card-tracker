@@ -23,36 +23,60 @@ function Tooltip($) {
             $.extend(settings, options);
         }
 
-        element = $('<div style="background: white; display: none; position: absolute; width: 223px; height: 310px; text-align: center;"></div>');
+        element = $('<div style="display: none; position: absolute; "></div>');
         $('body').append(element);
 
         var onMouseEnter = function (e) {
-            var cardId = parseInt($(e.target).parents('tr')[0].id);
+            var cardId = parseInt($(e.target).parents('tr')[0].id, 10);
             var cardData = settings.cardsTable.getRowData(cardId);
-            element.html('Loading...');
+            if (localStorage.getItem('largeTooltip')) {
+                element.html('');
+                element.append(cardGen(cardData));
+                if (cardData.otherSide !== null) {
+                    if (typeof cardData.otherSide === 'object') {
+                        element.append(cardGen(cardData.otherSide));
+                    } else {
+                        $.ajax({
+                            url: 'cards',
+                            dataType: 'json',
+                            data: {
+                                action: 'getCard',
+                                cardId: cardData.otherSide
+                            },
+                            success: function (data) {
+                                cardData.otherSide = data;
+                                element.append(cardGen(cardData.otherSide));
+                            }
+                        });
+                    }
+                }
+            } else {
+                element.html('<div style="background-color: white; width: 200px; text-align: center;">Loading...</div>');
+
+                if (image !== null) {
+                    image.onload = null;
+                }
+                image = document.createElement('img');
+                image.src = 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=' + cardData.editions[0].gathererId;
+
+                if (image.complete) {
+                    element.html('');
+                    element.append(image);
+                } else {
+                    image.onload = function () {
+                        image.onload = null;
+                        element.html('');
+                        element.append(image);
+                        image = null;
+                    };
+                }
+            }
+            
             element.css({
                 left: posX(e),
                 top: posY(e)
             });
             element.show();
-
-            if (image !== null) {
-                image.onload = null;
-            }
-            image = document.createElement('img');
-            image.src = 'http://gatherer.wizards.com/Handlers/Image.ashx?type=card&multiverseid=' + cardData.editions[0].gathererId;
-
-            if (image.complete) {
-                element.html('');
-                element.append(image);
-            } else {
-                image.onload = function () {
-                    image.onload = null;
-                    element.html('');
-                    element.append(image);
-                    image = null;
-                };
-            }
         };
 
         var onMouseOut = function (e) {

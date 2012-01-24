@@ -165,7 +165,12 @@ public class AdminController {
     @RequestMapping(value = "/admin", params = "action=registerAccount")
     @ResponseBody
     public HashMap<String, Object> registerAccount(@ModelAttribute Account account) {
-        Boolean success = cardService.saveAccount(account);
+        Boolean success = false;
+        if (account.getName().isEmpty() || account.getPassword().isEmpty()) {
+            success = false;
+        } else {
+            success = cardService.saveAccount(account);
+        }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("success", success);

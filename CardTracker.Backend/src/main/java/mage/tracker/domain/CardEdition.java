@@ -1,17 +1,7 @@
 package mage.tracker.domain;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 
 /**
  *
@@ -23,7 +13,9 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name = "CardEdition.findByNameAndExpansionCode",
     query = "select c from CardEdition c where c.card.name = ?1 and c.expansion.code = ?2"),
     @NamedQuery(name = "CardEdition.findByCardId",
-    query = "select c from CardEdition c where c.card.id = ?1")
+    query = "select c from CardEdition c where c.card.id = ?1"),
+    @NamedQuery(name = "CardEdition.findByCardNumberAndExpansionId",
+    query = "select c from CardEdition c where c.cardNumber = ?1 and c.expansion.id = ?2")
 })
 @Entity
 public class CardEdition implements Serializable {
@@ -31,6 +23,7 @@ public class CardEdition implements Serializable {
     // Named Queries
     public static final String FIND_BY_NAME_AND_EXPANSION = "CardEdition.findByNameAndExpansion";
     public static final String FIND_BY_NAME_AND_EXPANSION_CODE = "CardEdition.findByNameAndExpansionCode";
+    public static final String FIND_BY_CARD_NUMBER_AND_EXPANSION_ID = "CardEdition.findByCardNumberAndExpansionId";
     public static final String FIND_BY_CARD_ID = "CardEdition.findByCardId";
     // Columns
     @Id

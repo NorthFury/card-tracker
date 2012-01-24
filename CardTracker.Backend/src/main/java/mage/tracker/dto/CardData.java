@@ -2,11 +2,7 @@ package mage.tracker.dto;
 
 import java.util.LinkedList;
 import java.util.List;
-import mage.tracker.domain.Account;
-import mage.tracker.domain.Card;
-import mage.tracker.domain.CardEdition;
-import mage.tracker.domain.CardRarity;
-import mage.tracker.domain.CardStatus;
+import mage.tracker.domain.*;
 
 /**
  *
@@ -50,7 +46,7 @@ public class CardData {
             return expansionName;
         }
     }
-    private long id;
+    private Long id;
     private String name;
     private String cost;
     private String type;
@@ -64,6 +60,7 @@ public class CardData {
     private Boolean bugged;
     private String developer;
     private List<EditionData> editions;
+    private Long otherSide;
 
     public CardData(Card card) {
         this.id = card.getId();
@@ -80,6 +77,8 @@ public class CardData {
         this.requested = status.getRequested();
         this.tested = status.getTested();
         this.bugged = status.getBugged();
+
+        this.otherSide = card.getOtherSide();
 
         Account account = status.getAccount();
         if (account != null) {
@@ -147,5 +146,9 @@ public class CardData {
 
     public List<EditionData> getEditions() {
         return editions;
+    }
+
+    public Long getOtherSide() {
+        return otherSide;
     }
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import mage.tracker.authentication.AuthenticationContext;
 import mage.tracker.domain.Account;
 import mage.tracker.domain.Card;
-import mage.tracker.domain.CardEdition;
 import mage.tracker.domain.CardStatus;
 import mage.tracker.dto.CardCriteria;
 import mage.tracker.dto.CardData;
@@ -60,6 +59,16 @@ public class CardsController {
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("totalRows", count);
         return model;
+    }
+
+    @RequestMapping(value = "/cards", params = "action=getCard")
+    @ResponseBody
+    public CardData getCard(@RequestParam("cardId") long cardId) {
+        Card card = cardService.findCardById(cardId);
+        if (card != null) {
+            return new CardData(card);
+        }
+        return null;
     }
 
     @RequestMapping(value = "/cards", params = "action=markIp")

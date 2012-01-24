@@ -3,7 +3,6 @@ package mage.tracker.repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import org.springframework.stereotype.Repository;
 
 /**

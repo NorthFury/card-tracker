@@ -1,48 +1,25 @@
-/**
- * Copyright (c) 2011 SC The Red Point SA. All rights reserved.
- */
 package mage.tracker.service;
 
 import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaBuilder.In;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import mage.tracker.domain.Account;
-import mage.tracker.domain.Account_;
-import mage.tracker.domain.Card;
-import mage.tracker.domain.Card_;
-import mage.tracker.domain.CardEdition;
-import mage.tracker.domain.CardEdition_;
-import mage.tracker.domain.CardRarity;
-import mage.tracker.domain.CardStatus;
-import mage.tracker.domain.CardStatus_;
-import mage.tracker.domain.Expansion;
-import mage.tracker.domain.Expansion_;
+import javax.persistence.criteria.*;
+import mage.tracker.domain.*;
 import mage.tracker.dto.CardCriteria;
 import mage.tracker.dto.ExpansionStatus;
-import mage.tracker.repository.AccountRepository;
-import mage.tracker.repository.CardEditionRepository;
-import mage.tracker.repository.CardRepository;
-import mage.tracker.repository.ExpansionRepository;
-import mage.tracker.repository.GenericRepository;
+import mage.tracker.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 
+ *
  * @author North
  */
 @Service
@@ -123,64 +100,64 @@ public class CardService {
     @Transactional(readOnly = false)
     public void updateCardData(String cardData) {
         String[] cardAttributes = cardData.split("\\|");
-        Card card = cardRepository.findByName(cardAttributes[1]);
-        if (card == null) {
-            card = new Card();
-            card.setName(cardAttributes[1]);
-
-            String[] cardType = cardAttributes[4].split(" - ");
-            if (cardType[0].contains("Legendary")) {
-                card.setSuperType("Legendary");
-                cardType[0] = cardType[0].replace("Legendary ", "");
-            }
-            if (cardType[0].contains("Basic")) {
-                card.setSuperType("Basic");
-                cardType[0] = cardType[0].replace("Basic ", "");
-            }
-            if (cardType[0].contains("Snow")) {
-                card.setSuperType("Snow");
-                cardType[0] = cardType[0].replace("Snow ", "");
-            }
-            if (cardType[0].contains("World")) {
-                card.setSuperType("World");
-                cardType[0] = cardType[0].replace("World ", "");
-            }
-            card.setType(cardType[0]);
-            if (cardType.length > 1) {
-                card.setSubType(cardType[1]);
-            }
-
-            card.setCost(cardAttributes[2]);
-            try {
-                card.setCmc(Integer.parseInt(cardAttributes[3]));
-            } catch (NumberFormatException e) {
-                card.setCmc(0);
-            }
-            String[] pt = cardAttributes[7].split(" / ");
-            if (pt.length == 2) {
-                card.setPower(pt[0]);
-                card.setToughness(pt[1]);
-            }
-            // TODO: Add loyalty
-            if (pt.length == 1 && pt[0].length() > 0) {
-                card.setToughness(pt[0]);
-            }
-
-            CardStatus cardStatus = new CardStatus();
-            cardStatus = cardStatusRepository.persist(cardStatus);
-            card.setStatus(cardStatus);
-
-            card.setAbilities(cardAttributes[5]);
-
-            cardRepository.persist(card);
-        } else if (!card.getAbilities().equals(cardAttributes[5])) {
-            card.setAbilities(cardAttributes[5]);
-            cardRepository.merge(card);
-        }
 
         Expansion expansion = expansionRepository.findByName(cardAttributes[8]);
-        if (card != null && expansion != null) {
-            if (cardEditionRepository.findByNameAndExpansion(card.getName(), expansion.getName()) == null) {
+        if (expansion != null) {
+            Card card = cardRepository.findByName(cardAttributes[1]);
+            if (card == null) {
+                card = new Card();
+                card.setName(cardAttributes[1]);
+
+                String[] cardType = cardAttributes[4].split(" - ");
+                if (cardType[0].contains("Legendary")) {
+                    card.setSuperType("Legendary");
+                    cardType[0] = cardType[0].replace("Legendary ", "");
+                }
+                if (cardType[0].contains("Basic")) {
+                    card.setSuperType("Basic");
+                    cardType[0] = cardType[0].replace("Basic ", "");
+                }
+                if (cardType[0].contains("Snow")) {
+                    card.setSuperType("Snow");
+                    cardType[0] = cardType[0].replace("Snow ", "");
+                }
+                if (cardType[0].contains("World")) {
+                    card.setSuperType("World");
+                    cardType[0] = cardType[0].replace("World ", "");
+                }
+                card.setType(cardType[0]);
+                if (cardType.length > 1) {
+                    card.setSubType(cardType[1]);
+                }
+
+                card.setCost(cardAttributes[2]);
+                try {
+                    card.setCmc(Integer.parseInt(cardAttributes[3]));
+                } catch (NumberFormatException e) {
+                    card.setCmc(0);
+                }
+                String[] pt = cardAttributes[7].split(" / ");
+                if (pt.length == 2) {
+                    card.setPower(pt[0]);
+                    card.setToughness(pt[1]);
+                }
+                // TODO: Add loyalty
+                if (pt.length == 1 && pt[0].length() > 0) {
+                    card.setToughness(pt[0]);
+                }
+
+                CardStatus cardStatus = new CardStatus();
+                cardStatus = cardStatusRepository.persist(cardStatus);
+                card.setStatus(cardStatus);
+
+                card.setAbilities(cardAttributes[5]);
+
+                cardRepository.persist(card);
+            } else if (!card.getAbilities().equals(cardAttributes[5])) {
+                card.setAbilities(cardAttributes[5]);
+                cardRepository.merge(card);
+            }
+            if (card != null && cardEditionRepository.findByNameAndExpansion(card.getName(), expansion.getName()) == null) {
                 CardEdition cardEdition = new CardEdition();
                 String rarity = cardAttributes[9];
                 if (rarity.equals("Basic Land")) {
@@ -202,6 +179,23 @@ public class CardService {
                 cardEdition.setCard(card);
                 cardEdition.setExpansion(expansion);
                 cardEditionRepository.persist(cardEdition);
+
+                String lastCharCardNumber = cardAttributes[10].substring(cardAttributes[10].length() - 1);
+                if ("a".equals(lastCharCardNumber) || "b".equals(lastCharCardNumber)) {
+                    TypedQuery query = em.createNamedQuery(CardEdition.FIND_BY_CARD_NUMBER_AND_EXPANSION_ID, CardEdition.class);
+                    String cardNumber = cardAttributes[10].substring(0, cardAttributes[10].length() - 1)
+                            + ("a".equals(lastCharCardNumber) ? "b" : "a");
+                    query.setParameter(1, cardNumber);
+                    query.setParameter(2, expansion.getId());
+                    List<CardEdition> otherSideEditions = query.getResultList();
+                    if(!otherSideEditions.isEmpty()){
+                        Card otherSide = otherSideEditions.get(0).getCard();
+                        card.setOtherSide(otherSide.getId());
+                        otherSide.setOtherSide(card.getId());
+                        cardRepository.merge(card);
+                        cardRepository.merge(otherSide);
+                    }
+                }
             }
         }
     }

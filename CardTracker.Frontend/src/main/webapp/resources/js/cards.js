@@ -181,4 +181,11 @@ $(document).ready(function () {
     container.on('click', '.ipAction', function (e) {
         onAction('markIp', $(e.target).parents('tr')[0].id);
     });
+    $('#toogleTooltip').on('click', function () {
+        if (localStorage.getItem('largeTooltip')) {
+            localStorage.removeItem('largeTooltip');
+        } else {
+            localStorage.setItem('largeTooltip', 'true');
+        }
+    });
 });
