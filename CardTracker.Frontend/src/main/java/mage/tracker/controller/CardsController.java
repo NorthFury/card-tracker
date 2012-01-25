@@ -76,18 +76,28 @@ public class CardsController {
     public HashMap<String, Object> markIp(@RequestParam("cardId") long cardId) {
         Card card = cardService.findCardById(cardId);
         Account account = AuthenticationContext.getAccount();
-        CardStatus status = card.getStatus();
+        boolean success = markIpStatus(card, account);
 
-        boolean success = false;
-        if (account != null && status.getAccount() == null) {
-            status.setAccount(account);
-            cardService.updateCardStatus(status);
-            success = true;
+        if (card.getOtherSide() != null) {
+            card = cardService.findCardById(card.getOtherSide());
+            if (card != null) {
+                markIpStatus(card, account);
+            }
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("success", success);
         return model;
+    }
+
+    private boolean markIpStatus(Card card, Account account) {
+        CardStatus status = card.getStatus();
+        if (account != null && status.getAccount() == null) {
+            status.setAccount(account);
+            cardService.updateCardStatus(status);
+            return true;
+        }
+        return false;
     }
 
     @RequestMapping(value = "/cards", params = "action=done")
@@ -95,20 +105,30 @@ public class CardsController {
     public HashMap<String, Object> done(@RequestParam("cardId") long cardId) {
         Card card = cardService.findCardById(cardId);
         Account account = AuthenticationContext.getAccount();
-        CardStatus status = card.getStatus();
+        boolean success = setDoneStatus(card, account);
 
-        boolean success = false;
-        if (account != null && status.getAccount() != null && status.getAccount().getName().equals(account.getName())) {
-            status.setAccount(null);
-            status.setImplemented(true);
-            status.setBugged(false);
-            cardService.updateCardStatus(status);
-            success = true;
+        if (card.getOtherSide() != null) {
+            card = cardService.findCardById(card.getOtherSide());
+            if (card != null) {
+                setDoneStatus(card, account);
+            }
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("success", success);
         return model;
+    }
+
+    private boolean setDoneStatus(Card card, Account account) {
+        CardStatus status = card.getStatus();
+        if (account != null && status.getAccount() != null && status.getAccount().getName().equals(account.getName())) {
+            status.setAccount(null);
+            status.setImplemented(true);
+            status.setBugged(false);
+            cardService.updateCardStatus(status);
+            return true;
+        }
+        return false;
     }
 
     @RequestMapping(value = "/cards", params = "action=cancel")
@@ -116,18 +136,28 @@ public class CardsController {
     public HashMap<String, Object> cancel(@RequestParam("cardId") long cardId) {
         Card card = cardService.findCardById(cardId);
         Account account = AuthenticationContext.getAccount();
-        CardStatus status = card.getStatus();
+        boolean success = cancelStatus(card, account);
 
-        boolean success = false;
-        if (account != null && status.getAccount() != null && status.getAccount().getName().equals(account.getName())) {
-            status.setAccount(null);
-            cardService.updateCardStatus(status);
-            success = true;
+        if (card.getOtherSide() != null) {
+            card = cardService.findCardById(card.getOtherSide());
+            if (card != null) {
+                cancelStatus(card, account);
+            }
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("success", success);
         return model;
+    }
+
+    private boolean cancelStatus(Card card, Account account) {
+        CardStatus status = card.getStatus();
+        if (account != null && status.getAccount() != null && status.getAccount().getName().equals(account.getName())) {
+            status.setAccount(null);
+            cardService.updateCardStatus(status);
+            return true;
+        }
+        return false;
     }
 
     @RequestMapping(value = "/cards", params = "action=unlock")
@@ -135,18 +165,28 @@ public class CardsController {
     public HashMap<String, Object> unlock(@RequestParam("cardId") long cardId) {
         Card card = cardService.findCardById(cardId);
         Account account = AuthenticationContext.getAccount();
-        CardStatus status = card.getStatus();
+        boolean success = unlockStatus(card, account);
 
-        boolean success = false;
-        if (account != null && status.getAccount() != null) {
-            status.setAccount(null);
-            cardService.updateCardStatus(status);
-            success = true;
+        if (card.getOtherSide() != null) {
+            card = cardService.findCardById(card.getOtherSide());
+            if (card != null) {
+                unlockStatus(card, account);
+            }
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("success", success);
         return model;
+    }
+
+    private boolean unlockStatus(Card card, Account account) {
+        CardStatus status = card.getStatus();
+        if (account != null && status.getAccount() != null) {
+            status.setAccount(null);
+            cardService.updateCardStatus(status);
+            return true;
+        }
+        return false;
     }
 
     @RequestMapping(value = "/cards", params = "action=setBugged")
@@ -154,13 +194,13 @@ public class CardsController {
     public HashMap<String, Object> setBugged(@RequestParam("cardId") long cardId) {
         Card card = cardService.findCardById(cardId);
         Account account = AuthenticationContext.getAccount();
-        CardStatus status = card.getStatus();
+        boolean success = setBuggedStatus(card, account);
 
-        boolean success = false;
-        if (account != null) {
-            status.setBugged(true);
-            cardService.updateCardStatus(status);
-            success = true;
+        if (card.getOtherSide() != null) {
+            card = cardService.findCardById(card.getOtherSide());
+            if (card != null) {
+                setBuggedStatus(card, account);
+            }
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
@@ -168,22 +208,35 @@ public class CardsController {
         return model;
     }
 
+    private boolean setBuggedStatus(Card card, Account account) {
+        CardStatus status = card.getStatus();
+        if (account != null) {
+            status.setBugged(true);
+            cardService.updateCardStatus(status);
+            return true;
+        }
+        return false;
+    }
+
     @RequestMapping(value = "/cards", params = "action=setTested")
     @ResponseBody
     public HashMap<String, Object> setTested(@RequestParam("cardId") long cardId) {
         Card card = cardService.findCardById(cardId);
         Account account = AuthenticationContext.getAccount();
-        CardStatus status = card.getStatus();
-
-        boolean success = false;
-        if (account != null) {
-            status.setTested(true);
-            cardService.updateCardStatus(status);
-            success = true;
-        }
+        boolean success = setTestedStatus(card, account);
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("success", success);
         return model;
+    }
+
+    private boolean setTestedStatus(Card card, Account account) {
+        CardStatus status = card.getStatus();
+        if (account != null) {
+            status.setTested(true);
+            cardService.updateCardStatus(status);
+            return true;
+        }
+        return false;
     }
 }
