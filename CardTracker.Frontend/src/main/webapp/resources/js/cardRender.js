@@ -1,4 +1,4 @@
-function cardGen(card) {
+function cardGen(card, otherSide, flip) {
     var i, j, newElement;
     var background, ptBox;
     var cost;
@@ -119,22 +119,21 @@ function cardGen(card) {
         }
 
         function fitText(parent) {
-            var innerElements = $(parent).children(':visible'),
-            imgs = $(parent).find('img'),
-            fontSize = 19 || innerElements.css("font-size"), // use current font-size by default
-            maxHeight = $(parent).height(),
-            maxWidth = $(parent).width(),
-            innerHeight,
-            innerWidth;
+            var innerElements = $(parent).children(':visible');
+            var imgs = $(parent).find('img');
+            var fontSize = 19; // use current font-size by default
+            var maxHeight = $(parent).height();
+            var maxWidth = $(parent).width();
+            var innerHeight, innerWidth;
 
             do {
                 innerElements.css('font-size', fontSize);
                 imgs.css('height', (fontSize - 3) + 'px');
 
                 // use the combined height of all children, eg. multiple <p> elements.
-                innerHeight = $.map(innerElements, function(e) {
+                innerHeight = $.map(innerElements, function (e) {
                     return $(e).outerHeight();
-                }).reduce(function(p, c) {
+                }).reduce(function (p, c) {
                     return p + c;
                 }, 0);
 
@@ -170,16 +169,26 @@ function cardGen(card) {
     newElement.innerHTML = card.type + (card.subType ? ' - ' + card.subType : '');
     container.appendChild(newElement);
 
-    if (edition.mtgoImageId) {
+    if (edition.cropImage) {
+        container.appendChild(edition.cropImage);
+    } else if (edition.mtgoImageId || otherSide) {
         var cropImage = document.createElement('img');
         cropImage.className = 'crop';
-        cropImage.src = 'http://mtgodownload1.onlinegaming.wizards.com/mtgov3/Graphics/Cards/Pics/' + edition.mtgoImageId + '_typ_reg_sty_010.jpg';
+        if (typeof otherSide === 'undefined') {
+            cropImage.src = 'http://mtgodownload1.onlinegaming.wizards.com/mtgov3/Graphics/Cards/Pics/' + edition.mtgoImageId + '_typ_reg_sty_010.jpg';
+        } else {
+            cropImage.src = 'http://mtgodownload1.onlinegaming.wizards.com/mtgov3/Graphics/Cards/Pics/' + (edition.mtgoImageId || otherSide.editions[i].mtgoImageId) + '_typ_flip_sty_013.jpg';
+            if (flip) {
+                cropImage.className += ' flip-vertical';
+            }
+        }
         cropImage.onerror = function () {
             cropImage.onerror = null;
             cropImage.src = 'http://mtgodownload1.onlinegaming.wizards.com/mtgov3/Graphics/Cards/Pics/' + edition.mtgoImageId + '_typ_reg_sty_001.jpg';
         };
         cropImage.onload = function () {
             cropImage.onload = null;
+            edition.cropImage = cropImage;
             container.appendChild(cropImage);
         };
     }

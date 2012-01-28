@@ -3,6 +3,7 @@ function Tooltip($) {
     var settings = {};
     var element;
     var image = null;
+    var requestNumber;
 
     function posX(e) {
         return e.pageX + 10;
@@ -22,6 +23,7 @@ function Tooltip($) {
         if (options) {
             $.extend(settings, options);
         }
+        requestNumber = 0;
 
         element = $('<div style="display: none; position: absolute; "></div>');
         $('body').append(element);
@@ -29,29 +31,61 @@ function Tooltip($) {
         var onMouseEnter = function (e) {
             var cardId = parseInt($(e.target).parents('tr')[0].id, 10);
             var cardData = settings.cardsTable.getRowData(cardId);
+
+            function displayDualCard(cardData) {
+                var card1, card2;
+                if (cardData.editions[0].cardNumber.indexOf('a') !== -1) {
+                    if (cardData.editions[0].mtgoImageId && !cardData.otherSide.editions[0].mtgoImageId) {
+                        card1 = cardGen(cardData, cardData.otherSide);
+                        card2 = cardGen(cardData.otherSide, cardData, true);
+                    } else {
+                        card1 = cardGen(cardData);
+                        card2 = cardGen(cardData.otherSide);
+                    }
+                } else {
+                    if (cardData.otherSide.editions[0].mtgoImageId && !cardData.editions[0].mtgoImageId) {
+                        card1 = cardGen(cardData.otherSide, cardData);
+                        card2 = cardGen(cardData, cardData.otherSide, true);
+                    } else {
+                        card1 = cardGen(cardData.otherSide);
+                        card2 = cardGen(cardData);
+                    }
+                }
+                element.append(card1);
+                element.append(card2);
+            }
+
+            function requestOtherSide(cardData, request) {
+                $.ajax({
+                    url: 'cards',
+                    dataType: 'json',
+                    data: {
+                        action: 'getCard',
+                        cardId: cardData.otherSide
+                    },
+                    success: function (data) {
+                        cardData.otherSide = data;
+                        if (requestNumber === request) {
+                            displayDualCard(cardData);
+                        }
+                    }
+                });
+            }
+
             if (localStorage.getItem('largeTooltip')) {
                 element.html('');
-                element.append(cardGen(cardData));
-                if (cardData.otherSide !== null) {
+                if (cardData.otherSide === null) {
+                    element.append(cardGen(cardData));
+                } else {
                     if (typeof cardData.otherSide === 'object') {
-                        element.append(cardGen(cardData.otherSide));
+                        displayDualCard(cardData);
                     } else {
-                        $.ajax({
-                            url: 'cards',
-                            dataType: 'json',
-                            data: {
-                                action: 'getCard',
-                                cardId: cardData.otherSide
-                            },
-                            success: function (data) {
-                                cardData.otherSide = data;
-                                element.append(cardGen(cardData.otherSide));
-                            }
-                        });
+                        requestNumber++;
+                        requestOtherSide(cardData, requestNumber);
                     }
                 }
             } else {
-                element.html('<div style="background-color: white; width: 200px; text-align: center;">Loading...</div>');
+                element.html('<div style="background-color: white; width: 200px; height: 310px; text-align: center;">Loading...</div>');
 
                 if (image !== null) {
                     image.onload = null;
@@ -71,7 +105,7 @@ function Tooltip($) {
                     };
                 }
             }
-            
+
             element.css({
                 left: posX(e),
                 top: posY(e)

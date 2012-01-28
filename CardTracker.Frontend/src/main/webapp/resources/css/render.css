@@ -13,7 +13,7 @@
     top: 47px;
     left: 16px;
     width: 324px;
-    height: 238px;
+    max-height: 238px;
     z-index: 3;
 }
 .card .ptbox {
@@ -102,15 +102,20 @@
     z-index: 6;
 }
 .card .text .regular {
-/*    font-size: 17px;*/
     font-family: MPlantin;
     padding-top: 5px;
     line-height: 90%;
 }
 .card .text .italic {
     padding-top: 10px;
-/*    font-size: 17px;*/
     font-family: MPlantin;
     font-style: italic;
     line-height: 90%;
+}
+.flip-vertical {
+    -moz-transform: scale(-1, -1);
+    -webkit-transform: scale(-1, -1);
+    -o-transform: scale(-1, -1);
+    transform: scale(-1, -1);
+    filter: flipv; /*IE*/
 }

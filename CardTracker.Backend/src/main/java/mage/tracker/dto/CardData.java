@@ -17,6 +17,7 @@ public class CardData {
         private String mtgoImageId;
         private String expansionCode;
         private String expansionName;
+        private String cardNumber;
 
         public EditionData(CardEdition edition) {
             this.rarity = edition.getRarity();
@@ -24,6 +25,7 @@ public class CardData {
             this.mtgoImageId = edition.getMtgoImageId();
             this.expansionCode = edition.getExpansion().getCode();
             this.expansionName = edition.getExpansion().getName();
+            this.cardNumber = edition.getCardNumber();
         }
 
         public CardRarity getRarity() {
@@ -44,6 +46,10 @@ public class CardData {
 
         public String getExpansionName() {
             return expansionName;
+        }
+
+        public String getCardNumber() {
+            return cardNumber;
         }
     }
     private Long id;
