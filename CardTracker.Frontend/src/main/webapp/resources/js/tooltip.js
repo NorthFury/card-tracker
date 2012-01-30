@@ -72,7 +72,7 @@ function Tooltip($) {
                 });
             }
 
-            if (localStorage.getItem('largeTooltip')) {
+            if (!localStorage.getItem('scanTooltip')) {
                 element.html('');
                 if (cardData.otherSide === null) {
                     element.append(cardGen(cardData));

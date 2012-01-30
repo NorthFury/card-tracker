@@ -4,7 +4,8 @@ Magic 2011|M11|2010, 6, 16
 Magic 2012|M12|2011, 6, 9
 Planechase|HOP|2009, 8, 4
 Duel Decks: Elspeth vs. Tezzeret|DDF|2010, 8, 3
-Tempest|TMP|1997, 9, 1
+Tempest|TMP|1997, 9, 13
+Urza's Saga|USG|1998, 9, 12
 Invasion|INV|2000, 9, 2
 Planeshift|PLS|2001, 1, 5
 Apocalypse|APC|2001, 5, 1
@@ -35,3 +36,4 @@ Scars of Mirrodin|SOM|2010, 10, 1
 Mirrodin Besieged|MBS|2011, 1, 4
 New Phyrexia|NPH|2011, 4, 4
 Innistrad|ISD|2011, 9, 30
+Dark Ascension|DKA|2012, 1, 3

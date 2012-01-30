@@ -45,8 +45,8 @@ $(document).ready(function () {
 
     var editionsFormat = function (row) {
         var i, j, html, editions, expansion, sets, setsReplace;
-        sets = ['INV', 'PLS', 'TMP', 'APC', 'COK'];
-        setsReplace = ['IN', 'PS', 'TE', 'AP', 'CHK'];
+        sets = ['USG', 'INV', 'PLS', 'TMP', 'APC', 'COK'];
+        setsReplace = ['UZ', 'IN', 'PS', 'TE', 'AP', 'CHK'];
         html = '';
         editions = row.editions;
         for (i = 0; i < editions.length; i++) {
@@ -182,10 +182,10 @@ $(document).ready(function () {
         onAction('markIp', $(e.target).parents('tr')[0].id);
     });
     $('#toogleTooltip').on('click', function () {
-        if (localStorage.getItem('largeTooltip')) {
-            localStorage.removeItem('largeTooltip');
+        if (localStorage.getItem('scanTooltip')) {
+            localStorage.removeItem('scanTooltip');
         } else {
-            localStorage.setItem('largeTooltip', 'true');
+            localStorage.setItem('scanTooltip', 'true');
         }
     });
 });

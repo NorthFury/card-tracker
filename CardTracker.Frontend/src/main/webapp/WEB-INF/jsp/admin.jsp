@@ -14,7 +14,7 @@
         <title>Card Tracker Administration Page</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js" type="text/javascript"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="http://crypto-js.googlecode.com/files/2.3.0-crypto-md5.js" type="text/javascript"></script>
+        <script  src="resources/js/crypto-md5.js" type="text/javascript"></script>
         <script  src="resources/js/admin.js" type="text/javascript"></script>
         <style>
             .aButton {

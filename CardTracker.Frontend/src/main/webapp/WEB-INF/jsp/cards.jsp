@@ -18,7 +18,7 @@
         <link type="text/css" rel="stylesheet" href="resources/css/render.css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js" type="text/javascript"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="http://crypto-js.googlecode.com/files/2.3.0-crypto-md5.js" type="text/javascript"></script>
+        <script  src="resources/js/crypto-md5.js" type="text/javascript"></script>
         <script src="resources/js/login.js" type="text/javascript"></script>
         <script src="resources/js/filter.js" type="text/javascript"></script>
         <script src="resources/js/dataTable.js" type="text/javascript"></script>
@@ -27,7 +27,7 @@
         <script  src="resources/js/cards.js" type="text/javascript"></script>
     </head>
     <body>
-        <div id="cardsFilter" class="ui-widget" style="width: 400px; float:right">
+        <div id="cardsFilter" class="ui-widget" style="width: 310px; float:right">
             <div class="ui-widget-header" style="padding:5px;">Filter Settings</div>
             <div class="ui-widget-content">
                 <table>
