@@ -19,6 +19,11 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <error-page>
+        <exception-type>org.springframework.transaction.CannotCreateTransactionException</exception-type>
+        <location>/WEB-INF/jsp/error.jsp</location>
+    </error-page>
+
     <!-- Processes application requests -->
     <servlet>
         <servlet-name>appServlet</servlet-name>
