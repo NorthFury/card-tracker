@@ -73,26 +73,26 @@ function DataTable($) {
         }
 
         var onSuccess = function (data) {
-            var i, j, row, cell, cards, table, tbody, value;
+            var i, j, row, cell, rowsData, table, tbody, value;
 
-            settings.cardsData = data.cards;
-            cards = data.cards;
+            settings.rowsData = data.rowsData;
+            rowsData = data.rowsData;
             table = $(settings.container).find('table');
             tbody = $('<tbody/>').addClass('ui-datatable-data ui-widget-content');
 
-            for (i = 0; i < cards.length; i++) {
+            for (i = 0; i < rowsData.length; i++) {
                 row = $('<tr/>').addClass('ui-widget-content').addClass((i % 2 === 0 ? 'ui-datatable-even' : 'ui-datatable-odd'));
                 for (j = 0; j < settings.columnModel.length; j++) {
                     if (settings.columnModel[j].format) {
-                        value = settings.columnModel[j].format(cards[i]);
+                        value = settings.columnModel[j].format(rowsData[i]);
                     } else {
-                        value = cards[i][settings.columnModel[j].key] || '';
+                        value = rowsData[i][settings.columnModel[j].key] || '';
                     }
                     cell = $('<td><div class="ui-dt-c">' + value + '</div></td>');
                     row.append(cell);
                 }
-                row.addClass(settings.rowClass(cards[i]));
-                row.attr('id', cards[i].id);
+                row.addClass(settings.rowClass(rowsData[i]));
+                row.attr('id', rowsData[i].id);
                 tbody.append(row);
             }
 
@@ -228,12 +228,12 @@ function DataTable($) {
     };
 
     var getRowData = function (id) {
-        var cards, i;
-        cards = settings.cardsData;
+        var rowsData, i;
+        rowsData = settings.rowsData;
 
-        for (i = 0; i < cards.length; i++) {
-            if (cards[i].id === id) {
-                return cards[i];
+        for (i = 0; i < rowsData.length; i++) {
+            if (rowsData[i].id === id) {
+                return rowsData[i];
             }
         }
         return null;

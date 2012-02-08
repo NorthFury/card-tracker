@@ -90,47 +90,47 @@ $(document).ready(function () {
         rowClass: rowClass,
         filter: filter,
         columnModel: [
-            {
-                name: 'Name',
-                sortable: true,
-                format: function (row) {
-                    return '<div class="cardName">' + row.name + '</div>';
-                }
-            },
-            {
-                name: 'Mana Cost',
-                key: 'cost',
-                format: costFormat
-            },
-            {
-                name: 'Type',
-                key: 'type',
-                sortable: true
-            },
-            {
-                name: 'Subtype',
-                key: 'subType',
-            },
-            {
-                name: 'P',
-                key: 'power',
-            },
-            {
-                name: 'T',
-                key: 'toughness',
-            },
-            {
-                name: 'Editions',
-                format: editionsFormat
-            },
-            {
-                name: 'Dev',
-                key: 'developer',
-            },
-            {
-                name: 'Status/Actions',
-                format: actionsFormat
+        {
+            name: 'Name',
+            sortable: true,
+            format: function (row) {
+                return '<div class="cardName">' + row.name + '</div>';
             }
+        },
+        {
+            name: 'Mana Cost',
+            key: 'cost',
+            format: costFormat
+        },
+        {
+            name: 'Type',
+            key: 'type',
+            sortable: true
+        },
+        {
+            name: 'Subtype',
+            key: 'subType',
+        },
+        {
+            name: 'P',
+            key: 'power',
+        },
+        {
+            name: 'T',
+            key: 'toughness',
+        },
+        {
+            name: 'Editions',
+            format: editionsFormat
+        },
+        {
+            name: 'Dev',
+            key: 'developer',
+        },
+        {
+            name: 'Status/Actions',
+            format: actionsFormat
+        }
         ]
     });
 
@@ -145,7 +145,7 @@ $(document).ready(function () {
         var account = localStorage.getItem('account') || sessionStorage.getItem('account');
         if (account) {
             account = JSON.parse(account);
-            $.ajax({
+            return $.ajax({
                 url: 'cards',
                 dataType: 'json',
                 data: {
@@ -160,6 +160,9 @@ $(document).ready(function () {
             });
         } else {
             alert('Please login!');
+            var deferred = $.Deferred();
+            deferred.reject();
+            return deferred;
         }
     }
     var container = $('#cardsContainer');
@@ -181,11 +184,145 @@ $(document).ready(function () {
     container.on('click', '.ipAction', function (e) {
         onAction('markIp', $(e.target).parents('tr')[0].id);
     });
+
     $('#toogleTooltip').on('click', function () {
         if (localStorage.getItem('scanTooltip')) {
             localStorage.removeItem('scanTooltip');
         } else {
             localStorage.setItem('scanTooltip', 'true');
+        }
+    });
+
+    $('#cardDialog').dialog({
+        autoOpen: false,
+        width: 'auto'
+    });
+
+    var displayCard = function (cardData) {
+        function displayDualCard(cardData, cardContainer) {
+            var card1, card2;
+            if (cardData.editions[0].cardNumber.indexOf('a') !== -1) {
+                if (cardData.editions[0].mtgoImageId && !cardData.otherSide.editions[0].mtgoImageId) {
+                    card1 = cardGen(cardData, cardData.otherSide);
+                    card2 = cardGen(cardData.otherSide, cardData, true);
+                } else {
+                    card1 = cardGen(cardData);
+                    card2 = cardGen(cardData.otherSide);
+                }
+            } else {
+                if (cardData.otherSide.editions[0].mtgoImageId && !cardData.editions[0].mtgoImageId) {
+                    card1 = cardGen(cardData.otherSide, cardData);
+                    card2 = cardGen(cardData, cardData.otherSide, true);
+                } else {
+                    card1 = cardGen(cardData.otherSide);
+                    card2 = cardGen(cardData);
+                }
+            }
+            cardContainer.append(card1);
+            cardContainer.append(card2);
+        }
+
+        function requestOtherSide(cardData) {
+            $.ajax({
+                url: 'cards',
+                dataType: 'json',
+                data: {
+                    action: 'getCard',
+                    cardId: cardData.otherSide
+                },
+                success: function (data) {
+                    cardData.otherSide = data;
+                    displayDualCard(cardData);
+                }
+            });
+        }
+
+        var cardDialog = $('#cardDialog');
+        cardDialog.html('');
+
+        if (cardData.otherSide === null) {
+            cardDialog.append(cardGen(cardData));
+        } else {
+            if (typeof cardData.otherSide === 'object') {
+                displayDualCard(cardData);
+            } else {
+                $.ajax({
+                    url: 'cards',
+                    dataType: 'json',
+                    data: {
+                        action: 'getCard',
+                        cardId: cardData.otherSide
+                    },
+                    success: function (data) {
+                        cardData.otherSide = data;
+                        displayDualCard(cardData, cardDialog);
+                    }
+                });
+            }
+        }
+        var buttonsDiv = $('<div name="' + cardData.id + '" class="actionButtons"></div>');
+        buttonsDiv.html(actionsFormat(cardData));
+        cardDialog.append(buttonsDiv);
+        function onPopupAction(action, id) {
+            onAction(action, id).done(function () {
+                $.ajax({
+                    url: 'cards',
+                    dataType: 'json',
+                    data: {
+                        action: 'getCard',
+                        cardId: id
+                    },
+                    success: function (cardData) {
+                        buttonsDiv.html(actionsFormat(cardData));
+                    }
+                });
+            });
+        }
+        buttonsDiv.on('click', '.buggedAction', function (e) {
+            onPopupAction('setBugged', cardData.id);
+        });
+        buttonsDiv.on('click', '.testedAction', function (e) {
+            onPopupAction('setTested', cardData.id);
+        });
+        buttonsDiv.on('click', '.doneAction', function (e) {
+            onPopupAction('done', cardData.id);
+        });
+        buttonsDiv.on('click', '.cancelAction', function (e) {
+            onPopupAction('cancel', cardData.id);
+        });
+        buttonsDiv.on('click', '.unlockAction', function (e) {
+            onPopupAction('unlock', cardData.id);
+        });
+        buttonsDiv.on('click', '.ipAction', function (e) {
+            onPopupAction('markIp', cardData.id);
+        });
+
+        cardDialog.dialog('open');
+    }
+
+    container.on('click', '.cardName', function (e) {
+        var cardId = parseInt($(e.target).parents('tr')[0].id, 10);
+        var cardData = cardsTable.getRowData(cardId);
+        displayCard(cardData);
+    });
+
+
+    $( "#cardNames" ).autocomplete({
+        source: "cards?action=findCard",
+        minLength: 2,
+        autoFocus: true,
+        select: function( event, ui ) {
+            if (ui.item) {
+                $.ajax({
+                    url: 'cards',
+                    dataType: 'json',
+                    data: {
+                        action: 'getCard',
+                        cardId: ui.item.id
+                    },
+                    success: displayCard
+                });
+            }
         }
     });
 });

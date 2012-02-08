@@ -9,6 +9,7 @@ import mage.tracker.domain.Card;
 import mage.tracker.domain.CardStatus;
 import mage.tracker.dto.CardCriteria;
 import mage.tracker.dto.CardData;
+import mage.tracker.dto.CardName;
 import mage.tracker.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,7 +48,7 @@ public class CardsController {
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
-        model.put("cards", cardsData);
+        model.put("rowsData", cardsData);
         return model;
     }
 
@@ -69,6 +70,12 @@ public class CardsController {
             return new CardData(card);
         }
         return null;
+    }
+
+    @RequestMapping(value = "/cards", params = "action=findCard")
+    @ResponseBody
+    public List<CardName> findCard(@RequestParam("term") String name) {
+        return cardService.findCardsLikeName(name);
     }
 
     @RequestMapping(value = "/cards", params = "action=markIp")

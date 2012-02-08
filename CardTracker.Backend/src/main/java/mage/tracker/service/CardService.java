@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.*;
 import mage.tracker.domain.*;
 import mage.tracker.dto.CardCriteria;
+import mage.tracker.dto.CardName;
 import mage.tracker.dto.ExpansionStatus;
 import mage.tracker.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -188,7 +189,7 @@ public class CardService {
                     query.setParameter(1, cardNumber);
                     query.setParameter(2, expansion.getId());
                     List<CardEdition> otherSideEditions = query.getResultList();
-                    if(!otherSideEditions.isEmpty()){
+                    if (!otherSideEditions.isEmpty()) {
                         Card otherSide = otherSideEditions.get(0).getCard();
                         card.setOtherSide(otherSide.getId());
                         otherSide.setOtherSide(card.getId());
@@ -207,6 +208,20 @@ public class CardService {
 
     public Card findCardByName(String cardName) {
         return cardRepository.findByName(cardName);
+    }
+
+    public List<CardName> findCardsLikeName(String name) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("select c.id, c.name from Card c where c.name like '%").append(name).append("%' order by c.name");
+        Query query = em.createNativeQuery(sb.toString());
+        query.setMaxResults(15);
+        List<Object[]> resultList = query.getResultList();
+
+        List<CardName> cardNames = new LinkedList<CardName>();
+        for (Object[] object : resultList) {
+            cardNames.add(new CardName(((BigInteger) object[0]).longValue(), (String) object[1]));
+        }
+        return cardNames;
     }
 
     public Card findCardById(long id) {

@@ -29,3 +29,10 @@
     cursor: pointer;
     margin-right: 2px;
 }
+.actionButtons {
+    padding: 10px;
+    text-align: center;
+}
+.cardName {
+    cursor: pointer;
+}
