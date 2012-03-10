@@ -45,8 +45,8 @@ $(document).ready(function () {
 
     var editionsFormat = function (row) {
         var i, j, html, editions, expansion, sets, setsReplace;
-        sets = ['USG', 'INV', 'PLS', 'TMP', 'APC', 'COK'];
-        setsReplace = ['UZ', 'IN', 'PS', 'TE', 'AP', 'CHK'];
+        sets = ['5ED', 'USG', 'INV', 'PLS', 'TMP', 'APC', 'COK'];
+        setsReplace = ['5E', 'UZ', 'IN', 'PS', 'TE', 'AP', 'CHK'];
         html = '';
         editions = row.editions;
         for (i = 0; i < editions.length; i++) {
@@ -307,11 +307,11 @@ $(document).ready(function () {
     });
 
 
-    $( "#cardNames" ).autocomplete({
+    $('#cardNames').autocomplete({
         source: "cards?action=findCard",
         minLength: 2,
         autoFocus: true,
-        select: function( event, ui ) {
+        select: function(event, ui) {
             if (ui.item) {
                 $.ajax({
                     url: 'cards',

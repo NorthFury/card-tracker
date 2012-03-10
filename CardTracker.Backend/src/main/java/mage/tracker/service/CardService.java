@@ -270,8 +270,8 @@ public class CardService {
             }
             restrictions.add(criteriaBuilder.or(typeRestrictions.toArray(new Predicate[0])));
         }
-        Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
         if (cardCriteria.getExpansion() != null && !cardCriteria.getExpansion().isEmpty()) {
+            Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
             Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
             In<String> inExpansion = criteriaBuilder.in(expansion.get(Expansion_.code));
             for (String value : cardCriteria.getExpansion()) {
@@ -314,7 +314,6 @@ public class CardService {
                 criteriaQuery.orderBy(criteriaBuilder.desc(column));
             }
         }
-        criteriaQuery.groupBy(card.get("name"));
 
         criteriaQuery.select(card);
 
@@ -347,8 +346,8 @@ public class CardService {
             }
             restrictions.add(criteriaBuilder.or(typeRestrictions.toArray(new Predicate[0])));
         }
-        Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
         if (cardCriteria.getExpansion() != null && !cardCriteria.getExpansion().isEmpty()) {
+            Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
             Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
             In<String> inExpansion = criteriaBuilder.in(expansion.get(Expansion_.code));
             for (String value : cardCriteria.getExpansion()) {

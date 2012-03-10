@@ -29,7 +29,7 @@ public class CardsController {
     @Autowired
     CardService cardService;
 
-    @RequestMapping(value = "/cards")
+    @RequestMapping(value = {"/cards", "/"})
     public ModelAndView viewCards() {
         ModelAndView modelAndView = new ModelAndView("cards");
         modelAndView.addObject("expansions", cardService.getExpansions());

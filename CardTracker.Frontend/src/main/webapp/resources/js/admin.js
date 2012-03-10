@@ -50,6 +50,7 @@
     };
 
     var onAdminLoad = function () {
+        $('#mainContent a').button();
         $('#importExpansionData').click(function () {
             pushData('importExpansionData');
         });
