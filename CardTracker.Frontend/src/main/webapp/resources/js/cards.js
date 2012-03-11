@@ -199,7 +199,10 @@ $(document).ready(function () {
     });
 
     var displayCard = function (cardData) {
-        function displayDualCard(cardData, cardContainer) {
+        var cardDialog = $('#cardDialog');
+        cardDialog.html('<table><tr><td id="cardDialogDisplay"></td></tr><tr><td id="cardDialogData"></td></tr></table>');
+
+        function displayDualCard(cardData) {
             var card1, card2;
             if (cardData.editions[0].cardNumber.indexOf('a') !== -1) {
                 if (cardData.editions[0].mtgoImageId && !cardData.otherSide.editions[0].mtgoImageId) {
@@ -218,8 +221,8 @@ $(document).ready(function () {
                     card2 = cardGen(cardData);
                 }
             }
-            cardContainer.append(card1);
-            cardContainer.append(card2);
+            $('#cardDialogDisplay').append(card1);
+            $('#cardDialogDisplay').append(card2);
         }
 
         function requestOtherSide(cardData) {
@@ -237,11 +240,8 @@ $(document).ready(function () {
             });
         }
 
-        var cardDialog = $('#cardDialog');
-        cardDialog.html('');
-
         if (cardData.otherSide === null) {
-            cardDialog.append(cardGen(cardData));
+            $('#cardDialogDisplay').append(cardGen(cardData));
         } else {
             if (typeof cardData.otherSide === 'object') {
                 displayDualCard(cardData);
@@ -255,14 +255,14 @@ $(document).ready(function () {
                     },
                     success: function (data) {
                         cardData.otherSide = data;
-                        displayDualCard(cardData, cardDialog);
+                        displayDualCard(cardData);
                     }
                 });
             }
         }
         var buttonsDiv = $('<div name="' + cardData.id + '" class="actionButtons"></div>');
         buttonsDiv.html(actionsFormat(cardData));
-        cardDialog.append(buttonsDiv);
+        $('#cardDialogData').append(buttonsDiv);
         function onPopupAction(action, id) {
             onAction(action, id).done(function () {
                 $.ajax({
@@ -297,6 +297,7 @@ $(document).ready(function () {
             onPopupAction('markIp', cardData.id);
         });
 
+        $('#cardDialogData').append('<br/><a target="_blank" href="http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=' + cardData.editions[0].gathererId + '">Gatherer Link</a>');
         cardDialog.dialog('open');
     }
 
