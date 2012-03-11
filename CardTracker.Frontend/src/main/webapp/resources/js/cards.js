@@ -1,11 +1,6 @@
 $(document).ready(function () {
     $('#dialog').hide();
 
-    var login = Login(jQuery);
-    login.init({
-        container: '#loginContainer'
-    });
-
     var filter = CardsFilter(jQuery);
     filter.init({
         container: '#cardsFilter'
@@ -185,11 +180,14 @@ $(document).ready(function () {
         onAction('markIp', $(e.target).parents('tr')[0].id);
     });
 
+    $('#toogleTooltip').button({label: 'Toggle tooltip: ' + (localStorage.getItem('scanTooltip') ? 'Scan' : 'Generated')});
     $('#toogleTooltip').on('click', function () {
         if (localStorage.getItem('scanTooltip')) {
             localStorage.removeItem('scanTooltip');
+            $('#toogleTooltip').button({label: 'Toggle tooltip: Generated'});
         } else {
             localStorage.setItem('scanTooltip', 'true');
+            $('#toogleTooltip').button({label: 'Toggle tooltip: Scan'});
         }
     });
 

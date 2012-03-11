@@ -8,7 +8,7 @@ function Login($) {
 
         container = $(settings.container);
         account = localStorage.getItem('account') || sessionStorage.getItem('account');
-        loginHtml = '<table><tr><td>Name:</td><td><input id="name" type="text"/></td></tr><tr><td>Password</td><td><input id="password" type="password"/></td></tr></table>';
+        loginHtml = 'Name: <input id="name" type="text"/> Password: <input id="password" type="password"/>';
 
         var login = function (e) {
             account = {
@@ -45,7 +45,8 @@ function Login($) {
 
         if (account) {
             account = JSON.parse(account);
-            container.html('<a class="ui-button-text logout">Logout</a> ' + account.name);
+            container.html(account.name + ' <a class="ui-button-text logout">Logout</a>');
+            container.find('.logout').button();
         } else {
             container.html(loginHtml);
             $(settings.container + ' input').on('keyup', login);

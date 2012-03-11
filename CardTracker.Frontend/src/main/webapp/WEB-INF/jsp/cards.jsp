@@ -18,13 +18,13 @@
         <link type="text/css" rel="stylesheet" href="resources/css/render.css" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
-        <script  src="resources/js/crypto-md5.js" type="text/javascript"></script>
+        <script src="resources/js/crypto-md5.js" type="text/javascript"></script>
         <script src="resources/js/login.js" type="text/javascript"></script>
         <script src="resources/js/filter.js" type="text/javascript"></script>
         <script src="resources/js/dataTable.js" type="text/javascript"></script>
-        <script  src="resources/js/cardRender.js" type="text/javascript"></script>
-        <script  src="resources/js/tooltip.js" type="text/javascript"></script>
-        <script  src="resources/js/cards.js" type="text/javascript"></script>
+        <script src="resources/js/cardRender.js" type="text/javascript"></script>
+        <script src="resources/js/tooltip.js" type="text/javascript"></script>
+        <script src="resources/js/cards.js" type="text/javascript"></script>
     </head>
     <body>
         <jsp:include page="menu.jsp"/>
@@ -135,8 +135,7 @@
                         <label for="cardNames">Find Card: </label>
                         <input id="cardNames" />
                     </div>
-                    <div id="loginContainer"></div>
-                    <a id="toogleTooltip" class="aButton">Toggle Tooltip</a>
+                    <a id="toogleTooltip">Toggle Tooltip</a>
                 </td>
             </tr>
         </table>
