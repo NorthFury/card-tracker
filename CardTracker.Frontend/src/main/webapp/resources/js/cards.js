@@ -174,7 +174,20 @@ $(document).ready(function () {
         onAction('cancel', $(e.target).parents('tr')[0].id);
     });
     container.on('click', '.unlockAction', function (e) {
-        onAction('unlock', $(e.target).parents('tr')[0].id);
+        $( "#cardUnlockConfirmDialog" ).dialog({
+            resizable: false,
+            height:140,
+            modal: true,
+            buttons: {
+                Unlock: function () {
+                    onAction('unlock', $(e.target).parents('tr')[0].id);
+                    $(this).dialog("close");
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
     });
     container.on('click', '.ipAction', function (e) {
         onAction('markIp', $(e.target).parents('tr')[0].id);

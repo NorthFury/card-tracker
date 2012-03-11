@@ -140,5 +140,8 @@
             </tr>
         </table>
         <div id="cardDialog" title="Card"></div>
+        <div id="cardUnlockConfirmDialog" title="Unlock card?">
+            <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to unlock this card?</p>
+        </div>
     </body>
 </html>
