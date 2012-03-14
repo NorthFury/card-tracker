@@ -18,7 +18,8 @@ function Login($) {
             var onSuccess = function (data) {
                 if (data.success) {
                     localStorage.setItem('account', JSON.stringify(account));
-                    container.html('<a class="ui-button-text logout">Logout</a> ' + account.name);
+                    container.html(account.name + ' <a class="ui-button-text logout">Logout</a>');
+                    container.find('.logout').button();
                 } else {
                     alert('Credidentials not valid. Please try again.');
                 }
