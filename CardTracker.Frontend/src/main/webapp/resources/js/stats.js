@@ -54,7 +54,7 @@ $(document).ready(function () {
                     key: 'total',
                     sortable: true,
                     comparator: function (a, b) {
-                        return a.implemented - b.implemented;
+                        return a.total - b.total;
                     }
                 },
                 {
