@@ -8,12 +8,12 @@ function Login($) {
 
         container = $(settings.container);
         account = localStorage.getItem('account') || sessionStorage.getItem('account');
-        loginHtml = 'Name: <input id="name" type="text"/> Password: <input id="password" type="password"/>';
+        loginHtml = 'Name: <input id="loginName" type="text"/> Password: <input id="loginPassword" type="password"/>';
 
         var login = function (e) {
             account = {
-                name: $('#name').val(),
-                password: Crypto.MD5($('#password').val())
+                name: $('#loginName').val(),
+                password: Crypto.MD5($('#loginPassword').val())
             };
             var onSuccess = function (data) {
                 if (data.success) {
