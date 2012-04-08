@@ -10,15 +10,14 @@ $(document).ready(function () {
             var rowClass = function (row) {
                 return '';
             }
-            var cardsTable = SortableTable(jQuery);
-            cardsTable.init({
+            var table = sortableTable(jQuery);
+            table.init({
                 container: '#statsTable',
                 rowClass: rowClass,
                 rowsData: data,
                 columnModel: [
                 {
                     name: 'Name',
-                    sortable: true,
                     format: function (row) {
                         return '<a href="cards?expansion=' + row.code + '">' + row.name + '</a>';
                     },
@@ -34,14 +33,12 @@ $(document).ready(function () {
                 {
                     name: 'Implemented',
                     key: 'implemented',
-                    sortable: true,
                     comparator: function (a, b) {
                         return a.implemented - b.implemented;
                     }
                 },
                 {
                     name: 'Remaining',
-                    sortable: true,
                     format: function (row) {
                         return row.total - row.implemented;
                     },
@@ -52,7 +49,6 @@ $(document).ready(function () {
                 {
                     name: 'Total',
                     key: 'total',
-                    sortable: true,
                     comparator: function (a, b) {
                         return a.total - b.total;
                     }
@@ -67,7 +63,6 @@ $(document).ready(function () {
                         '</div>'
                         return html;
                     },
-                    sortable: true,
                     comparator: function (a, b) {
                         var x, y;
                         x = a.implemented * 100 / a.total;
