@@ -77,7 +77,7 @@ $(document).ready(function () {
         return html;
     };
 
-    var cardsTable = DataTable(jQuery);
+    var cardsTable = dataTable(jQuery);
     cardsTable.init({
         url: 'cards',
         container: '#cardsContainer',

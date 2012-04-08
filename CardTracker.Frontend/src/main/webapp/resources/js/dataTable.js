@@ -1,4 +1,4 @@
-function DataTable($) {
+function dataTable($) {
     "use strict";
     var settings = {
         rows: 30,
@@ -63,7 +63,7 @@ function DataTable($) {
         };
 
         if (settings.sortColumn) {
-            data.sortColumn = settings.sortColumn;
+            data.sortColumn = settings.columnModel[settings.sortColumn].name;
             data.sortAscending = settings.sortAscending;
         }
 
@@ -147,7 +147,7 @@ function DataTable($) {
                 }
                 htmlString += '<span>' + columnModel.name + '</span>';
                 htmlString += '</div>';
-                element.append($('<th/>').attr('name', columnModel.name).html(htmlString).addClass('ui-state-default' + (columnModel.sortable ? ' ui-sortable-column' : '')));
+                element.append($('<th/>').html(htmlString).addClass('ui-state-default' + (columnModel.sortable ? ' ui-sortable-column' : '')));
             }
         }
     }
@@ -172,33 +172,19 @@ function DataTable($) {
         };
         var sort = function (e) {
             var $this = $(this);
-            var icon, active;
 
-            active = $('.ui-sortable-column.ui-state-active');
-            if (active.attr('name') !== $this.attr('name')) {
-                active.removeClass('ui-state-active');
-                active.find('.ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s').addClass('ui-icon-carat-2-n-s');
-                $this.addClass('ui-state-active');
-            }
-
-            settings.sortColumn = $this.attr('name');
-
-            icon = $this.find('.ui-sortable-column-icon');
-            if (icon.hasClass('ui-icon-carat-2-n-s')) {
-                icon.removeClass('ui-icon-carat-2-n-s');
-                icon.addClass('ui-icon-triangle-1-n');
+            if (this.cellIndex !== settings.sortColumn) {
                 settings.sortAscending = true;
             } else {
-                if (icon.hasClass('ui-icon-triangle-1-n')) {
-                    settings.sortAscending = false;
-                    icon.removeClass('ui-icon-triangle-1-n');
-                    icon.addClass('ui-icon-triangle-1-s');
-                } else {
-                    settings.sortAscending = true;
-                    icon.removeClass('ui-icon-triangle-1-s');
-                    icon.addClass('ui-icon-triangle-1-n');
-                }
+                settings.sortAscending = !settings.sortAscending;
             }
+            settings.sortColumn = this.cellIndex;
+
+            container.find('.ui-sortable-column').removeClass('ui-state-active');
+            container.find('.ui-sortable-column .ui-sortable-column-icon').removeClass('ui-icon-triangle-1-n ui-icon-triangle-1-s').addClass('ui-icon-carat-2-n-s');
+
+            $this.find('.ui-sortable-column-icon').removeClass('ui-icon-carat-2-n-s').addClass(settings.sortAscending ? 'ui-icon-triangle-1-s' : 'ui-icon-triangle-1-n');
+            $this.addClass('ui-state-active');
 
             updateTable();
         };
