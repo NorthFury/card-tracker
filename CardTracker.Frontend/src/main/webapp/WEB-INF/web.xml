@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-    version="2.4">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
 
     <display-name>CardTracker</display-name>
 
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-			classpath:mage/tracker/ctx/persistence-context.xml
-			classpath:mage/tracker/ctx/web-context.xml
+            classpath:mage/tracker/ctx/persistence-context.xml
+            classpath:mage/tracker/ctx/web-context.xml
         </param-value>
     </context-param>
 
@@ -26,7 +26,7 @@
 
     <!-- Processes application requests -->
     <servlet>
-        <servlet-name>appServlet</servlet-name>
+        <servlet-name>cardTracker</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
@@ -36,7 +36,7 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>appServlet</servlet-name>
+        <servlet-name>cardTracker</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
@@ -47,7 +47,7 @@
 
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
-        <servlet-name>appServlet</servlet-name>
+        <servlet-name>cardTracker</servlet-name>
     </filter-mapping>
 </web-app>
 
