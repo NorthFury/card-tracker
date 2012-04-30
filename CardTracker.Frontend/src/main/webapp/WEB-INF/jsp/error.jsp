@@ -12,22 +12,15 @@
         <title>Error Page</title>
         <script type="text/javascript">
             (function () {
-                var time = 30;
                 var tick = function () {
-                    time--;
-                    document.getElementById("timer").innerHTML = time;
-                    if (time > 0) {
-                        setTimeout(tick, 1000);
-                    } else {
-                        window.location.reload();
-                    }
+                    window.location.reload();
                 }
                 setTimeout(tick, 1000);
             })();
         </script>
     </head>
     <body>
-        <p>The database connection idled out. It will be up again in a minute or two.</p>
-        <p>Automatically reloading page in ... <a id="timer"></a> seconds</p>
+        <p>The database connection idled out. It will be up again in a few seconds</p>
+        <p>Automatically reloading page ...</p>
     </body>
 </html>
