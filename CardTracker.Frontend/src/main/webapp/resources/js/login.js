@@ -15,6 +15,18 @@ function Login($) {
                 localStorage.setItem('account', JSON.stringify(account));
                 container.html('<a class="accountName">' + account.name + '</a><a class="ui-button-text logout">Logout</a>');
                 container.find('.logout').button();
+                window.setTimeout(function () {
+                    $.ajax({
+                        url: 'admin',
+                        dataType: 'json',
+                        data: {
+                            action: 'login',
+                            name: account.name,
+                            password: account.password
+                        },
+                        success: onLoginSuccess
+                    });
+                }, 60000);
             } else {
                 alert('Credidentials not valid. Please try again.');
             }
@@ -78,7 +90,9 @@ function Login($) {
                 if (password !== passwordConfirm) {
                     alert('Passwords do not match!');
                 } else {
-                    password = Crypto.MD5(password);
+                    if (password.length !== 0) {
+                        password = Crypto.MD5(password);
+                    }
                     $.ajax({
                         type: 'POST',
                         dataType: 'json',
