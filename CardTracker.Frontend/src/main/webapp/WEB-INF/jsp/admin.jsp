@@ -22,30 +22,38 @@
     </head>
     <body>
         <jsp:include page="menu.jsp"/>
-        <div id="mainContent">
-            <a id="importExpansionData">Import Expansion data</a>
-            <a id="importCardsData">Import Cards data</a>
-            <a id="importImplementedCards">Import Implemented Cards</a>
-            <a id="importRequestedCards">Import Requested Cards</a>
-            <a id="importMtgoData">Import MTGO Data</a>
-            <textarea id="dataInput" rows="20" cols="100" style="margin-top: 5px;"></textarea>
-            <br/>
-            <br/>
-            <a id="registerAccount">Register Account</a>
-            <table>
-                <tr>
-                    <td>Name</td>
-                    <td><input id="name" type="text"/></td>
-                </tr>
-                <tr>
-                    <td>Password</td>
-                    <td><input id="password" type="password"/></td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td><input id="email" type="text"/></td>
-                </tr>
-            </table>
-        </div>
+        <c:choose>
+            <c:when test="${empty sessionScope.AuthenticatedUser}">
+                <h1>Please login and reload the page.</h1>
+            </c:when>
+
+            <c:otherwise>
+                <div id="mainContent">
+                    <a id="importExpansionData">Import Expansion data</a>
+                    <a id="importCardsData">Import Cards data</a>
+                    <a id="importImplementedCards">Import Implemented Cards</a>
+                    <a id="importRequestedCards">Import Requested Cards</a>
+                    <a id="importMtgoData">Import MTGO Data</a>
+                    <textarea id="dataInput" rows="20" cols="100" style="margin-top: 5px;"></textarea>
+                    <br/>
+                    <br/>
+                    <a id="registerAccount">Register Account</a>
+                    <table>
+                        <tr>
+                            <td>Name</td>
+                            <td><input id="name" type="text"/></td>
+                        </tr>
+                        <tr>
+                            <td>Password</td>
+                            <td><input id="password" type="password"/></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td><input id="email" type="text"/></td>
+                        </tr>
+                    </table>
+                </div>
+            </c:otherwise>
+        </c:choose>
     </body>
 </html>

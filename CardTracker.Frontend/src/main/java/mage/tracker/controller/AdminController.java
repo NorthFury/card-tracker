@@ -3,11 +3,13 @@ package mage.tracker.controller;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
 import mage.tracker.authentication.AuthenticationContext;
 import mage.tracker.domain.Account;
 import mage.tracker.domain.Card;
 import mage.tracker.domain.CardStatus;
 import mage.tracker.domain.Expansion;
+import mage.tracker.filter.AuthenticationFilter;
 import mage.tracker.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -216,6 +218,21 @@ public class AdminController {
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("success", success);
+        return model;
+    }
+
+    /**
+     * Handler for the logout request
+     *
+     * @return success message
+     */
+    @RequestMapping(value = "/admin", params = "action=logout")
+    @ResponseBody
+    public HashMap<String, Object> logout(HttpServletRequest request) {
+        request.getSession().setAttribute(AuthenticationFilter.ACCOUNT_KEY, null);
+
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("success", true);
         return model;
     }
 }

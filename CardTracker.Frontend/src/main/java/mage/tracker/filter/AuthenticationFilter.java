@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class AuthenticationFilter implements Filter {
 
-    private static final String ACCOUNT_KEY = "AuthenticatedUser";
+    public static final String ACCOUNT_KEY = "AuthenticatedUser";
     @Autowired
     CardService cardService;
 

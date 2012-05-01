@@ -60,6 +60,13 @@ function Login($) {
             sessionStorage.removeItem('account');
             container.html(loginHtml);
             $(settings.container + ' input').on('keyup', login);
+            $.ajax({
+                url: 'admin',
+                dataType: 'json',
+                data: {
+                    action: 'logout'
+                }
+            });
         };
 
         var editAccount = function () {
