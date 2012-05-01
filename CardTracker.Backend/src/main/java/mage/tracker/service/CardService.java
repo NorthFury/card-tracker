@@ -288,6 +288,15 @@ public class CardService {
                 inExpansion.value(value);
             }
             restrictions.add(inExpansion);
+            if (cardCriteria.getSortColumn() == null && cardCriteria.getExpansion().size() == 1) {
+                Expression<String> cardNumber = criteriaBuilder.trim('b', cardEdition.get(CardEdition_.cardNumber));
+                cardNumber = criteriaBuilder.trim('a', cardNumber);
+                cardNumber = criteriaBuilder.concat("0000", cardNumber);
+                Expression<Integer> from = criteriaBuilder.sum(criteriaBuilder.length(cardNumber), -3);
+                cardNumber = criteriaBuilder.substring(cardNumber, from);
+
+                criteriaQuery.orderBy(criteriaBuilder.asc(cardNumber));
+            }
         }
         if (cardCriteria.getImplemented() != null || cardCriteria.getRequested() != null
                 || cardCriteria.getBugged() != null || cardCriteria.getTested() != null
