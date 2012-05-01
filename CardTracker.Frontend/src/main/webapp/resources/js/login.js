@@ -108,17 +108,18 @@ function Login($) {
                 if (accountDialog.length === 0) {
                     accountDialog = $('<div id="accountDialog"></div>');
                     $('body').append(accountDialog);
+                    accountDialog.on('click', '.ok', onOkClick);
+                    accountDialog.dialog({
+                        autoOpen: false,
+                        width: 'auto',
+                        title: "Account Settings"
+                    });
                 }
-                accountDialog.dialog({
-                    autoOpen: false,
-                    width: 'auto'
-                });
 
                 accountDialog.html('<table><tr><td>Password</td><td><input id="accountEditPassword" type="password"/></td></tr>'
                     + '<tr><td>Confirm Password</td><td><input id="accountEditPasswordConfirm" type="password"/></td></tr>'
                     + '<tr><td>Email</td><td><input id="accountEditEmail" type="text"/></td></tr></table>'
                     + '<a class="ui-button-text ok">OK</a>');
-                accountDialog.on('click', '.ok', onOkClick);
                 accountDialog.find('.ok').button();
 
                 accountDialog.dialog('open');
