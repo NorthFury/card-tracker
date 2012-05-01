@@ -3,6 +3,7 @@ package mage.tracker.controller;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import mage.tracker.authentication.AuthenticationContext;
 import mage.tracker.domain.Account;
 import mage.tracker.domain.Card;
 import mage.tracker.domain.CardStatus;
@@ -166,10 +167,36 @@ public class AdminController {
     @ResponseBody
     public HashMap<String, Object> registerAccount(@ModelAttribute Account account) {
         Boolean success = false;
-        if (account.getName().isEmpty() || account.getPassword().isEmpty()) {
-            success = false;
-        } else {
+        if (!account.getName().isEmpty() && !account.getPassword().isEmpty()) {
             success = cardService.saveAccount(account);
+        }
+
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("success", success);
+        return model;
+    }
+
+    /**
+     * Handler for the update account request
+     *
+     * @return success message
+     */
+    @RequestMapping(value = "/admin", params = "action=updateAccount")
+    @ResponseBody
+    public HashMap<String, Object> updateAccount(
+            @RequestParam("newEmail") String newEmail,
+            @RequestParam("newPassword") String newPassword,
+            @RequestParam("oldName") String name) {
+        Boolean success = false;
+        Account currentAccount = AuthenticationContext.getAccount();
+        if (currentAccount != null && currentAccount.getName().equals(name)) {
+            if (!newEmail.isEmpty()) {
+                currentAccount.setEmail(newEmail);
+            }
+            if (!newPassword.isEmpty()) {
+                currentAccount.setPassword(newPassword);
+            }
+            success = cardService.updateAccount(currentAccount);
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();

@@ -104,15 +104,15 @@ $(document).ready(function () {
         },
         {
             name: 'Subtype',
-            key: 'subType',
+            key: 'subType'
         },
         {
             name: 'P',
-            key: 'power',
+            key: 'power'
         },
         {
             name: 'T',
-            key: 'toughness',
+            key: 'toughness'
         },
         {
             name: 'Editions',
@@ -120,7 +120,7 @@ $(document).ready(function () {
         },
         {
             name: 'Dev',
-            key: 'developer',
+            key: 'developer'
         },
         {
             name: 'Status/Actions',

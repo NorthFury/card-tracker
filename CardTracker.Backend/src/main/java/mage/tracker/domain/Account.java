@@ -22,7 +22,7 @@ public class Account implements Serializable {
     // Columns
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
     @Column(length = 64, nullable = false, unique = true)
     private String name;
     @Column(length = 64, nullable = false)
@@ -38,11 +38,11 @@ public class Account implements Serializable {
         this.email = email;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

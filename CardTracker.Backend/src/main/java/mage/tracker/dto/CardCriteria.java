@@ -12,7 +12,7 @@ public class CardCriteria {
     private Integer rows;
     private List<String> type;
     private List<String> expansion;
-    private List<Integer> developer;
+    private List<Long> developer;
     private Boolean implemented;
     private Boolean requested;
     private Boolean bugged;
@@ -62,11 +62,11 @@ public class CardCriteria {
         this.expansion = expansion;
     }
 
-    public List<Integer> getDeveloper() {
+    public List<Long> getDeveloper() {
         return developer;
     }
 
-    public void setDeveloper(List<Integer> developer) {
+    public void setDeveloper(List<Long> developer) {
         this.developer = developer;
     }
 

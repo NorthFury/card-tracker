@@ -31,14 +31,15 @@ public class AuthenticationFilter implements Filter {
         String name = httpRequest.getParameter("name");
         String password = httpRequest.getParameter("password");
         Account account = (Account) session.getAttribute(ACCOUNT_KEY);
-        if (account == null || (account != null && !account.getName().equals(name) || !account.getPassword().equals(password))) {
+        if (name != null && !name.isEmpty() && password != null && !password.isEmpty()
+                && (account == null || (account != null && !account.getName().equals(name) || !account.getPassword().equals(password)))) {
             account = cardService.authenticateAccount(name, password);
             session.setAttribute(ACCOUNT_KEY, account);
         }
 
         AuthenticationContext.setAccount(account);
-        if ( chain != null ) {
-        	chain.doFilter(request, response);
+        if (chain != null) {
+            chain.doFilter(request, response);
         }
     }
 

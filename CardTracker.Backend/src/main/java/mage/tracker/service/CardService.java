@@ -72,6 +72,16 @@ public class CardService {
         return false;
     }
 
+    @Transactional(readOnly = false)
+    public Boolean updateAccount(Account account) {
+        Account result = accountRepository.find(Account.class, account.getId());
+        if (result != null) {
+            accountRepository.merge(account);
+            return true;
+        }
+        return false;
+    }
+
     public Account authenticateAccount(String name, String password) {
         Account account = accountRepository.findByName(name);
         if (account != null && account.getPassword().equals(password)) {
@@ -297,8 +307,8 @@ public class CardService {
             }
             if (cardCriteria.getDeveloper() != null) {
                 Join<CardStatus, Account> account = cardStatus.join(CardStatus_.account);
-                In<Integer> inDeveloper = criteriaBuilder.in(account.get(Account_.id));
-                for (Integer value : cardCriteria.getDeveloper()) {
+                In<Long> inDeveloper = criteriaBuilder.in(account.get(Account_.id));
+                for (Long value : cardCriteria.getDeveloper()) {
                     inDeveloper.value(value);
                 }
                 restrictions.add(inDeveloper);
@@ -373,8 +383,8 @@ public class CardService {
             }
             if (cardCriteria.getDeveloper() != null) {
                 Join<CardStatus, Account> account = cardStatus.join(CardStatus_.account);
-                In<Integer> inDeveloper = criteriaBuilder.in(account.get(Account_.id));
-                for (Integer value : cardCriteria.getDeveloper()) {
+                In<Long> inDeveloper = criteriaBuilder.in(account.get(Account_.id));
+                for (Long value : cardCriteria.getDeveloper()) {
                     inDeveloper.value(value);
                 }
                 restrictions.add(inDeveloper);
