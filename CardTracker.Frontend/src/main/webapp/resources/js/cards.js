@@ -145,9 +145,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 data: {
                     action: action,
-                    cardId: id,
-                    name: account.name,
-                    password: account.password
+                    cardId: id
                 },
                 success: function (data) {
                     cardsTable.update();
