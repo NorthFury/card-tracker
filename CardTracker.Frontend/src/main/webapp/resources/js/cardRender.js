@@ -215,7 +215,7 @@ function cardGen(card, otherSide, flip) {
         }
     }
 
-    if (card.power) {
+    if (card.toughness) {
         newElement = document.createElement('img');
         newElement.className = 'ptbox';
         newElement.src = 'resources/img/pt/PTBOX_' + ptBox + '.png';
@@ -223,7 +223,7 @@ function cardGen(card, otherSide, flip) {
 
         newElement = document.createElement('div');
         newElement.className = 'pt';
-        newElement.innerHTML = card.power + '/' + card.toughness;
+        newElement.innerHTML = (card.power ? card.power + '/' : '') + card.toughness;
         container.appendChild(newElement);
     }
 
