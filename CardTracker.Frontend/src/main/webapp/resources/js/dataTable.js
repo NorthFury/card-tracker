@@ -62,7 +62,7 @@ function dataTable($) {
             action: 'load'
         };
 
-        if (settings.sortColumn) {
+        if (typeof settings.sortColumn !== "undefined") {
             data.sortColumn = settings.columnModel[settings.sortColumn].name;
             data.sortAscending = settings.sortAscending;
         }
