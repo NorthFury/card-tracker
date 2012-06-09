@@ -193,8 +193,8 @@ function cardGen(card, otherSide, flip) {
         };
     }
 
-    var sets = ['5ED', 'USG', 'INV', 'PLS', 'TMP', 'APC', 'COK'];
-    var setsReplace = ['5E', 'UZ', 'IN', 'PS', 'TE', 'AP', 'CHK'];
+    var sets = ['5ED', 'USG', 'ULG', 'INV', 'PLS', 'TMP', 'APC', 'COK'];
+    var setsReplace = ['5E', 'UZ', 'GU', 'IN', 'PS', 'TE', 'AP', 'CHK'];
     var expansion = edition.expansionCode;
     for (j = 0; j < sets.length; j++) {
         expansion = expansion.replace(sets[j], setsReplace[j]);

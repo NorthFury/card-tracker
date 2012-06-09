@@ -1,5 +1,6 @@
 package mage.tracker.controller;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,9 +8,11 @@ import mage.tracker.authentication.AuthenticationContext;
 import mage.tracker.domain.Account;
 import mage.tracker.domain.Card;
 import mage.tracker.domain.CardStatus;
+import mage.tracker.domain.Comment;
 import mage.tracker.dto.CardCriteria;
 import mage.tracker.dto.CardData;
 import mage.tracker.dto.CardName;
+import mage.tracker.dto.CommentData;
 import mage.tracker.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -76,6 +79,48 @@ public class CardsController {
     @ResponseBody
     public List<CardName> findCard(@RequestParam("term") String name) {
         return cardService.findCardsLikeName(name);
+    }
+
+    @RequestMapping(value = "/cards", params = "action=comment")
+    @ResponseBody
+    public HashMap<String, Object> comment(@RequestParam("cardId") long cardId, @RequestParam("text") String text) {
+        Card card = cardService.findCardById(cardId);
+        Account account = AuthenticationContext.getAccount();
+        boolean success = false;
+
+        if (card != null && account != null) {
+            Comment comment = new Comment();
+            comment.setAccount(account);
+            comment.setCard(card);
+            comment.setPostTime(Calendar.getInstance().getTime());
+            comment.setText(text);
+
+            cardService.saveComment(comment);
+            if (card.getOtherSide() != null) {
+                card = cardService.findCardById(card.getOtherSide());
+
+                if (card != null) {
+                    comment.setCard(card);
+                    cardService.saveComment(comment);
+                }
+            }
+            success = true;
+        }
+
+        HashMap<String, Object> model = new HashMap<String, Object>();
+        model.put("success", success);
+        return model;
+    }
+
+    @RequestMapping(value = "/cards", params = "action=getComments")
+    @ResponseBody
+    public List<CommentData> getComments(@RequestParam("cardId") long cardId) {
+        List<Comment> commentList = cardService.getCardComments(cardId);
+        List<CommentData> result = new LinkedList<CommentData>();
+        for (Comment comment : commentList) {
+            result.add(new CommentData(comment));
+        }
+        return result;
     }
 
     @RequestMapping(value = "/cards", params = "action=markIp")

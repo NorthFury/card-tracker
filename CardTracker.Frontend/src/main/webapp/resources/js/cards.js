@@ -40,8 +40,8 @@ $(document).ready(function () {
 
     var editionsFormat = function (row) {
         var i, j, html, editions, expansion, sets, setsReplace;
-        sets = ['5ED', 'USG', 'INV', 'PLS', 'TMP', 'APC', 'COK'];
-        setsReplace = ['5E', 'UZ', 'IN', 'PS', 'TE', 'AP', 'CHK'];
+        sets = ['5ED', 'USG', 'ULG', 'INV', 'PLS', 'TMP', 'APC', 'COK'];
+        setsReplace = ['5E', 'UZ', 'GU', 'IN', 'PS', 'TE', 'AP', 'CHK'];
         html = '';
         editions = row.editions;
         for (i = 0; i < editions.length; i++) {
@@ -307,7 +307,62 @@ $(document).ready(function () {
         });
 
         $('#cardDialogData').append('<br/><a target="_blank" href="http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=' + cardData.editions[0].gathererId + '">Gatherer Link</a>');
+
+        function loadComments() {
+            commentsTable.html('');
+            $.ajax({
+                url: 'cards',
+                dataType: 'json',
+                data: {
+                    action: 'getComments',
+                    cardId: cardData.id
+                },
+                success: function (comments) {
+                    function createComment(comment) {
+                        var html = '<tr>';
+                        html += '<td>' + comment.accountName + '</td>';
+                        html += '<td>' + comment.text.replace('\n', '</br>') + '</td>';
+                        html += '</tr>';
+                        return html;
+                    }
+
+                    for (var i = 0; i < comments.length; i++) {
+                        commentsTable.append(createComment(comments[i]));
+                    }
+                }
+            });
+        }
+        var commentsContainer = $('<div></div>');
+        var commentTextArea = $('<textarea rows="5" cols="60"></textarea>');
+        var commentButton = $('<a>Post</a>');
+        var commentsTable = $('<table border="1px" cellspacing="0" cellpadding="4px" style="width: 100%"></table>');
+        commentsContainer.append(commentsTable);
+        commentsContainer.append(commentButton);
+        commentsContainer.append('</br>');
+        commentsContainer.append(commentTextArea);
+
+        commentButton.button();
+        commentButton.on('click', function () {
+            var text = commentTextArea.val();
+            if (text.length > 0) {
+                $.ajax({
+                    url: 'cards',
+                    dataType: 'json',
+                    data: {
+                        action: 'comment',
+                        cardId: cardData.id,
+                        text: text
+                    },
+                    success: function () {
+                        commentTextArea.val('');
+                        loadComments();
+                    }
+                });
+            }
+        });
+        $('#cardDialogData').append(commentsContainer);
         cardDialog.dialog('open');
+        loadComments();
     }
 
     container.on('click', '.cardName', function (e) {

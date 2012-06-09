@@ -8,9 +8,16 @@ import javax.persistence.*;
  *
  * @author North
  */
+@NamedQueries({
+    @NamedQuery(name = "Comment.findByCardId",
+    query = "select c from Comment c where c.card.id = ?1 order by c.postTime")
+})
 @Entity
 public class Comment implements Serializable {
 
+    // Named Queries
+    public static final String FIND_BY_CARD_ID = "Comment.findByCardId";
+    // Columns
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

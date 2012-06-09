@@ -244,6 +244,16 @@ public class CardService {
         return query.getResultList();
     }
 
+    public void saveComment(Comment comment) {
+        em.persist(comment);
+    }
+
+    public List<Comment> getCardComments(long cardId) {
+        TypedQuery query = em.createNamedQuery(Comment.FIND_BY_CARD_ID, Comment.class);
+        query.setParameter(1, cardId);
+        return query.getResultList();
+    }
+
     public List<ExpansionStatus> getExpansionStatus() {
         StringBuilder sb = new StringBuilder();
         sb.append("select e.name, e.code, count(*), ");
