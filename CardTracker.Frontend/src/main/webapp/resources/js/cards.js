@@ -40,8 +40,8 @@ $(document).ready(function () {
 
     var editionsFormat = function (row) {
         var i, j, html, editions, expansion, sets, setsReplace;
-        sets = ['5ED', 'USG', 'ULG', 'INV', 'PLS', 'TMP', 'APC', 'COK'];
-        setsReplace = ['5E', 'UZ', 'GU', 'IN', 'PS', 'TE', 'AP', 'CHK'];
+        sets = ['5ED', 'USG', 'ULG', 'UDS', 'INV', 'PLS', 'WTH', 'TMP', 'APC', 'COK'];
+        setsReplace = ['5E', 'UZ', 'GU', 'CG', 'IN', 'PS', 'WL', 'TE', 'AP', 'CHK'];
         html = '';
         editions = row.editions;
         for (i = 0; i < editions.length; i++) {
