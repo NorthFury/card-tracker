@@ -76,7 +76,7 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
-                <version>3.0.6.RELEASE</version>
+                <version>${springframework.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -98,7 +98,12 @@
                 <artifactId>spring-aspects</artifactId>
                 <version>${springframework.version}</version>
             </dependency>
-
+            <!-- AOP dependency -->
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib</artifactId>
+                <version>2.2.2</version>
+            </dependency>
 			<!-- web -->
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -117,11 +122,6 @@
                 <artifactId>jstl</artifactId>
                 <version>1.2</version>
             </dependency>
-            <dependency>
-                <groupId>net.sf.flexjson</groupId>
-                <artifactId>flexjson</artifactId>
-                <version>2.0</version>
-            </dependency>
 
             <!-- Jackson JSON Mapper -->
             <dependency>
@@ -136,11 +136,7 @@
                 <artifactId>commons-dbcp</artifactId>
                 <version>1.4</version>
             </dependency>
-<!--            <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.19</version>
-            </dependency>-->
+
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
@@ -155,8 +151,9 @@
     </dependencyManagement>
 
     <properties>
-        <springframework.version>3.0.6.RELEASE</springframework.version>
+        <springframework.version>3.1.2.RELEASE</springframework.version>
         <hibernate.version>3.6.8.Final</hibernate.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
