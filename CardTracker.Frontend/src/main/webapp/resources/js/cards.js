@@ -39,17 +39,11 @@ $(document).ready(function () {
     };
 
     var editionsFormat = function (row) {
-        var i, j, html, editions, expansion, sets, setsReplace;
-        sets = ['5ED', 'USG', 'ULG', 'UDS', 'INV', 'PLS', 'WTH', 'TMP', 'APC', 'COK'];
-        setsReplace = ['5E', 'UZ', 'GU', 'CG', 'IN', 'PS', 'WL', 'TE', 'AP', 'CHK'];
+        var i, html, editions;
         html = '';
         editions = row.editions;
         for (i = 0; i < editions.length; i++) {
-            expansion = editions[i].expansionCode;
-            for (j = 0; j < sets.length; j++) {
-                expansion = expansion.replace(sets[j], setsReplace[j]);
-            }
-            html += '<img style="height: 15px;" src="http://gatherer.wizards.com/handlers/image.ashx?size=small&amp;type=symbol&amp;set=' + expansion + '&amp;rarity=' + editions[i].rarity[0] + '" title="' + editions[i].expansionName + '">';
+            html += '<img style="height: 15px;" src="http://gatherer.wizards.com/handlers/image.ashx?size=small&amp;type=symbol&amp;set=' + editions[i].expansionCode + '&amp;rarity=' + editions[i].rarity[0] + '" title="' + editions[i].expansionName + '">';
         }
         return html;
     };

@@ -1,8 +1,13 @@
 package mage.tracker.dto;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import mage.tracker.domain.*;
+import mage.tracker.domain.Account;
+import mage.tracker.domain.Card;
+import mage.tracker.domain.CardEdition;
+import mage.tracker.domain.CardStatus;
 
 /**
  *
@@ -10,48 +15,6 @@ import mage.tracker.domain.*;
  */
 public class CardData {
 
-    public class EditionData {
-
-        private CardRarity rarity;
-        private String gathererId;
-        private String mtgoImageId;
-        private String expansionCode;
-        private String expansionName;
-        private String cardNumber;
-
-        public EditionData(CardEdition edition) {
-            this.rarity = edition.getRarity();
-            this.gathererId = edition.getGathererId();
-            this.mtgoImageId = edition.getMtgoImageId();
-            this.expansionCode = edition.getExpansion().getCode();
-            this.expansionName = edition.getExpansion().getName();
-            this.cardNumber = edition.getCardNumber();
-        }
-
-        public CardRarity getRarity() {
-            return rarity;
-        }
-
-        public String getGathererId() {
-            return gathererId;
-        }
-
-        public String getMtgoImageId() {
-            return mtgoImageId;
-        }
-
-        public String getExpansionCode() {
-            return expansionCode;
-        }
-
-        public String getExpansionName() {
-            return expansionName;
-        }
-
-        public String getCardNumber() {
-            return cardNumber;
-        }
-    }
     private Long id;
     private String name;
     private String cost;
@@ -93,6 +56,12 @@ public class CardData {
 
         editions = new LinkedList<EditionData>();
         List<CardEdition> cardEditions = card.getEditions();
+        Collections.sort(cardEditions, new Comparator<CardEdition>() {
+            @Override
+            public int compare(CardEdition o1, CardEdition o2) {
+                return o1.getExpansion().getReleaseDate().compareTo(o2.getExpansion().getReleaseDate());
+            }
+        });
         for (CardEdition edition : cardEditions) {
             editions.add(new EditionData(edition));
         }

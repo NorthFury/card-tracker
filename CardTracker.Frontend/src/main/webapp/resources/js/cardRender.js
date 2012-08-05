@@ -1,5 +1,5 @@
 function cardGen(card, otherSide, flip) {
-    var i, j, newElement;
+    var i, newElement;
     var background, ptBox;
     var cost;
     if (card.cost) {
@@ -191,13 +191,6 @@ function cardGen(card, otherSide, flip) {
             edition.cropImage = cropImage;
             container.appendChild(cropImage);
         };
-    }
-
-    var sets = ['5ED', 'USG', 'ULG', 'UDS', 'INV', 'PLS', 'WTH', 'TMP', 'APC', 'COK'];
-    var setsReplace = ['5E', 'UZ', 'GU', 'CG', 'IN', 'PS', 'WL', 'TE', 'AP', 'CHK'];
-    var expansion = edition.expansionCode;
-    for (j = 0; j < sets.length; j++) {
-        expansion = expansion.replace(sets[j], setsReplace[j]);
     }
 
     newElement = document.createElement('img');
