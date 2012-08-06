@@ -195,7 +195,7 @@ function cardGen(card, otherSide, flip) {
 
     newElement = document.createElement('img');
     newElement.className = 'symbol';
-    newElement.src = 'http://gatherer.wizards.com/handlers/image.ashx?size=small&type=symbol&set=' + expansion + '&rarity=' + edition.rarity[0];
+    newElement.src = 'http://gatherer.wizards.com/handlers/image.ashx?size=small&type=symbol&set=' + edition.expansionCode + '&rarity=' + edition.rarity[0];
     container.appendChild(newElement);
 
     if (cost) {
