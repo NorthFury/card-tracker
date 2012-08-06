@@ -9,23 +9,34 @@ import javax.persistence.*;
  */
 @NamedQueries({
     @NamedQuery(name = "CardEdition.findByNameAndExpansion",
-    query = "select c from CardEdition c where c.card.name = ?1 and c.expansion.name = ?2"),
+    query = "select c from CardEdition c where c.card.name = :cardName and c.expansion.name = :expansionName"),
     @NamedQuery(name = "CardEdition.findByNameAndExpansionCode",
-    query = "select c from CardEdition c where c.card.name = ?1 and c.expansion.code = ?2"),
+    query = "select c from CardEdition c where c.card.name = :cardName and c.expansion.code = :expansionCode"),
     @NamedQuery(name = "CardEdition.findByCardId",
-    query = "select c from CardEdition c where c.card.id = ?1"),
+    query = "select c from CardEdition c where c.card.id = :cardId"),
     @NamedQuery(name = "CardEdition.findByCardNumberAndExpansionId",
-    query = "select c from CardEdition c where c.cardNumber = ?1 and c.expansion.id = ?2")
+    query = "select c from CardEdition c where c.cardNumber = :cardNumber and c.expansion.id = :expansionId")
 })
 @Entity
 public class CardEdition implements Serializable {
 
-    // Named Queries
+    /**
+     * parameters: cardName, expansionName
+     */
     public static final String FIND_BY_NAME_AND_EXPANSION = "CardEdition.findByNameAndExpansion";
+    /**
+     * parameters: cardName, expansionCode
+     */
     public static final String FIND_BY_NAME_AND_EXPANSION_CODE = "CardEdition.findByNameAndExpansionCode";
+    /**
+     * parameters: cardNumber, expansionId
+     */
     public static final String FIND_BY_CARD_NUMBER_AND_EXPANSION_ID = "CardEdition.findByCardNumberAndExpansionId";
+    /**
+     * parameters: cardId
+     */
     public static final String FIND_BY_CARD_ID = "CardEdition.findByCardId";
-    // Columns
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

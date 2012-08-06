@@ -19,7 +19,7 @@ public class AccountRepository extends GenericRepository<Account> {
 
     public Account findByName(String name) {
         TypedQuery query = em.createNamedQuery(Account.FIND_BY_NAME, Account.class);
-        query.setParameter(1, name);
+        query.setParameter("name", name);
         List<Account> resultList = query.getResultList();
         if (resultList.isEmpty()) {
             return null;

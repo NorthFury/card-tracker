@@ -11,20 +11,25 @@ import javax.persistence.*;
  */
 @NamedQueries({
     @NamedQuery(name = "Expansion.findByName",
-    query = "select c from Expansion c where c.name = ?1"),
+    query = "select c from Expansion c where c.name = :name"),
     @NamedQuery(name = "Expansion.findByCode",
-    query = "select c from Expansion c where c.code = ?1"),
+    query = "select c from Expansion c where c.code = :code"),
     @NamedQuery(name = "Expansion.findAll",
     query = "select c from Expansion c order by c.releaseDate desc")
 })
 @Entity
 public class Expansion implements Serializable {
 
-    // Named Queries
+    /**
+     * parameters: name
+     */
     public static final String FIND_BY_NAME = "Expansion.findByName";
+    /**
+     * parameters: code
+     */
     public static final String FIND_BY_CODE = "Expansion.findByCode";
     public static final String FIND_ALL = "Expansion.findAll";
-    // Columns
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

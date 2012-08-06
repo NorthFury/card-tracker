@@ -19,7 +19,7 @@ public class ExpansionRepository extends GenericRepository<Expansion> {
 
     public Expansion findByName(String name) {
         TypedQuery query = em.createNamedQuery(Expansion.FIND_BY_NAME, Expansion.class);
-        query.setParameter(1, name);
+        query.setParameter("name", name);
         List<Expansion> resultList = query.getResultList();
         if (resultList.isEmpty()) {
             return null;
@@ -30,7 +30,7 @@ public class ExpansionRepository extends GenericRepository<Expansion> {
 
     public Expansion findByCode(String code) {
         TypedQuery query = em.createNamedQuery(Expansion.FIND_BY_CODE, Expansion.class);
-        query.setParameter(1, code);
+        query.setParameter("code", code);
         List<Expansion> resultList = query.getResultList();
         if (resultList.isEmpty()) {
             return null;

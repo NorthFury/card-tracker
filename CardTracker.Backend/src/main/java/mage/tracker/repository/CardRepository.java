@@ -19,7 +19,7 @@ public class CardRepository extends GenericRepository<Card> {
 
     public Card findByName(String name) {
         TypedQuery query = em.createNamedQuery(Card.FIND_BY_NAME, Card.class);
-        query.setParameter(1, name);
+        query.setParameter("name", name);
         List<Card> resultList = query.getResultList();
         if (resultList.isEmpty()) {
             return null;

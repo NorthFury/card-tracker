@@ -217,8 +217,8 @@ public class CardService {
                     TypedQuery query = em.createNamedQuery(CardEdition.FIND_BY_CARD_NUMBER_AND_EXPANSION_ID, CardEdition.class);
                     String cardNumber = cardAttributes[10].substring(0, cardAttributes[10].length() - 1)
                             + ("a".equals(lastCharCardNumber) ? "b" : "a");
-                    query.setParameter(1, cardNumber);
-                    query.setParameter(2, expansion.getId());
+                    query.setParameter("cardNumber", cardNumber);
+                    query.setParameter("expansionId", expansion.getId());
                     List<CardEdition> otherSideEditions = query.getResultList();
                     if (!otherSideEditions.isEmpty()) {
                         Card otherSide = otherSideEditions.get(0).getCard();
@@ -261,7 +261,7 @@ public class CardService {
 
     public List<CardEdition> getCardEditions(long cardId) {
         TypedQuery query = em.createNamedQuery(CardEdition.FIND_BY_CARD_ID, CardEdition.class);
-        query.setParameter(1, cardId);
+        query.setParameter("cardId", cardId);
         return query.getResultList();
     }
 
@@ -271,7 +271,7 @@ public class CardService {
 
     public List<Comment> getCardComments(long cardId) {
         TypedQuery query = em.createNamedQuery(Comment.FIND_BY_CARD_ID, Comment.class);
-        query.setParameter(1, cardId);
+        query.setParameter("cardId", cardId);
         return query.getResultList();
     }
 

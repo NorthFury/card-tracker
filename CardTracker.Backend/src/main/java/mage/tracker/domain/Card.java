@@ -10,7 +10,7 @@ import javax.persistence.*;
  */
 @NamedQueries({
     @NamedQuery(name = "Card.findByName",
-    query = "select c from Card c where c.name = ?1")
+    query = "select c from Card c where c.name = :name")
 })
 @Entity
 public class Card implements Serializable {

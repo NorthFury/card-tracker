@@ -9,17 +9,19 @@ import javax.persistence.*;
  */
 @NamedQueries({
     @NamedQuery(name = "Account.findByName",
-    query = "select a from Account a where a.name = ?1"),
+    query = "select a from Account a where a.name = :name"),
     @NamedQuery(name = "Account.findAll",
     query = "select a from Account a order by a.name")
 })
 @Entity
 public class Account implements Serializable {
 
-    // Named Queries
+    /**
+     * parameters: name
+     */
     public static final String FIND_BY_NAME = "Account.findByName";
     public static final String FIND_ALL = "Account.findAll";
-    // Columns
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

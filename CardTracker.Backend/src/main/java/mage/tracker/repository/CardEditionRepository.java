@@ -19,8 +19,8 @@ public class CardEditionRepository extends GenericRepository<CardEdition> {
 
     public CardEdition findByNameAndExpansion(String name, String expansion) {
         TypedQuery query = em.createNamedQuery(CardEdition.FIND_BY_NAME_AND_EXPANSION, CardEdition.class);
-        query.setParameter(1, name);
-        query.setParameter(2, expansion);
+        query.setParameter("cardName", name);
+        query.setParameter("expansionName", expansion);
         List<CardEdition> resultList = query.getResultList();
         if (resultList.isEmpty()) {
             return null;
@@ -31,8 +31,8 @@ public class CardEditionRepository extends GenericRepository<CardEdition> {
 
     public CardEdition findByNameAndExpansionCode(String name, String code) {
         TypedQuery query = em.createNamedQuery(CardEdition.FIND_BY_NAME_AND_EXPANSION_CODE, CardEdition.class);
-        query.setParameter(1, name);
-        query.setParameter(2, code);
+        query.setParameter("cardName", name);
+        query.setParameter("expansionCode", code);
         List<CardEdition> resultList = query.getResultList();
         if (resultList.isEmpty()) {
             return null;
