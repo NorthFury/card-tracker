@@ -297,6 +297,8 @@ public class CardService {
         CriteriaQuery<Card> criteriaQuery = criteriaBuilder.createQuery(Card.class);
 
         Root<Card> card = criteriaQuery.from(Card.class);
+        card.fetch(Card_.status);
+
         List<Predicate> restrictions = new LinkedList<Predicate>();
         if (cardCriteria.getAbilities() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.abilities), "%" + cardCriteria.getAbilities() + "%"));
