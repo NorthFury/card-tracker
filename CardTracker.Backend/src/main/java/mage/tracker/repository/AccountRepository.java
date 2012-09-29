@@ -32,4 +32,9 @@ public class AccountRepository extends GenericRepository<Account> {
         TypedQuery query = em.createNamedQuery(Account.FIND_ALL, Account.class);
         return query.getResultList();
     }
+
+    public List<Account> findActive() {
+        TypedQuery query = em.createNamedQuery(Account.FIND_ACTIVE, Account.class);
+        return query.getResultList();
+    }
 }

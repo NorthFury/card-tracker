@@ -45,8 +45,8 @@ public class CardService {
     @Qualifier("genericRepository")
     private GenericRepository<CardStatus> cardStatusRepository;
 
-    public List<Account> getAccounts() {
-        return accountRepository.findAll();
+    public List<Account> getActiveAccounts() {
+        return accountRepository.findActive();
     }
 
     public List<Expansion> getExpansions() {

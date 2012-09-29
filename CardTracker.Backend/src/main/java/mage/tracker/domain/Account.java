@@ -11,7 +11,9 @@ import javax.persistence.*;
     @NamedQuery(name = "Account.findByName",
     query = "select a from Account a where a.name = :name"),
     @NamedQuery(name = "Account.findAll",
-    query = "select a from Account a order by a.name")
+    query = "select a from Account a order by a.name"),
+    @NamedQuery(name = "Account.findActive",
+    query = "select a from Account a where exists(select 'found' from Card c where c.status.account.id = a.id) order by a.name")
 })
 @Entity
 public class Account implements Serializable {
@@ -21,6 +23,7 @@ public class Account implements Serializable {
      */
     public static final String FIND_BY_NAME = "Account.findByName";
     public static final String FIND_ALL = "Account.findAll";
+    public static final String FIND_ACTIVE = "Account.findActive";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
