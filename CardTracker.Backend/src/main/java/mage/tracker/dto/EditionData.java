@@ -34,6 +34,14 @@ public class EditionData {
         expansionCodeFix.put("STH", "ST");
         expansionCodeFix.put("VIS", "VI");
         expansionCodeFix.put("MIR", "MI");
+        expansionCodeFix.put("ARN", "AN");
+        expansionCodeFix.put("ATQ", "AQ");
+        expansionCodeFix.put("LEG", "LE");
+        expansionCodeFix.put("DRK", "DK");
+        expansionCodeFix.put("FEM", "FE");
+        expansionCodeFix.put("HML", "HM");
+        expansionCodeFix.put("ICE", "IA");
+        expansionCodeFix.put("ALL", "AL");
     }
     private CardRarity rarity;
     private String gathererId;
