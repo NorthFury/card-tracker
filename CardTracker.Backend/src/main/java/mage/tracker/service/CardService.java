@@ -30,9 +30,6 @@ public class CardService {
     @PersistenceContext
     private EntityManager em;
     @Autowired
-    @Qualifier("accountRepository")
-    private AccountRepository accountRepository;
-    @Autowired
     @Qualifier("cardRepository")
     private CardRepository cardRepository;
     @Autowired
@@ -45,10 +42,6 @@ public class CardService {
     @Qualifier("genericRepository")
     private GenericRepository<CardStatus> cardStatusRepository;
 
-    public List<Account> getActiveAccounts() {
-        return accountRepository.findActive();
-    }
-
     public List<Expansion> getExpansions() {
         return expansionRepository.findAll();
     }
@@ -60,34 +53,6 @@ public class CardService {
             return expansionRepository.persist(expansion);
         }
         return result;
-    }
-
-    @Transactional(readOnly = false)
-    public Boolean saveAccount(Account account) {
-        Account result = accountRepository.findByName(account.getName());
-        if (result == null) {
-            accountRepository.persist(account);
-            return true;
-        }
-        return false;
-    }
-
-    @Transactional(readOnly = false)
-    public Boolean updateAccount(Account account) {
-        Account result = accountRepository.find(Account.class, account.getId());
-        if (result != null) {
-            accountRepository.merge(account);
-            return true;
-        }
-        return false;
-    }
-
-    public Account authenticateAccount(String name, String password) {
-        Account account = accountRepository.findByName(name);
-        if (account != null && account.getPassword().equals(password)) {
-            return account;
-        }
-        return null;
     }
 
     @Transactional(readOnly = false)

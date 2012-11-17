@@ -10,6 +10,7 @@ import mage.tracker.domain.Card;
 import mage.tracker.domain.CardStatus;
 import mage.tracker.domain.Expansion;
 import mage.tracker.filter.AuthenticationFilter;
+import mage.tracker.service.AccountService;
 import mage.tracker.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class AdminController {
 
     @Autowired
-    CardService cardService;
+    private CardService cardService;
+    @Autowired
+    private AccountService accountService;
 
     /**
      * Handler for the admin page
@@ -170,7 +173,7 @@ public class AdminController {
     public HashMap<String, Object> registerAccount(@ModelAttribute Account account) {
         Boolean success = false;
         if (!account.getName().isEmpty() && !account.getPassword().isEmpty()) {
-            success = cardService.saveAccount(account);
+            success = accountService.saveAccount(account);
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
@@ -198,7 +201,7 @@ public class AdminController {
             if (!newPassword.isEmpty()) {
                 currentAccount.setPassword(newPassword);
             }
-            success = cardService.updateAccount(currentAccount);
+            success = accountService.updateAccount(currentAccount);
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
@@ -214,7 +217,7 @@ public class AdminController {
     @RequestMapping(value = "/admin", params = "action=login")
     @ResponseBody
     public HashMap<String, Object> login(@RequestParam("name") String name, @RequestParam("password") String password) {
-        Boolean success = cardService.authenticateAccount(name, password) != null;
+        Boolean success = accountService.authenticateAccount(name, password) != null;
 
         HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("success", success);

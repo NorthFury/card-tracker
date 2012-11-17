@@ -13,6 +13,7 @@ import mage.tracker.dto.CardCriteria;
 import mage.tracker.dto.CardData;
 import mage.tracker.dto.CardName;
 import mage.tracker.dto.CommentData;
+import mage.tracker.service.AccountService;
 import mage.tracker.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,12 +32,14 @@ public class CardsController {
 
     @Autowired
     CardService cardService;
+    @Autowired
+    AccountService accountService;
 
     @RequestMapping(value = {"/cards", "/"})
     public ModelAndView viewCards() {
         ModelAndView modelAndView = new ModelAndView("cards");
         modelAndView.addObject("expansions", cardService.getExpansions());
-        modelAndView.addObject("accounts", cardService.getActiveAccounts());
+        modelAndView.addObject("accounts", accountService.getActiveAccounts());
         return modelAndView;
     }
 

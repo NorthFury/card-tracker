@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import mage.tracker.authentication.AuthenticationContext;
 import mage.tracker.domain.Account;
-import mage.tracker.service.CardService;
+import mage.tracker.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -17,7 +17,7 @@ public class AuthenticationFilter implements Filter {
 
     public static final String ACCOUNT_KEY = "AuthenticatedUser";
     @Autowired
-    CardService cardService;
+    private AccountService accountService;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -33,7 +33,7 @@ public class AuthenticationFilter implements Filter {
         Account account = (Account) session.getAttribute(ACCOUNT_KEY);
         if (name != null && !name.isEmpty() && password != null && !password.isEmpty()
                 && (account == null || (account != null && !account.getName().equals(name) || !account.getPassword().equals(password)))) {
-            account = cardService.authenticateAccount(name, password);
+            account = accountService.authenticateAccount(name, password);
             session.setAttribute(ACCOUNT_KEY, account);
         }
 
