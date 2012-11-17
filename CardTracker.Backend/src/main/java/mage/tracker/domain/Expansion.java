@@ -10,11 +10,11 @@ import javax.persistence.*;
  * @author North
  */
 @NamedQueries({
-    @NamedQuery(name = "Expansion.findByName",
+    @NamedQuery(name = Expansion.FIND_BY_NAME,
     query = "select c from Expansion c where c.name = :name"),
-    @NamedQuery(name = "Expansion.findByCode",
+    @NamedQuery(name = Expansion.FIND_BY_CODE,
     query = "select c from Expansion c where c.code = :code"),
-    @NamedQuery(name = "Expansion.findAll",
+    @NamedQuery(name = Expansion.FIND_ALL,
     query = "select c from Expansion c order by c.releaseDate desc")
 })
 @Entity

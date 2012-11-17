@@ -9,7 +9,7 @@ import javax.persistence.*;
  * @author North
  */
 @NamedQueries({
-    @NamedQuery(name = "Card.findByName",
+    @NamedQuery(name = Card.FIND_BY_NAME,
     query = "select c from Card c where c.name = :name")
 })
 @Entity

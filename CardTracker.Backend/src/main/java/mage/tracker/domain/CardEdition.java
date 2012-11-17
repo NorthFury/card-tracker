@@ -8,13 +8,13 @@ import javax.persistence.*;
  * @author North
  */
 @NamedQueries({
-    @NamedQuery(name = "CardEdition.findByNameAndExpansion",
+    @NamedQuery(name = CardEdition.FIND_BY_NAME_AND_EXPANSION,
     query = "select c from CardEdition c where c.card.name = :cardName and c.expansion.name = :expansionName"),
-    @NamedQuery(name = "CardEdition.findByNameAndExpansionCode",
+    @NamedQuery(name = CardEdition.FIND_BY_NAME_AND_EXPANSION_CODE,
     query = "select c from CardEdition c where c.card.name = :cardName and c.expansion.code = :expansionCode"),
-    @NamedQuery(name = "CardEdition.findByCardId",
+    @NamedQuery(name = CardEdition.FIND_BY_CARD_ID,
     query = "select c from CardEdition c where c.card.id = :cardId"),
-    @NamedQuery(name = "CardEdition.findByCardNumberAndExpansionId",
+    @NamedQuery(name = CardEdition.FIND_BY_CARD_NUMBER_AND_EXPANSION_ID,
     query = "select c from CardEdition c where c.cardNumber = :cardNumber and c.expansion.id = :expansionId")
 })
 @Entity

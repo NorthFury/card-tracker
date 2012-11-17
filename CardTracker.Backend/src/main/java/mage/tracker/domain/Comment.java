@@ -9,7 +9,7 @@ import javax.persistence.*;
  * @author North
  */
 @NamedQueries({
-    @NamedQuery(name = "Comment.findByCardId",
+    @NamedQuery(name = Comment.FIND_BY_CARD_ID,
     query = "select c from Comment c where c.card.id = :cardId order by c.postTime")
 })
 @Entity

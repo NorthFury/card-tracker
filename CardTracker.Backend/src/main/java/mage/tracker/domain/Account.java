@@ -8,11 +8,11 @@ import javax.persistence.*;
  * @author North
  */
 @NamedQueries({
-    @NamedQuery(name = "Account.findByName",
+    @NamedQuery(name = Account.FIND_BY_NAME,
     query = "select a from Account a where a.name = :name"),
-    @NamedQuery(name = "Account.findAll",
+    @NamedQuery(name = Account.FIND_ALL,
     query = "select a from Account a order by a.name"),
-    @NamedQuery(name = "Account.findActive",
+    @NamedQuery(name = Account.FIND_ACTIVE,
     query = "select a from Account a where exists(select 'found' from Card c where c.status.account.id = a.id) order by a.name")
 })
 @Entity
