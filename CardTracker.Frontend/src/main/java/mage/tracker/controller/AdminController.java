@@ -11,6 +11,7 @@ import mage.tracker.domain.CardStatus;
 import mage.tracker.domain.Expansion;
 import mage.tracker.filter.AuthenticationFilter;
 import mage.tracker.service.AccountService;
+import mage.tracker.service.CardEditionService;
 import mage.tracker.service.CardService;
 import mage.tracker.service.ExpansionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class AdminController {
     private AccountService accountService;
     @Autowired
     private ExpansionService expansionService;
+    @Autowired
+    private CardEditionService cardEditionService;
 
     /**
      * Handler for the admin page
@@ -155,7 +158,7 @@ public class AdminController {
         ArrayList<Integer> failed = new ArrayList<Integer>();
         String[] cards = data.split("\n");
         for (int i = 0; i < cards.length; i++) {
-            if (!cardService.updateCardEditionMtgoImageId(cards[i])) {
+            if (!cardEditionService.updateMtgoImageId(cards[i])) {
                 failed.add(i);
             }
         }

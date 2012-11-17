@@ -33,23 +33,9 @@ public class CardService {
     @Qualifier("cardRepository")
     private CardRepository cardRepository;
     @Autowired
-    @Qualifier("cardEditionRepository")
-    private CardEditionRepository cardEditionRepository;
+    private CardEditionService cardEditionService;
     @Autowired
     private ExpansionService expansionService;
-
-    @Transactional(readOnly = false)
-    public boolean updateCardEditionMtgoImageId(String cardData) {
-        String[] cardAttributes = cardData.split("\\|");
-        CardEdition edition = cardEditionRepository.findByNameAndExpansionCode(cardAttributes[1], cardAttributes[0]);
-        if (edition != null) {
-            edition.setMtgoImageId(cardAttributes[3]);
-            cardEditionRepository.persist(edition);
-            return true;
-        }
-
-        return false;
-    }
 
     /**
      * Used to add a new card or update its data if it already exists
@@ -137,7 +123,7 @@ public class CardService {
                 card.setAbilities(cardAttributes[5]);
                 cardRepository.merge(card);
             }
-            if (card != null && cardEditionRepository.findByNameAndExpansion(card.getName(), expansion.getName()) == null) {
+            if (card != null && cardEditionService.findByNameAndExpansion(card.getName(), expansion.getName()) == null) {
                 CardEdition cardEdition = new CardEdition();
                 String rarity = cardAttributes[9];
                 if (rarity.equals("Basic Land")) {
