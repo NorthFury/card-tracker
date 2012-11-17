@@ -38,9 +38,6 @@ public class CardService {
     @Autowired
     @Qualifier("expansionRepository")
     private ExpansionRepository expansionRepository;
-    @Autowired
-    @Qualifier("genericRepository")
-    private GenericRepository<CardStatus> cardStatusRepository;
 
     public List<Expansion> getExpansions() {
         return expansionRepository.findAll();
@@ -123,7 +120,7 @@ public class CardService {
                 }
 
                 CardStatus cardStatus = new CardStatus();
-                cardStatus = cardStatusRepository.persist(cardStatus);
+                em.persist(cardStatus);
                 card.setStatus(cardStatus);
 
                 card.setAbilities(cardAttributes[5]);
@@ -199,7 +196,7 @@ public class CardService {
 
     @Transactional(readOnly = false)
     public CardStatus updateCardStatus(CardStatus cardStatus) {
-        return cardStatusRepository.merge(cardStatus);
+        return em.merge(cardStatus);
     }
 
     public Card findCardByName(String cardName) {
