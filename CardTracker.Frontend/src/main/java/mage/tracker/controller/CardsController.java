@@ -15,6 +15,7 @@ import mage.tracker.dto.CardName;
 import mage.tracker.dto.CommentData;
 import mage.tracker.service.AccountService;
 import mage.tracker.service.CardService;
+import mage.tracker.service.ExpansionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -34,11 +35,13 @@ public class CardsController {
     CardService cardService;
     @Autowired
     AccountService accountService;
+    @Autowired
+    private ExpansionService expansionService;
 
     @RequestMapping(value = {"/cards", "/"})
     public ModelAndView viewCards() {
         ModelAndView modelAndView = new ModelAndView("cards");
-        modelAndView.addObject("expansions", cardService.getExpansions());
+        modelAndView.addObject("expansions", expansionService.findAll());
         modelAndView.addObject("accounts", accountService.getActiveAccounts());
         return modelAndView;
     }

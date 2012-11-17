@@ -36,21 +36,7 @@ public class CardService {
     @Qualifier("cardEditionRepository")
     private CardEditionRepository cardEditionRepository;
     @Autowired
-    @Qualifier("expansionRepository")
-    private ExpansionRepository expansionRepository;
-
-    public List<Expansion> getExpansions() {
-        return expansionRepository.findAll();
-    }
-
-    @Transactional(readOnly = false)
-    public Expansion saveExpansion(Expansion expansion) {
-        Expansion result = expansionRepository.findByName(expansion.getName());
-        if (result == null) {
-            return expansionRepository.persist(expansion);
-        }
-        return result;
-    }
+    private ExpansionService expansionService;
 
     @Transactional(readOnly = false)
     public boolean updateCardEditionMtgoImageId(String cardData) {
@@ -74,7 +60,7 @@ public class CardService {
     public void updateCardData(String cardData) {
         String[] cardAttributes = cardData.split("\\|");
 
-        Expansion expansion = expansionRepository.findByName(cardAttributes[8]);
+        Expansion expansion = expansionService.findByName(cardAttributes[8]);
         if (expansion != null) {
             Card card = cardRepository.findByName(cardAttributes[1]);
             if (card == null) {
@@ -172,7 +158,7 @@ public class CardService {
                 cardEdition.setGathererId(cardAttributes[0]);
                 cardEdition.setCard(card);
                 cardEdition.setExpansion(expansion);
-                cardEditionRepository.persist(cardEdition);
+                em.persist(cardEdition);
 
                 String lastCharCardNumber = cardAttributes[10].substring(cardAttributes[10].length() - 1);
                 if ("a".equals(lastCharCardNumber) || "b".equals(lastCharCardNumber)) {

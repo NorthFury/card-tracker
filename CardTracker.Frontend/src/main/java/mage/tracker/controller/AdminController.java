@@ -12,6 +12,7 @@ import mage.tracker.domain.Expansion;
 import mage.tracker.filter.AuthenticationFilter;
 import mage.tracker.service.AccountService;
 import mage.tracker.service.CardService;
+import mage.tracker.service.ExpansionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,6 +31,8 @@ public class AdminController {
     private CardService cardService;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private ExpansionService expansionService;
 
     /**
      * Handler for the admin page
@@ -75,7 +78,7 @@ public class AdminController {
             expansion.setCode(expansionData[1]);
             expansionData = expansionData[2].split(", ");
             expansion.setReleaseDate(new GregorianCalendar(Integer.parseInt(expansionData[0]), Integer.parseInt(expansionData[1]), Integer.parseInt(expansionData[2])).getTime());
-            cardService.saveExpansion(expansion);
+            expansionService.save(expansion);
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
