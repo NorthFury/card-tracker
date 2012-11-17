@@ -100,7 +100,7 @@ public class AdminController {
         ArrayList<Integer> failed = new ArrayList<Integer>();
         String[] cards = data.split("\n");
         for (int i = 0; i < cards.length; i++) {
-            Card card = cardService.findCardByName(cards[i]);
+            Card card = cardService.findByName(cards[i]);
             if (card != null) {
                 CardStatus cardStatus = card.getStatus();
                 cardStatus.setImplemented(Boolean.TRUE);
@@ -129,7 +129,7 @@ public class AdminController {
         ArrayList<Integer> failed = new ArrayList<Integer>();
         String[] cards = data.split("\n");
         for (int i = 0; i < cards.length; i++) {
-            Card card = cardService.findCardByName(cards[i]);
+            Card card = cardService.findByName(cards[i]);
             if (card != null) {
                 CardStatus cardStatus = card.getStatus();
                 if (!cardStatus.getImplemented()) {

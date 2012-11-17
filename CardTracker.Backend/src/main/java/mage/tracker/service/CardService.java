@@ -13,9 +13,7 @@ import mage.tracker.domain.*;
 import mage.tracker.dto.CardCriteria;
 import mage.tracker.dto.CardName;
 import mage.tracker.dto.ExpansionStatus;
-import mage.tracker.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +27,6 @@ public class CardService {
 
     @PersistenceContext
     private EntityManager em;
-    @Autowired
-    @Qualifier("cardRepository")
-    private CardRepository cardRepository;
     @Autowired
     private CardEditionService cardEditionService;
     @Autowired
@@ -48,7 +43,7 @@ public class CardService {
 
         Expansion expansion = expansionService.findByName(cardAttributes[8]);
         if (expansion != null) {
-            Card card = cardRepository.findByName(cardAttributes[1]);
+            Card card = findByName(cardAttributes[1]);
             if (card == null) {
                 card = new Card();
                 card.setName(cardAttributes[1]);
@@ -97,7 +92,7 @@ public class CardService {
 
                 card.setAbilities(cardAttributes[5]);
 
-                cardRepository.persist(card);
+                em.persist(card);
             } else {
                 String[] cardType = cardAttributes[4].split(" - ");
                 if (cardType[0].contains("Legendary")) {
@@ -121,7 +116,7 @@ public class CardService {
                     card.setSubType(cardType[1]);
                 }
                 card.setAbilities(cardAttributes[5]);
-                cardRepository.merge(card);
+                em.merge(card);
             }
             if (card != null && cardEditionService.findByNameAndExpansion(card.getName(), expansion.getName()) == null) {
                 CardEdition cardEdition = new CardEdition();
@@ -158,8 +153,8 @@ public class CardService {
                         Card otherSide = otherSideEditions.get(0).getCard();
                         card.setOtherSide(otherSide.getId());
                         otherSide.setOtherSide(card.getId());
-                        cardRepository.merge(card);
-                        cardRepository.merge(otherSide);
+                        em.merge(card);
+                        em.merge(otherSide);
                     }
                 }
             }
@@ -171,8 +166,15 @@ public class CardService {
         return em.merge(cardStatus);
     }
 
-    public Card findCardByName(String cardName) {
-        return cardRepository.findByName(cardName);
+    public Card findByName(String name) {
+        TypedQuery query = em.createNamedQuery(Card.FIND_BY_NAME, Card.class);
+        query.setParameter("name", name);
+        List<Card> resultList = query.getResultList();
+        if (resultList.isEmpty()) {
+            return null;
+        } else {
+            return resultList.get(0);
+        }
     }
 
     public List<CardName> findCardsLikeName(String name) {
@@ -190,7 +192,7 @@ public class CardService {
     }
 
     public Card findCardById(long id) {
-        return cardRepository.find(Card.class, id);
+        return em.find(Card.class, id);
     }
 
     public List<CardEdition> getCardEditions(long cardId) {
