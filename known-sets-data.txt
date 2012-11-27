@@ -9,6 +9,7 @@ Magic 2010|M10|2009, 6, 17
 Magic 2011|M11|2010, 6, 16
 Magic 2012|M12|2011, 6, 9
 Magic 2013|M13|2012, 6, 7
+Planechase 2012 Edition|PC2|2012, 5, 1
 Planechase|HOP|2009, 8, 4
 Duel Decks: Elspeth vs. Tezzeret|DDF|2010, 8, 3
 Arabian Nights|ARN|1993, 11, 1
