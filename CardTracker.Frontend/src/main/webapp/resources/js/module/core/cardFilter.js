@@ -1,11 +1,55 @@
-define(['jquery'], function ($) {
+define(['jquery', 'amplify'], function ($, amplify) {
     "use strict";
     return function (options) {
         var settings = {};
         var filter = {};
 
+        var updatePaginator = function () {
+            amplify.publish(settings.topic, filter);
+        };
+        var onChangeTriState = function (e) {
+            if (e.target.value !== 'any') {
+                filter[e.target.name] = e.target.value;
+            } else {
+                delete filter[e.target.name];
+            }
+            updatePaginator();
+        };
+        var onMultiselectChange = function (e) {
+            if (e.target.value !== 'any') {
+                var i, selected = [];
+                var options = e.target.options;
+                for (i = 0; i < options.length; i++) {
+                    if (options[i].selected) {
+                        selected.push(options[i].value);
+                    }
+                }
+                filter[e.target.name] = selected;
+            } else {
+                delete filter[e.target.name];
+            }
+            updatePaginator();
+        };
+        var onTextBlur = function (e) {
+            if (e.target.value !== '') {
+                filter[e.target.name] = e.target.value;
+            } else {
+                delete filter[e.target.name];
+            }
+            updatePaginator();
+        };
+        var onTextSubmit = function (e) {
+            if (e.which === 13) {
+                if (e.target.value !== '') {
+                    filter[e.target.name] = e.target.value;
+                } else {
+                    delete filter[e.target.name];
+                }
+                updatePaginator();
+            }
+        };
+
         var init = function (options) {
-            filter.changed = true;
             var params, pair, i;
             if (options) {
                 $.extend(settings, options);
@@ -23,52 +67,8 @@ define(['jquery'], function ($) {
                 }
             }
 
-            // atachEvents
-            var updatePaginator = function () {
-                filter.changed = true;
-                settings.paginator.update(0);
-            };
-            var onChangeTriState = function (e) {
-                if (e.target.value !== 'any') {
-                    filter[e.target.name] = e.target.value;
-                } else {
-                    delete filter[e.target.name];
-                }
-                updatePaginator();
-            };
-            var onMultiselectChange = function (e) {
-                if (e.target.value !== 'any') {
-                    var i, selected = [];
-                    var options = e.target.options;
-                    for (i = 0; i < options.length; i++) {
-                        if (options[i].selected) {
-                            selected.push(options[i].value);
-                        }
-                    }
-                    filter[e.target.name] = selected;
-                } else {
-                    delete filter[e.target.name];
-                }
-                updatePaginator();
-            };
-            var onTextBlur = function (e) {
-                if (e.target.value !== '') {
-                    filter[e.target.name] = e.target.value;
-                } else {
-                    delete filter[e.target.name];
-                }
-                updatePaginator();
-            };
-            var onTextSubmit = function (e) {
-                if (e.which === 13) {
-                    if (e.target.value !== '') {
-                        filter[e.target.name] = e.target.value;
-                    } else {
-                        delete filter[e.target.name];
-                    }
-                    updatePaginator();
-                }
-            };
+            updatePaginator();
+
             $('#implementedFilter').on('change', onChangeTriState);
             $('#requestedFilter').on('change', onChangeTriState);
             $('#buggedFilter').on('change', onChangeTriState);
@@ -85,12 +85,6 @@ define(['jquery'], function ($) {
         init(options);
 
         return {
-            getFilter: function () {
-                return filter;
-            },
-            setPaginator: function (paginator) {
-                settings.paginator = paginator;
-            }
         };
     };
 });

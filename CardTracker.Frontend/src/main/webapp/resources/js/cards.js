@@ -1,8 +1,9 @@
 require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip'], function ($, dataTable, cardFilter, tooltip) {
     $('#dialog').hide();
 
-    var filter = cardFilter({
-        container: '#cardsFilter'
+    cardFilter({
+        container: '#cardsFilter',
+        topic: 'cardFilter'
     });
 
     var rowClass = function (rowData) {
@@ -75,7 +76,7 @@ require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip'], functio
         container: '#cardsContainer',
         rows: 30,
         rowClass: rowClass,
-        filter: filter,
+        filterTopic: 'cardFilter',
         columnModel: [
         {
             name: 'Name',
@@ -120,8 +121,6 @@ require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip'], functio
         }
         ]
     });
-
-    filter.setPaginator(cardsTable);
 
     tooltip({
         cardsTable: cardsTable,

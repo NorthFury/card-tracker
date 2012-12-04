@@ -1,10 +1,11 @@
-define(['jquery'], function ($) {
+define(['jquery', 'amplify'], function ($, amplify) {
     "use strict";
     return function (options) {
         var settings = {
             rows: 30,
             pageToLoad: 0,
-            maxPage: 0
+            maxPage: 0,
+            updatePaginator: true
         };
 
         /* ========== Init functions ========== */
@@ -93,16 +94,15 @@ define(['jquery'], function ($) {
 
         /* ========== Core functions ========== */
         function updatePaginator () {
-            if (settings.filter && settings.filter.getFilter().changed) {
-                settings.filter.getFilter().changed = false;
+            if (settings.updatePaginator) {
+                settings.updatePaginator = false;
                 var data = {
                     page: settings.pageToLoad,
                     rows: settings.rows,
                     action: 'getCount'
                 };
 
-                $.extend(data, settings.filter.getFilter());
-                delete data.changed;
+                $.extend(data, settings.filter);
 
                 $.ajax({
                     url: settings.url,
@@ -153,10 +153,7 @@ define(['jquery'], function ($) {
                 data.sortAscending = settings.sortAscending;
             }
 
-            if (settings.filter) {
-                $.extend(data, settings.filter.getFilter());
-                delete data.changed;
-            }
+            $.extend(data, settings.filter);
 
             var onSuccess = function (data) {
                 var i, j, row, cell, rowsData, table, tbody, value;
@@ -212,6 +209,7 @@ define(['jquery'], function ($) {
             return null;
         };
 
+        /* ========== Initialization ========== */
         if (options) {
             $.extend(settings, options);
         }
@@ -224,6 +222,11 @@ define(['jquery'], function ($) {
             attachEvents();
         }
         updateTable();
+        amplify.subscribe(settings.filterTopic, function (filter) {
+            settings.filter = filter;
+            settings.updatePaginator = true;
+            updateTable(0);
+        });
 
         return {
             update: updateTable,
