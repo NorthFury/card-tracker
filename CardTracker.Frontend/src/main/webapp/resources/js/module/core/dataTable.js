@@ -96,20 +96,17 @@ define(['jquery', 'amplify'], function ($, amplify) {
         function updatePaginator () {
             if (settings.updatePaginator) {
                 settings.updatePaginator = false;
-                var data = {
-                    page: settings.pageToLoad,
-                    rows: settings.rows,
-                    action: 'getCount'
-                };
+                var data = {};
 
                 $.extend(data, settings.filter);
 
                 $.ajax({
-                    url: settings.url,
-                    traditional: true,
+                    url: settings.url + "/getCount",
+                    processData: false,
+                    contentType: 'application/json; charset=UTF-8',
                     dataType: 'json',
                     type: 'POST',
-                    data: data,
+                    data: JSON.stringify(data),
                     success: function (data) {
                         settings.totalRows = data.totalRows;
                         settings.maxPage = Math.floor(Math.max(0, data.totalRows - 1) / settings.rows);
@@ -144,8 +141,7 @@ define(['jquery', 'amplify'], function ($, amplify) {
             }
             var data = {
                 page: settings.pageToLoad,
-                rows: settings.rows,
-                action: 'load'
+                rows: settings.rows
             };
 
             if (typeof settings.sortColumn !== "undefined") {
@@ -188,11 +184,12 @@ define(['jquery', 'amplify'], function ($, amplify) {
             };
 
             $.ajax({
-                url: settings.url,
-                traditional: true,
+                url: settings.url + "/load",
+                processData: false,
+                contentType: 'application/json; charset=UTF-8',
                 dataType: 'json',
                 type: 'POST',
-                data: data,
+                data: JSON.stringify(data),
                 success: onSuccess
             });
         };

@@ -18,7 +18,7 @@ import mage.tracker.service.CardService;
 import mage.tracker.service.ExpansionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -46,9 +46,9 @@ public class CardsController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/cards", params = "action=load")
+    @RequestMapping(value = "/cards/load")
     @ResponseBody
-    public HashMap<String, Object> loadCards(@ModelAttribute CardCriteria cardCriteria) {
+    public HashMap<String, Object> loadCards(@RequestBody CardCriteria cardCriteria) {
         List<Card> cards = cardService.getCardsByCriteria(cardCriteria);
 
         List<CardData> cardsData = new LinkedList<CardData>();
@@ -61,9 +61,9 @@ public class CardsController {
         return model;
     }
 
-    @RequestMapping(value = "/cards", params = "action=getCount")
+    @RequestMapping(value = "/cards/getCount")
     @ResponseBody
-    public HashMap<String, Object> getCount(@ModelAttribute CardCriteria cardCriteria) {
+    public HashMap<String, Object> getCount(@RequestBody CardCriteria cardCriteria) {
         Long count = cardService.getCardsCountByCriteria(cardCriteria);
 
         HashMap<String, Object> model = new HashMap<String, Object>();
