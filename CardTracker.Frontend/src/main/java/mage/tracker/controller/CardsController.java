@@ -49,6 +49,7 @@ public class CardsController {
     @RequestMapping(value = "/cards/load")
     @ResponseBody
     public HashMap<String, Object> loadCards(@RequestBody CardCriteria cardCriteria) {
+        Long count = cardService.getCardsCountByCriteria(cardCriteria);
         List<Card> cards = cardService.getCardsByCriteria(cardCriteria);
 
         List<CardData> cardsData = new LinkedList<CardData>();
@@ -57,17 +58,8 @@ public class CardsController {
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
-        model.put("rowsData", cardsData);
-        return model;
-    }
-
-    @RequestMapping(value = "/cards/getCount")
-    @ResponseBody
-    public HashMap<String, Object> getCount(@RequestBody CardCriteria cardCriteria) {
-        Long count = cardService.getCardsCountByCriteria(cardCriteria);
-
-        HashMap<String, Object> model = new HashMap<String, Object>();
         model.put("totalRows", count);
+        model.put("rowsData", cardsData);
         return model;
     }
 

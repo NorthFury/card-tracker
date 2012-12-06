@@ -4,8 +4,7 @@ define(['jquery', 'amplify'], function ($, amplify) {
         var settings = {
             rows: 30,
             pageToLoad: 0,
-            maxPage: 0,
-            updatePaginator: true
+            maxPage: 0
         };
 
         /* ========== Init functions ========== */
@@ -94,45 +93,24 @@ define(['jquery', 'amplify'], function ($, amplify) {
 
         /* ========== Core functions ========== */
         function updatePaginator () {
-            if (settings.updatePaginator) {
-                settings.updatePaginator = false;
-                var data = {};
-
-                $.extend(data, settings.filter);
-
-                $.ajax({
-                    url: settings.url + "/getCount",
-                    processData: false,
-                    contentType: 'application/json; charset=UTF-8',
-                    dataType: 'json',
-                    type: 'POST',
-                    data: JSON.stringify(data),
-                    success: function (data) {
-                        settings.totalRows = data.totalRows;
-                        settings.maxPage = Math.floor(Math.max(0, data.totalRows - 1) / settings.rows);
-                        updatePaginator();
-                    }
-                });
+            var container = $(settings.container);
+            if (settings.pageToLoad === 0) {
+                container.find('.ui-paginator-first').addClass('ui-state-disabled');
+                container.find('.ui-paginator-prev').addClass('ui-state-disabled');
             } else {
-                var container = $(settings.container);
-                if (settings.pageToLoad === 0) {
-                    container.find('.ui-paginator-first').addClass('ui-state-disabled');
-                    container.find('.ui-paginator-prev').addClass('ui-state-disabled');
-                } else {
-                    container.find('.ui-paginator-first').removeClass('ui-state-disabled');
-                    container.find('.ui-paginator-prev').removeClass('ui-state-disabled');
-                }
-
-                if (settings.pageToLoad === settings.maxPage) {
-                    container.find('.ui-paginator-last').addClass('ui-state-disabled');
-                    container.find('.ui-paginator-next').addClass('ui-state-disabled');
-                } else {
-                    container.find('.ui-paginator-last').removeClass('ui-state-disabled');
-                    container.find('.ui-paginator-next').removeClass('ui-state-disabled');
-                }
-
-                container.find('.ui-paginator-current').html('(' + (settings.pageToLoad + 1) + ' of ' + (settings.maxPage + 1) + ') (Total: ' + settings.totalRows + ')');
+                container.find('.ui-paginator-first').removeClass('ui-state-disabled');
+                container.find('.ui-paginator-prev').removeClass('ui-state-disabled');
             }
+
+            if (settings.pageToLoad === settings.maxPage) {
+                container.find('.ui-paginator-last').addClass('ui-state-disabled');
+                container.find('.ui-paginator-next').addClass('ui-state-disabled');
+            } else {
+                container.find('.ui-paginator-last').removeClass('ui-state-disabled');
+                container.find('.ui-paginator-next').removeClass('ui-state-disabled');
+            }
+
+            container.find('.ui-paginator-current').html('(' + (settings.pageToLoad + 1) + ' of ' + (settings.maxPage + 1) + ') (Total: ' + settings.totalRows + ')');
         }
 
         var updateTable = function (page) {
@@ -180,6 +158,9 @@ define(['jquery', 'amplify'], function ($, amplify) {
                 } else {
                     table.find('tbody').replaceWith(tbody);
                 }
+
+                settings.totalRows = data.totalRows;
+                settings.maxPage = Math.floor(Math.max(0, data.totalRows - 1) / settings.rows);
                 updatePaginator();
             };
 
@@ -221,7 +202,6 @@ define(['jquery', 'amplify'], function ($, amplify) {
         updateTable();
         amplify.subscribe(settings.filterTopic, function (filter) {
             settings.filter = filter;
-            settings.updatePaginator = true;
             updateTable(0);
         });
 
