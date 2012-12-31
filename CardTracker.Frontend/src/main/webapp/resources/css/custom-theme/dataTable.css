@@ -1,0 +1,167 @@
+.ui-datatable table {
+    border-collapse:collapse;
+    width: 100%;
+}
+
+
+.ui-datatable .ui-datatable-header,
+.ui-datatable .ui-datatable-footer {
+    text-align:center;
+    padding:4px 10px;
+}
+
+
+.ui-datatable .ui-datatable-header {
+    border-bottom: 0px none;
+}
+
+
+.ui-datatable .ui-datatable-footer {
+    border-top: 0px none;
+}
+
+
+.ui-datatable th, .ui-datatable tfoot td {
+    text-align:center;
+    white-space:nowrap;
+    padding:0px;
+    margin:0px;
+    overflow: hidden;
+}
+
+
+.ui-datatable-data, .ui-datatable-data-empty {}
+
+
+.ui-datatable .ui-datatable-data td,
+.ui-datatable .ui-datatable-data-empty td {
+    border-width: 1px;
+    border-style: solid;
+    border-color: inherit;
+    padding:0px;
+    margin:0px;
+    overflow: hidden;
+}
+
+
+.ui-datatable .ui-sortable-column {
+    cursor: pointer;
+}
+
+
+.ui-datatable div.ui-dt-c {
+    position: relative;
+}
+
+
+.ui-datatable .ui-sortable-column-icon {
+    left: 0;
+    top: 0;
+    position: absolute;
+    margin-top: 0.2em;
+}
+
+
+.ui-datatable tr.ui-state-highlight {
+    cursor: pointer;
+}
+
+
+.ui-datatable th div.ui-dt-c,
+.ui-datatable .ui-datatable-data td div.ui-dt-c,
+.ui-datatable .ui-datatable-data-empty td div.ui-dt-c,
+.ui-datatable tfoot td div.ui-dt-c {
+    padding: 4px 10px;
+    overflow: hidden;
+}
+
+
+.ui-datatable .ui-datatable-data tr.ui-state-hover {
+    border-color: inherit;
+    font-weight: inherit;
+    cursor: pointer;
+    *font-weight: normal; /*IE7 hack*/
+}
+
+
+.ui-datatable .ui-paginator,
+.ui-datatable .ui-paginator {
+    padding:2px;
+}
+
+
+
+.ui-paginator {
+    margin:0px;
+    text-align: center;
+    padding:2px;
+}
+
+
+.ui-paginator .ui-paginator-top {
+    border-bottom:0px none;
+}
+
+
+.ui-paginator .ui-paginator-bottom {
+    border-top:0px none;
+}
+
+
+.ui-paginator .ui-paginator-page,
+.ui-paginator .ui-paginator-pages,
+.ui-paginator .ui-paginator-next,
+.ui-paginator .ui-paginator-last,
+.ui-paginator .ui-paginator-first,
+.ui-paginator .ui-paginator-prev,
+.ui-paginator .ui-paginator-current {
+    display: inline-block;
+    padding: 2px 6px;
+    zoom: 1;
+    margin-left: 1px;
+    margin-right: 1px;
+    text-decoration: none;
+    outline: none;
+}
+
+
+.ui-paginator .ui-paginator-page,
+.ui-paginator .ui-paginator-next,
+.ui-paginator .ui-paginator-last,
+.ui-paginator .ui-paginator-first,
+.ui-paginator .ui-paginator-prev{
+    cursor: pointer;
+}
+
+
+.ui-paginator .ui-paginator-current,
+.ui-paginator .ui-paginator-rpp-options {
+    margin-left: 1em;
+    margin-right: 1em;
+    background-image: none;
+}
+
+
+.ui-paginator .ui-paginator-next .ui-icon,
+.ui-paginator .ui-paginator-prev .ui-icon,
+.ui-paginator .ui-paginator-first .ui-icon,
+.ui-paginator .ui-paginator-last .ui-icon {
+    height: auto;
+    /*overflow: inherit;*/
+}
+
+
+/* IE7 Hack */
+.ui-paginator .ui-paginator-pages {
+    *padding-bottom: 0px;
+}
+
+
+.ui-paginator .ui-paginator-jtp-select option,
+.ui-paginator .ui-paginator-rpp-options option {
+    background-image: none;
+    border:0 none;
+    box-shadow:none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
