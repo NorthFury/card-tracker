@@ -162,7 +162,7 @@ define(['jquery', 'amplify'], function ($, amplify) {
             };
 
             $.ajax({
-                url: settings.url + "/load",
+                url: settings.url,
                 processData: false,
                 contentType: 'application/json; charset=UTF-8',
                 dataType: 'json',

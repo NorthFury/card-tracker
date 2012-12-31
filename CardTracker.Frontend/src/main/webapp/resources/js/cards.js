@@ -72,7 +72,7 @@ require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip'], functio
     };
 
     var cardsTable = dataTable({
-        url: 'cards',
+        url: 'cards/load',
         container: '#cardsContainer',
         rows: 30,
         rowClass: rowClass,
