@@ -243,22 +243,7 @@ require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip'], functio
         if (cardData.otherSide === null) {
             $('#cardDialogDisplay').append(cardGen(cardData));
         } else {
-            if (typeof cardData.otherSide === 'object') {
-                displayDualCard(cardData);
-            } else {
-                $.ajax({
-                    url: 'cards',
-                    dataType: 'json',
-                    data: {
-                        action: 'getCard',
-                        cardId: cardData.otherSide
-                    },
-                    success: function (data) {
-                        cardData.otherSide = data;
-                        displayDualCard(cardData);
-                    }
-                });
-            }
+            displayDualCard(cardData);
         }
         var buttonsDiv = $('<div name="' + cardData.id + '" class="actionButtons"></div>');
         buttonsDiv.html(actionsFormat(cardData));

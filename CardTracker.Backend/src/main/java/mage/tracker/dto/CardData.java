@@ -29,7 +29,7 @@ public class CardData {
     private Boolean bugged;
     private String developer;
     private List<EditionData> editions;
-    private Long otherSide;
+    private CardData otherSide;
 
     public CardData(Card card) {
         this.id = card.getId();
@@ -47,8 +47,6 @@ public class CardData {
         this.tested = status.getTested();
         this.bugged = status.getBugged();
 
-        this.otherSide = card.getOtherSide();
-
         Account account = status.getAccount();
         if (account != null) {
             this.developer = account.getName();
@@ -65,6 +63,10 @@ public class CardData {
         for (CardEdition edition : cardEditions) {
             editions.add(new EditionData(edition));
         }
+    }
+
+    public void setOtherSide(CardData otherSide) {
+        this.otherSide = otherSide;
     }
 
     public String getCost() {
@@ -123,7 +125,7 @@ public class CardData {
         return editions;
     }
 
-    public Long getOtherSide() {
+    public CardData getOtherSide() {
         return otherSide;
     }
 }

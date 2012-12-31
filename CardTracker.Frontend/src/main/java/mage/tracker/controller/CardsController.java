@@ -46,6 +46,21 @@ public class CardsController {
         return modelAndView;
     }
 
+    private CardData getCardData(Card card) {
+        if (card == null) {
+            return null;
+        }
+
+        CardData cardData = new CardData(card);
+        if (card.getOtherSide() != null) {
+            Card otherSide = cardService.findCardById(card.getOtherSide());
+            if (otherSide != null) {
+                cardData.setOtherSide(new CardData(otherSide));
+            }
+        }
+        return cardData;
+    }
+
     @RequestMapping(value = "/cards/load")
     @ResponseBody
     public HashMap<String, Object> loadCards(@RequestBody CardCriteria cardCriteria) {
@@ -54,7 +69,7 @@ public class CardsController {
 
         List<CardData> cardsData = new LinkedList<CardData>();
         for (Card card : cards) {
-            cardsData.add(new CardData(card));
+            cardsData.add(getCardData(card));
         }
 
         HashMap<String, Object> model = new HashMap<String, Object>();
@@ -67,10 +82,7 @@ public class CardsController {
     @ResponseBody
     public CardData getCard(@RequestParam("cardId") long cardId) {
         Card card = cardService.findCardById(cardId);
-        if (card != null) {
-            return new CardData(card);
-        }
-        return null;
+        return getCardData(card);
     }
 
     @RequestMapping(value = "/cards", params = "action=findCard")
