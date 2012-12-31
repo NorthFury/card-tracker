@@ -1,6 +1,7 @@
 define(['jquery', 'amplify'], function ($, amplify) {
     "use strict";
-    return function (options) {
+    return function(options) {
+        var container;
         var settings = {
             rows: 30,
             pageToLoad: 0,
@@ -9,9 +10,8 @@ define(['jquery', 'amplify'], function ($, amplify) {
 
         /* ========== Init functions ========== */
         function addPaginator () {
-            var container, paginator;
+            var paginator;
 
-            container = $(settings.container);
             if (container.find('.ui-paginator').length === 0) {
                 paginator = $('<div class="ui-paginator ui-paginator-top ui-widget-header"></div>');
                 container.append(paginator);
@@ -25,9 +25,8 @@ define(['jquery', 'amplify'], function ($, amplify) {
         }
 
         function addHeader () {
-            var i, element, columnModel, htmlString, container;
+            var i, element, columnModel, htmlString;
 
-            container = $(settings.container);
             if (container.find('table').length === 0) {
                 element = $('<table/>');
                 container.append(element);
@@ -47,7 +46,6 @@ define(['jquery', 'amplify'], function ($, amplify) {
         }
 
         function attachEvents () {
-            var container = $(settings.container);
             var firstPage = function () {
                 settings.pageToLoad = 0;
                 updateTable();
@@ -93,7 +91,6 @@ define(['jquery', 'amplify'], function ($, amplify) {
 
         /* ========== Core functions ========== */
         function updatePaginator () {
-            var container = $(settings.container);
             if (settings.pageToLoad === 0) {
                 container.find('.ui-paginator-first').addClass('ui-state-disabled');
                 container.find('.ui-paginator-prev').addClass('ui-state-disabled');
@@ -134,7 +131,7 @@ define(['jquery', 'amplify'], function ($, amplify) {
 
                 settings.rowsData = data.rowsData;
                 rowsData = data.rowsData;
-                table = $(settings.container).find('table');
+                table = container.find('table');
                 tbody = $('<tbody/>').addClass('ui-datatable-data ui-widget-content');
 
                 for (i = 0; i < rowsData.length; i++) {
@@ -191,10 +188,11 @@ define(['jquery', 'amplify'], function ($, amplify) {
         if (options) {
             $.extend(settings, options);
         }
+        container = $(settings.container);
 
-        $(settings.container).addClass('ui-datatable ui-widget');
+        container.addClass('ui-datatable ui-widget');
 
-        if ($(settings.container).find('table').length === 0) {
+        if (container.find('table').length === 0) {
             addPaginator();
             addHeader();
             attachEvents();
