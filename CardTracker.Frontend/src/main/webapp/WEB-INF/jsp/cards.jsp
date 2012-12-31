@@ -1,9 +1,3 @@
-<%-- 
-    Document   : stats
-    Created on : Oct 23, 2011, 6:25:36 PM
-    Author     : North
---%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" isELIgnored="false"%>
 <!DOCTYPE html>
@@ -11,20 +5,19 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>Cards Page</title>
-        <link type="text/css" rel="stylesheet" href="resources/css/custom-theme/jquery-ui-1.8.17.custom.css" />
-        <link type="text/css" rel="stylesheet" href="resources/css/custom-theme/primefaces.css" />
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.1/require.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/amplifyjs/1.1.0/amplify.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js"></script>
+        <script type="text/javascript" src="resources/js/crypto-md5.js"></script>
+        <script src="resources/js/main.js" type="text/javascript"></script>
+        <script src="resources/js/cards.js" type="text/javascript"></script>
+        <link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/cupertino/jquery-ui.css" />
+        <link type="text/css" rel="stylesheet" href="resources/css/custom-theme/dataTable.css" />
         <link type="text/css" rel="stylesheet" href="resources/css/custom-theme/default.css" />
         <link type="text/css" rel="stylesheet" href="resources/css/cards.css" />
         <link type="text/css" rel="stylesheet" href="resources/css/render.css" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="resources/js/crypto-md5.js" type="text/javascript"></script>
-        <script src="resources/js/login.js" type="text/javascript"></script>
-        <script src="resources/js/filter.js" type="text/javascript"></script>
-        <script src="resources/js/dataTable.js" type="text/javascript"></script>
-        <script src="resources/js/cardRender.js" type="text/javascript"></script>
-        <script src="resources/js/tooltip.js" type="text/javascript"></script>
-        <script src="resources/js/cards.js" type="text/javascript"></script>
     </head>
     <body>
         <jsp:include page="menu.jsp"/>
@@ -34,7 +27,7 @@
                     <div id="cardsContainer" style="width: 800px;"></div>
                 </td>
                 <td style="vertical-align: top">
-                    <div id="cardsFilter" class="ui-widget" style="width: 310px; floa">
+                    <div id="cardsFilter" class="ui-widget" style="width: 310px;">
                         <div class="ui-widget-header" style="padding:5px;">Filter Settings</div>
                         <div class="ui-widget-content">
                             <table>

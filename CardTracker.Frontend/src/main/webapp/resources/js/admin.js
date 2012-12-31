@@ -1,9 +1,9 @@
-(function ($) {
+require(['jquery'], function ($) {
     var pushData = function (action) {
         var inputData = $('#dataInput').val();
         var failed = [];
 
-        function sendData(start) {
+        function sendData (start) {
             var end = inputData.indexOf("\n", start + 500000);
             var toSend = (end !== -1) ? inputData.slice(start, end) : inputData.slice(start);
             if (toSend.length > 0) {
@@ -100,4 +100,4 @@
     };
 
     $(document).ready(onAdminLoad);
-})(jQuery);
+});

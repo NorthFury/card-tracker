@@ -1,8 +1,7 @@
-$(document).ready(function () {
+require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip'], function ($, dataTable, cardFilter, tooltip) {
     $('#dialog').hide();
 
-    var filter = CardsFilter(jQuery);
-    filter.init({
+    var filter = cardFilter({
         container: '#cardsFilter'
     });
 
@@ -71,8 +70,7 @@ $(document).ready(function () {
         return html;
     };
 
-    var cardsTable = dataTable(jQuery);
-    cardsTable.init({
+    var cardsTable = dataTable({
         url: 'cards',
         container: '#cardsContainer',
         rows: 30,
@@ -125,7 +123,7 @@ $(document).ready(function () {
 
     filter.setPaginator(cardsTable);
 
-    Tooltip(jQuery).init({
+    tooltip({
         cardsTable: cardsTable,
         container: '#cardsContainer'
     });
@@ -357,7 +355,7 @@ $(document).ready(function () {
         $('#cardDialogData').append(commentsContainer);
         cardDialog.dialog('open');
         loadComments();
-    }
+    };
 
     container.on('click', '.cardName', function (e) {
         var cardId = parseInt($(e.target).parents('tr')[0].id, 10);
