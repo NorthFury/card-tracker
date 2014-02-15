@@ -25,6 +25,10 @@ public class ExpansionService {
         if (result == null) {
             em.persist(expansion);
             result = expansion;
+        } else {
+            result.setReleaseDate(expansion.getReleaseDate());
+            result.setName(expansion.getName());
+            em.merge(result);
         }
         return result;
     }
