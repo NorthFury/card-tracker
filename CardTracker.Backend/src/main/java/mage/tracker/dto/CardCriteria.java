@@ -17,10 +17,19 @@ public class CardCriteria {
     private Boolean requested;
     private Boolean bugged;
     private Boolean tested;
+    private String name;
     private String abilities;
     private String subtype;
     private String sortColumn;
     private Boolean sortAscending;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getAbilities() {
         return abilities;

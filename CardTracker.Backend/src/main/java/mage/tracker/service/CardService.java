@@ -299,6 +299,9 @@ public class CardService {
         if (cardCriteria.getAbilities() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.abilities), "%" + cardCriteria.getAbilities() + "%"));
         }
+        if (cardCriteria.getName() != null) {
+            restrictions.add(criteriaBuilder.like(card.get(Card_.name), "%" + cardCriteria.getName()+ "%"));
+        }
         if (cardCriteria.getSubtype() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.subType), "%" + cardCriteria.getSubtype() + "%"));
         }

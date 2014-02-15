@@ -80,6 +80,8 @@ define(['jquery', 'amplify'], function ($, amplify) {
             $('#abilitiesFilter').on('keypress', onTextSubmit);
             $('#subtypeFilter').on('blur', onTextBlur);
             $('#subtypeFilter').on('keypress', onTextSubmit);
+            $('#nameFilter').on('blur', onTextBlur);
+            $('#nameFilter').on('keypress', onTextSubmit);
         };
 
         init(options);

@@ -44,6 +44,12 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>Name</td>
+                                    <td>
+                                        <input id="nameFilter" name="name" />
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>Implemented</td>
                                     <td>
                                         <select id="implementedFilter" name="implemented">
