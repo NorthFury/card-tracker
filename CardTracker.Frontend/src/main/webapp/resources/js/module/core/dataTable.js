@@ -2,6 +2,7 @@ define(['jquery', 'amplify'], function ($, amplify) {
     "use strict";
     return function(options) {
         var container;
+        var requestCount = 0;
         var settings = {
             rows: 30,
             pageToLoad: 0,
@@ -126,39 +127,55 @@ define(['jquery', 'amplify'], function ($, amplify) {
 
             $.extend(data, settings.filter);
 
-            var onSuccess = function (data) {
-                var i, j, row, cell, rowsData, table, tbody, value;
+            function onSuccess(requestId) {
+                requestCount++;
+                return function(data) {
+                    var i, j, row, cell, rowsData, tbody, value;
 
-                settings.rowsData = data.rowsData;
-                rowsData = data.rowsData;
-                table = container.find('table');
-                tbody = $('<tbody/>').addClass('ui-datatable-data ui-widget-content');
-
-                for (i = 0; i < rowsData.length; i++) {
-                    row = $('<tr/>').addClass('ui-widget-content').addClass((i % 2 === 0 ? 'ui-datatable-even' : 'ui-datatable-odd'));
-                    for (j = 0; j < settings.columnModel.length; j++) {
-                        if (settings.columnModel[j].format) {
-                            value = settings.columnModel[j].format(rowsData[i]);
-                        } else {
-                            value = rowsData[i][settings.columnModel[j].key] || '';
-                        }
-                        cell = $('<td><div class="ui-dt-c">' + value + '</div></td>');
-                        row.append(cell);
+                    if (requestCount !== requestId + 1) {
+                        return;
                     }
-                    row.addClass(settings.rowClass(rowsData[i]));
-                    row.attr('id', rowsData[i].id);
-                    tbody.append(row);
-                }
 
-                if (table.find('tbody').length === 0) {
-                    table.append(tbody);
-                } else {
-                    table.find('tbody').replaceWith(tbody);
-                }
+                    settings.rowsData = data.rowsData;
+                    rowsData = data.rowsData;
 
-                settings.totalRows = data.totalRows;
-                settings.maxPage = Math.floor(Math.max(0, data.totalRows - 1) / settings.rows);
-                updatePaginator();
+                    tbody = $('<tbody/>').addClass('ui-datatable-data ui-widget-content');
+
+                    for (i = 0; i < rowsData.length; i++) {
+                        row = $('<tr/>').addClass('ui-widget-content').addClass((i % 2 === 0 ? 'ui-datatable-even' : 'ui-datatable-odd'));
+                        for (j = 0; j < settings.columnModel.length; j++) {
+                            if (settings.columnModel[j].format) {
+                                value = settings.columnModel[j].format(rowsData[i]);
+                            } else {
+                                value = rowsData[i][settings.columnModel[j].key] || '';
+                            }
+                            cell = $('<td><div class="ui-dt-c">' + value + '</div></td>');
+                            row.append(cell);
+                        }
+                        row.addClass(settings.rowClass(rowsData[i]));
+                        row.attr('id', rowsData[i].id);
+                        tbody.append(row);
+                    }
+
+                    if (rowsData.length === 0) {
+                        row = $('<tr/>').addClass('ui-widget-content');
+                        cell = $('<td><div class="ui-dt-c" style="text-align: center;">No results</div></td>');
+                        cell.attr('colspan', settings.columnModel.length);
+                        row.append(cell);
+                        tbody.append(row);
+                    }
+
+                    var table = container.find('table');
+                    if (table.find('tbody').length === 0) {
+                        table.append(tbody);
+                    } else {
+                        table.find('tbody').replaceWith(tbody);
+                    }
+
+                    settings.totalRows = data.totalRows;
+                    settings.maxPage = Math.floor(Math.max(0, data.totalRows - 1) / settings.rows);
+                    updatePaginator();
+                };
             };
 
             $.ajax({
@@ -168,7 +185,7 @@ define(['jquery', 'amplify'], function ($, amplify) {
                 dataType: 'json',
                 type: 'POST',
                 data: JSON.stringify(data),
-                success: onSuccess
+                success: onSuccess(requestCount)
             });
         };
 
