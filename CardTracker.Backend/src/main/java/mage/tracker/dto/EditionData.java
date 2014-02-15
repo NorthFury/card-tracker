@@ -42,6 +42,10 @@ public class EditionData {
         expansionCodeFix.put("HML", "HM");
         expansionCodeFix.put("ICE", "IA");
         expansionCodeFix.put("ALL", "AL");
+        expansionCodeFix.put("3ED", "3E");
+        expansionCodeFix.put("2ED", "2U");
+        expansionCodeFix.put("LEB", "2E");
+        expansionCodeFix.put("LEA", "1E");
     }
     private CardRarity rarity;
     private String gathererId;
