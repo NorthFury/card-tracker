@@ -118,7 +118,7 @@ public class CardService {
                 card.setAbilities(cardAttributes[5]);
                 em.merge(card);
             }
-            if (card != null && cardEditionService.findByNameAndExpansion(card.getName(), expansion.getName()) == null) {
+            if (cardEditionService.findByNameAndExpansion(card.getName(), expansion.getName()) == null) {
                 CardEdition cardEdition = new CardEdition();
                 String rarity = cardAttributes[9];
                 if (rarity.equals("Basic Land")) {
@@ -235,13 +235,22 @@ public class CardService {
         Root<Card> card = criteriaQuery.from(Card.class);
         card.fetch(Card_.status);
 
-        List<Predicate> restrictions = buildPredicates(cardCriteria, criteriaBuilder, card);
+        List<Predicate> restrictions = buildPredicates(cardCriteria, criteriaBuilder, criteriaQuery, card);
         criteriaQuery.where(restrictions.toArray(new Predicate[0]));
 
-        List<String> expansion = cardCriteria.getExpansion();
-        if (cardCriteria.getSortColumn() == null && expansion != null && expansion.size() == 1) {
-            Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
-            Expression<String> cardNumber = criteriaBuilder.trim('b', cardEdition.get(CardEdition_.cardNumber));
+        List<String> expansions = cardCriteria.getExpansion();
+        if (cardCriteria.getSortColumn() == null && expansions != null && expansions.size() == 1) {
+            Subquery subquery = criteriaQuery.subquery(String.class);
+            Root<CardEdition> cardEdition = subquery.from(CardEdition.class);
+
+            Predicate cardPredicate = criteriaBuilder.equal(cardEdition.get(CardEdition_.card), card);
+            Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
+            Predicate expansionPredicate = criteriaBuilder.equal(expansion.get(Expansion_.code), expansions.get(0));
+
+            subquery.where(cardPredicate, expansionPredicate);
+            Subquery cardNumberValue = subquery.select(cardEdition.get(CardEdition_.cardNumber));
+
+            Expression<String> cardNumber = criteriaBuilder.trim('b', cardNumberValue);
             cardNumber = criteriaBuilder.trim('a', cardNumber);
             cardNumber = criteriaBuilder.concat("0000", cardNumber);
             Expression<Integer> from = criteriaBuilder.sum(criteriaBuilder.length(cardNumber), -3);
@@ -277,7 +286,7 @@ public class CardService {
 
         Root<Card> card = criteriaQuery.from(Card.class);
 
-        List<Predicate> restrictions = buildPredicates(cardCriteria, criteriaBuilder, card);
+        List<Predicate> restrictions = buildPredicates(cardCriteria, criteriaBuilder, criteriaQuery, card);
         criteriaQuery.where(restrictions.toArray(new Predicate[0]));
 
         criteriaQuery.select(criteriaBuilder.countDistinct(card));
@@ -285,7 +294,7 @@ public class CardService {
         return query.getSingleResult();
     }
 
-    private List<Predicate> buildPredicates(CardCriteria cardCriteria, CriteriaBuilder criteriaBuilder, Root<Card> card) {
+    private List<Predicate> buildPredicates(CardCriteria cardCriteria, CriteriaBuilder criteriaBuilder, CriteriaQuery criteriaQuery, Root<Card> card) {
         List<Predicate> restrictions = new LinkedList<Predicate>();
         if (cardCriteria.getAbilities() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.abilities), "%" + cardCriteria.getAbilities() + "%"));
@@ -301,38 +310,42 @@ public class CardService {
             restrictions.add(criteriaBuilder.or(typeRestrictions.toArray(new Predicate[0])));
         }
         if (cardCriteria.getExpansion() != null && !cardCriteria.getExpansion().isEmpty()) {
-            Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
+            Subquery subquery = criteriaQuery.subquery(Long.class);
+            Root<CardEdition> cardEdition = subquery.from(CardEdition.class);
+
             Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
             In<String> inExpansion = criteriaBuilder.in(expansion.get(Expansion_.code));
             for (String value : cardCriteria.getExpansion()) {
                 inExpansion.value(value);
             }
-            restrictions.add(inExpansion);
+
+            Predicate cardPredicate = criteriaBuilder.equal(cardEdition.get(CardEdition_.card), card);
+
+            subquery.where(cardPredicate, inExpansion);
+            Subquery count = subquery.select(criteriaBuilder.count(cardEdition));
+            restrictions.add(criteriaBuilder.ge(count, 1));
         }
-        if (cardCriteria.getImplemented() != null || cardCriteria.getRequested() != null
-                || cardCriteria.getBugged() != null || cardCriteria.getTested() != null
-                || cardCriteria.getDeveloper() != null) {
-            Join<Card, CardStatus> cardStatus = card.join(Card_.status);
-            if (cardCriteria.getImplemented() != null) {
-                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.implemented), cardCriteria.getImplemented()));
+
+        Join<Card, CardStatus> cardStatus = card.join(Card_.status);
+        if (cardCriteria.getImplemented() != null) {
+            restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.implemented), cardCriteria.getImplemented()));
+        }
+        if (cardCriteria.getRequested() != null) {
+            restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.requested), cardCriteria.getRequested()));
+        }
+        if (cardCriteria.getBugged() != null) {
+            restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.bugged), cardCriteria.getBugged()));
+        }
+        if (cardCriteria.getTested() != null) {
+            restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.tested), cardCriteria.getTested()));
+        }
+        if (cardCriteria.getDeveloper() != null) {
+            Join<CardStatus, Account> account = cardStatus.join(CardStatus_.account);
+            In<Long> inDeveloper = criteriaBuilder.in(account.get(Account_.id));
+            for (Long value : cardCriteria.getDeveloper()) {
+                inDeveloper.value(value);
             }
-            if (cardCriteria.getRequested() != null) {
-                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.requested), cardCriteria.getRequested()));
-            }
-            if (cardCriteria.getBugged() != null) {
-                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.bugged), cardCriteria.getBugged()));
-            }
-            if (cardCriteria.getTested() != null) {
-                restrictions.add(criteriaBuilder.equal(cardStatus.get(CardStatus_.tested), cardCriteria.getTested()));
-            }
-            if (cardCriteria.getDeveloper() != null) {
-                Join<CardStatus, Account> account = cardStatus.join(CardStatus_.account);
-                In<Long> inDeveloper = criteriaBuilder.in(account.get(Account_.id));
-                for (Long value : cardCriteria.getDeveloper()) {
-                    inDeveloper.value(value);
-                }
-                restrictions.add(inDeveloper);
-            }
+            restrictions.add(inDeveloper);
         }
         return restrictions;
     }
