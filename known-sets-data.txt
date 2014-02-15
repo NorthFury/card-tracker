@@ -1,3 +1,7 @@
+Limited Edition Alpha|LEA|1993, 7, 1
+Limited Edition Beta|LEB|1993, 9, 1
+Unlimited Edition|2ED|1993, 11, 1
+Revised Edition|3ED|1994, 3, 1
 Fourth Edition|4ED|1995, 3, 1
 Fifth Edition|5ED|1997, 2, 24
 Sixth Edition|6ED|1999, 3, 28
@@ -9,6 +13,7 @@ Magic 2010|M10|2009, 6, 17
 Magic 2011|M11|2010, 6, 16
 Magic 2012|M12|2011, 6, 9
 Magic 2013|M13|2012, 6, 7
+Magic 2014 Core Set|M14|2032, 6, 13
 Planechase 2012 Edition|PC2|2012, 5, 1
 Planechase|HOP|2009, 8, 4
 Duel Decks: Elspeth vs. Tezzeret|DDF|2010, 8, 3
@@ -72,3 +77,4 @@ New Phyrexia|NPH|2011, 4, 4
 Innistrad|ISD|2011, 9, 30
 Dark Ascension|DKA|2012, 1, 3
 Avacyn Restored|AVR|2012, 4, 4
+Gatecrash|GTC|2013, 1, 1
