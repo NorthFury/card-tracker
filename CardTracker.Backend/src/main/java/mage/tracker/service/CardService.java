@@ -238,89 +238,66 @@ public class CardService {
         List<Predicate> restrictions = buildPredicates(cardCriteria, criteriaBuilder, criteriaQuery, card);
         criteriaQuery.where(restrictions.toArray(new Predicate[0]));
 
-        List<String> expansions = cardCriteria.getExpansion();
-        if (cardCriteria.getSortColumn() == null && expansions != null && expansions.size() == 1) {
-            Subquery subquery = criteriaQuery.subquery(String.class);
-            Root<CardEdition> cardEdition = subquery.from(CardEdition.class);
+        if ((cardCriteria.getSortColumn() != null && cardCriteria.getSortColumn().equals("cost"))) {
+            CriteriaBuilder.Case<Object> selectCase = criteriaBuilder.selectCase();
+            Path<String> cost = card.get(Card_.cost);
+            Predicate isWhite = criteriaBuilder.like(cost, "%W%");
+            Predicate isBlue = criteriaBuilder.like(cost, "%U%");
+            Predicate isBlack = criteriaBuilder.like(cost, "%B%");
+            Predicate isRed = criteriaBuilder.like(cost, "%R%");
+            Predicate isGreen = criteriaBuilder.like(cost, "%G%");
 
-            Predicate cardPredicate = criteriaBuilder.equal(cardEdition.get(CardEdition_.card), card);
-            Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
-            Predicate expansionPredicate = criteriaBuilder.equal(expansion.get(Expansion_.code), expansions.get(0));
+            selectCase.when(criteriaBuilder.equal(cost, ""), 200);
 
-            subquery.where(cardPredicate, expansionPredicate);
-            Subquery cardNumberValue = subquery.select(cardEdition.get(CardEdition_.cardNumber));
+            selectCase.when(criteriaBuilder.and(isWhite, isBlue, isBlack, isRed, isGreen), 31);
 
-            Expression<String> cardNumber = criteriaBuilder.trim('b', cardNumberValue);
-            cardNumber = criteriaBuilder.trim('a', cardNumber);
-            cardNumber = criteriaBuilder.concat("0000", cardNumber);
-            Expression<Integer> from = criteriaBuilder.sum(criteriaBuilder.length(cardNumber), -3);
-            cardNumber = criteriaBuilder.substring(cardNumber, from);
+            selectCase.when(criteriaBuilder.and(isWhite, isBlue, isBlack, isRed), 26);
+            selectCase.when(criteriaBuilder.and(isWhite, isBlue, isBlack, isGreen), 27);
+            selectCase.when(criteriaBuilder.and(isWhite, isBlack, isRed, isGreen), 28);
+            selectCase.when(criteriaBuilder.and(isWhite, isBlue, isRed, isGreen), 29);
+            selectCase.when(criteriaBuilder.and(isBlue, isBlack, isRed, isGreen), 30);
 
-            criteriaQuery.orderBy(criteriaBuilder.asc(cardNumber));
-        }
+            selectCase.when(criteriaBuilder.and(isWhite, isBlue, isBlack), 16);
+            selectCase.when(criteriaBuilder.and(isWhite, isBlue, isRed), 17);
+            selectCase.when(criteriaBuilder.and(isWhite, isBlue, isGreen), 18);
+            selectCase.when(criteriaBuilder.and(isWhite, isBlack, isRed), 19);
+            selectCase.when(criteriaBuilder.and(isWhite, isBlack, isGreen), 20);
+            selectCase.when(criteriaBuilder.and(isWhite, isRed, isGreen), 21);
+            selectCase.when(criteriaBuilder.and(isBlue, isBlack, isRed), 22);
+            selectCase.when(criteriaBuilder.and(isBlue, isBlack, isGreen), 23);
+            selectCase.when(criteriaBuilder.and(isBlue, isRed, isGreen), 24);
+            selectCase.when(criteriaBuilder.and(isBlack, isRed, isGreen), 25);
 
-        if (cardCriteria.getSortColumn() != null) {
-            if (cardCriteria.getSortColumn().equals("cost")) {
-                CriteriaBuilder.Case<Object> selectCase = criteriaBuilder.selectCase();
-                Path<String> cost = card.get(Card_.cost);
-                Predicate isWhite = criteriaBuilder.like(cost, "%W%");
-                Predicate isBlue = criteriaBuilder.like(cost, "%U%");
-                Predicate isBlack = criteriaBuilder.like(cost, "%B%");
-                Predicate isRed = criteriaBuilder.like(cost, "%R%");
-                Predicate isGreen = criteriaBuilder.like(cost, "%G%");
+            selectCase.when(criteriaBuilder.and(isWhite, isBlue), 6);
+            selectCase.when(criteriaBuilder.and(isWhite, isBlack), 7);
+            selectCase.when(criteriaBuilder.and(isWhite, isRed), 8);
+            selectCase.when(criteriaBuilder.and(isWhite, isGreen), 9);
+            selectCase.when(criteriaBuilder.and(isBlue, isBlack), 10);
+            selectCase.when(criteriaBuilder.and(isBlue, isRed), 11);
+            selectCase.when(criteriaBuilder.and(isBlue, isGreen), 12);
+            selectCase.when(criteriaBuilder.and(isBlack, isRed), 13);
+            selectCase.when(criteriaBuilder.and(isBlack, isGreen), 14);
+            selectCase.when(criteriaBuilder.and(isRed, isGreen), 15);
 
+            selectCase.when(isWhite, 1);
+            selectCase.when(isBlue, 2);
+            selectCase.when(isBlack, 3);
+            selectCase.when(isRed, 4);
+            selectCase.when(isGreen, 5);
+            selectCase.otherwise(100);
 
-                selectCase.when(criteriaBuilder.equal(cost, ""), 200);
-
-                selectCase.when(criteriaBuilder.and(isWhite, isBlue, isBlack, isRed, isGreen), 31);
-
-                selectCase.when(criteriaBuilder.and(isWhite, isBlue, isBlack, isRed), 26);
-                selectCase.when(criteriaBuilder.and(isWhite, isBlue, isBlack, isGreen), 27);
-                selectCase.when(criteriaBuilder.and(isWhite, isBlack, isRed, isGreen), 28);
-                selectCase.when(criteriaBuilder.and(isWhite, isBlue, isRed, isGreen), 29);
-                selectCase.when(criteriaBuilder.and(isBlue, isBlack, isRed, isGreen), 30);
-
-                selectCase.when(criteriaBuilder.and(isWhite, isBlue, isBlack), 16);
-                selectCase.when(criteriaBuilder.and(isWhite, isBlue, isRed), 17);
-                selectCase.when(criteriaBuilder.and(isWhite, isBlue, isGreen), 18);
-                selectCase.when(criteriaBuilder.and(isWhite, isBlack, isRed), 19);
-                selectCase.when(criteriaBuilder.and(isWhite, isBlack, isGreen), 20);
-                selectCase.when(criteriaBuilder.and(isWhite, isRed, isGreen), 21);
-                selectCase.when(criteriaBuilder.and(isBlue, isBlack, isRed), 22);
-                selectCase.when(criteriaBuilder.and(isBlue, isBlack, isGreen), 23);
-                selectCase.when(criteriaBuilder.and(isBlue, isRed, isGreen), 24);
-                selectCase.when(criteriaBuilder.and(isBlack, isRed, isGreen), 25);
-
-                selectCase.when(criteriaBuilder.and(isWhite, isBlue), 6);
-                selectCase.when(criteriaBuilder.and(isWhite, isBlack), 7);
-                selectCase.when(criteriaBuilder.and(isWhite, isRed), 8);
-                selectCase.when(criteriaBuilder.and(isWhite, isGreen), 9);
-                selectCase.when(criteriaBuilder.and(isBlue, isBlack), 10);
-                selectCase.when(criteriaBuilder.and(isBlue, isRed), 11);
-                selectCase.when(criteriaBuilder.and(isBlue, isGreen), 12);
-                selectCase.when(criteriaBuilder.and(isBlack, isRed), 13);
-                selectCase.when(criteriaBuilder.and(isBlack, isGreen), 14);
-                selectCase.when(criteriaBuilder.and(isRed, isGreen), 15);
-
-                selectCase.when(isWhite, 1);
-                selectCase.when(isBlue, 2);
-                selectCase.when(isBlack, 3);
-                selectCase.when(isRed, 4);
-                selectCase.when(isGreen, 5);
-                selectCase.otherwise(100);
-
-                if (cardCriteria.getSortAscending()) {
-                    criteriaQuery.orderBy(criteriaBuilder.asc(selectCase), criteriaBuilder.asc(card.get(Card_.cmc)));
-                } else {
-                    criteriaQuery.orderBy(criteriaBuilder.desc(selectCase), criteriaBuilder.desc(card.get(Card_.cmc)));
-                }
+            if (cardCriteria.getSortAscending()) {
+                criteriaQuery.orderBy(criteriaBuilder.asc(selectCase), criteriaBuilder.asc(card.get(Card_.cmc)));
             } else {
-                Expression column = card.get(cardCriteria.getSortColumn().toLowerCase());
-                if (cardCriteria.getSortAscending()) {
-                    criteriaQuery.orderBy(criteriaBuilder.asc(column));
-                } else {
-                    criteriaQuery.orderBy(criteriaBuilder.desc(column));
-                }
+                criteriaQuery.orderBy(criteriaBuilder.desc(selectCase), criteriaBuilder.desc(card.get(Card_.cmc)));
+            }
+        }
+        if (cardCriteria.getSortColumn() != null && !cardCriteria.getSortColumn().equals("cost")) {
+            Expression column = card.get(cardCriteria.getSortColumn().toLowerCase());
+            if (cardCriteria.getSortAscending()) {
+                criteriaQuery.orderBy(criteriaBuilder.asc(column));
+            } else {
+                criteriaQuery.orderBy(criteriaBuilder.desc(column));
             }
         }
 
