@@ -376,20 +376,13 @@ public class CardService {
             restrictions.add(criteriaBuilder.or(typeRestrictions.toArray(new Predicate[0])));
         }
         if (cardCriteria.getExpansion() != null && !cardCriteria.getExpansion().isEmpty()) {
-            Subquery subquery = criteriaQuery.subquery(Long.class);
-            Root<CardEdition> cardEdition = subquery.from(CardEdition.class);
-
+            Join<Card, CardEdition> cardEdition = card.join(Card_.editions);
             Join<CardEdition, Expansion> expansion = cardEdition.join(CardEdition_.expansion);
             In<String> inExpansion = criteriaBuilder.in(expansion.get(Expansion_.code));
             for (String value : cardCriteria.getExpansion()) {
                 inExpansion.value(value);
             }
-
-            Predicate cardPredicate = criteriaBuilder.equal(cardEdition.get(CardEdition_.card), card);
-
-            subquery.where(cardPredicate, inExpansion);
-            Subquery count = subquery.select(criteriaBuilder.count(cardEdition));
-            restrictions.add(criteriaBuilder.ge(count, 1));
+            restrictions.add(inExpansion);
         }
 
         Join<Card, CardStatus> cardStatus = card.join(Card_.status);
