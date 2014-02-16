@@ -80,6 +80,7 @@ require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip'], functio
         columnModel: [
         {
             name: 'Name',
+            key: 'name',
             sortable: true,
             format: function (row) {
                 return '<div class="cardName">' + row.name + '</div>';
@@ -88,6 +89,7 @@ require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip'], functio
         {
             name: 'Mana Cost',
             key: 'cost',
+            sortable: true,
             format: costFormat
         },
         {

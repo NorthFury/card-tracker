@@ -121,7 +121,7 @@ define(['jquery', 'amplify'], function ($, amplify) {
             };
 
             if (typeof settings.sortColumn !== "undefined") {
-                data.sortColumn = settings.columnModel[settings.sortColumn].name;
+                data.sortColumn = settings.columnModel[settings.sortColumn].key;
                 data.sortAscending = settings.sortAscending;
             }
 
