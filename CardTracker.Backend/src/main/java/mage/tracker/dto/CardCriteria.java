@@ -10,6 +10,7 @@ public class CardCriteria {
 
     private Integer page;
     private Integer rows;
+    private List<String> color;
     private List<String> type;
     private List<String> expansion;
     private List<Long> developer;
@@ -22,6 +23,14 @@ public class CardCriteria {
     private String subtype;
     private String sortColumn;
     private Boolean sortAscending;
+
+    public List<String> getColor() {
+        return color;
+    }
+
+    public void setColor(List<String> color) {
+        this.color = color;
+    }
 
     public String getName() {
         return name;

@@ -361,6 +361,13 @@ public class CardService {
         if (cardCriteria.getSubtype() != null) {
             restrictions.add(criteriaBuilder.like(card.get(Card_.subType), "%" + cardCriteria.getSubtype() + "%"));
         }
+        if(cardCriteria.getColor() != null) {
+            List<Predicate> colorRestrictions = new LinkedList<Predicate>();
+            for (String color : cardCriteria.getColor()) {
+                colorRestrictions.add(criteriaBuilder.like(card.get(Card_.cost), "%" + color + "%"));
+            }
+            restrictions.add(criteriaBuilder.or(colorRestrictions.toArray(new Predicate[0])));
+        }
         if (cardCriteria.getType() != null) {
             List<Predicate> typeRestrictions = new LinkedList<Predicate>();
             for (String type : cardCriteria.getType()) {

@@ -90,6 +90,19 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>Color</td>
+                                    <td>
+                                        <select id="colorFilter" name="color" multiple="multiple">
+                                            <option value="any">Any</option>
+                                            <option value="W">White</option>
+                                            <option value="U">Blue</option>
+                                            <option value="B">Black</option>
+                                            <option value="R">Red</option>
+                                            <option value="G">Green</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>Type</td>
                                     <td>
                                         <select id="typeFilter" name="type" multiple="multiple">
