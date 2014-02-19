@@ -1,4 +1,4 @@
-require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip'], function ($, dataTable, cardFilter, tooltip) {
+require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip', 'core/cardRender'], function ($, dataTable, cardFilter, tooltip, cardRender) {
     $('#dialog').hide();
 
     cardFilter({
@@ -208,19 +208,19 @@ require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip'], functio
             var card1, card2;
             if (cardData.editions[0].cardNumber.indexOf('a') !== -1) {
                 if (cardData.editions[0].mtgoImageId && !cardData.otherSide.editions[0].mtgoImageId) {
-                    card1 = cardGen(cardData, cardData.otherSide);
-                    card2 = cardGen(cardData.otherSide, cardData, true);
+                    card1 = cardRender(cardData, cardData.otherSide);
+                    card2 = cardRender(cardData.otherSide, cardData, true);
                 } else {
-                    card1 = cardGen(cardData);
-                    card2 = cardGen(cardData.otherSide);
+                    card1 = cardRender(cardData);
+                    card2 = cardRender(cardData.otherSide);
                 }
             } else {
                 if (cardData.otherSide.editions[0].mtgoImageId && !cardData.editions[0].mtgoImageId) {
-                    card1 = cardGen(cardData.otherSide, cardData);
-                    card2 = cardGen(cardData, cardData.otherSide, true);
+                    card1 = cardRender(cardData.otherSide, cardData);
+                    card2 = cardRender(cardData, cardData.otherSide, true);
                 } else {
-                    card1 = cardGen(cardData.otherSide);
-                    card2 = cardGen(cardData);
+                    card1 = cardRender(cardData.otherSide);
+                    card2 = cardRender(cardData);
                 }
             }
             $('#cardDialogDisplay').append(card1);
@@ -243,7 +243,7 @@ require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip'], functio
         }
 
         if (cardData.otherSide === null) {
-            $('#cardDialogDisplay').append(cardGen(cardData));
+            $('#cardDialogDisplay').append(cardRender(cardData));
         } else {
             displayDualCard(cardData);
         }
