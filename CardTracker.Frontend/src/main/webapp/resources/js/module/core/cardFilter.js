@@ -60,9 +60,12 @@ define(['jquery', 'amplify'], function ($, amplify) {
                 params = decodeURI(location.search.substr(1)).split('&');
                 for (i = 0; i < params.length; i++) {
                     pair = params[i].split('=');
-                    filter[pair[0]] = pair[1];
                     if (pair[0] === 'expansion') {
                         $("#editionFilter option[value='" + pair[1] + "']").attr('selected', true);
+                        filter['expansion'] = filter['expansion'] || [];
+                        filter['expansion'].push(pair[1]);
+                    } else {
+                        filter[pair[0]] = pair[1];
                     }
                 }
             }

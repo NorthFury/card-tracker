@@ -1,11 +1,6 @@
 require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip', 'core/cardRender'], function ($, dataTable, cardFilter, tooltip, cardRender) {
     $('#dialog').hide();
 
-    cardFilter({
-        container: '#cardsFilter',
-        topic: 'cardFilter'
-    });
-
     var rowClass = function (rowData) {
         if (rowData.developer) {
             if (rowData.implemented) {
@@ -122,6 +117,11 @@ require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip', 'core/ca
             format: actionsFormat
         }
         ]
+    });
+
+    cardFilter({
+        container: '#cardsFilter',
+        topic: 'cardFilter'
     });
 
     tooltip({
