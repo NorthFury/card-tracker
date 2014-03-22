@@ -14,7 +14,7 @@
             (function () {
                 var tick = function () {
                     window.location.reload();
-                }
+                };
                 setTimeout(tick, 1000);
             })();
         </script>

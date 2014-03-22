@@ -1,4 +1,4 @@
-require(['jquery'], function ($) {
+require(['jquery', 'jquery.ui'], function ($) {
     var pushData = function (action) {
         var inputData = $('#dataInput').val();
         var failed = [];

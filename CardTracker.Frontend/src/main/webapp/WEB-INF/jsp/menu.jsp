@@ -5,7 +5,7 @@
     <div id="loginContainer" style="float: right;"></div>
 </div>
 <script type="text/javascript">
-    require(['jquery', 'core/login'], function($, login) {
+    require(['jquery', 'core/login', 'jquery.ui'], function($, login) {
         $('#navigationMenu a').button().each(function() {
             if (location.href.indexOf(this.href) !== -1) {
                 $(this).button({

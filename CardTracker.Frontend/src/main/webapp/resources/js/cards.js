@@ -1,4 +1,4 @@
-require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip', 'core/cardRender'], function ($, dataTable, cardFilter, tooltip, cardRender) {
+require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip', 'core/cardRender', 'jquery.ui'], function ($, dataTable, cardFilter, tooltip, cardRender) {
     $('#dialog').hide();
 
     var rowClass = function (rowData) {
