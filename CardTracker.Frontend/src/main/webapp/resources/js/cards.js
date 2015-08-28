@@ -38,7 +38,7 @@ require(['jquery', 'core/dataTable', 'core/cardFilter', 'core/tooltip', 'core/ca
         html = '';
         editions = row.editions;
         for (i = 0; i < editions.length; i++) {
-            html += '<img style="height: 15px;" src="http://gatherer.wizards.com/handlers/image.ashx?size=small&amp;type=symbol&amp;set=' + editions[i].expansionCode + '&amp;rarity=' + editions[i].rarity[0] + '" title="' + editions[i].expansionName + '">';
+            html += '<img style="height: 15px;" src="http://gatherer.wizards.com/handlers/image.ashx?size=small&amp;type=symbol&amp;set=' + editions[i].expansionCode + '&amp;rarity=' + editions[i].rarity[0].replace("B", "L") + '" title="' + editions[i].expansionName + '">';
         }
         return html;
     };

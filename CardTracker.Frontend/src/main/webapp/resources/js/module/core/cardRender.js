@@ -170,22 +170,23 @@ define(['jquery'], function ($) {
         newElement.innerHTML = card.type + (card.subType ? ' - ' + card.subType : '');
         container.appendChild(newElement);
 
+        var CROP_IMAGE_BASE_URL = 'http://mtgoclientdepot.onlinegaming.wizards.com/Graphics/Cards/Pics/';
         if (edition.cropImage) {
             container.appendChild(edition.cropImage);
         } else if (edition.mtgoImageId || otherSide) {
             var cropImage = document.createElement('img');
             cropImage.className = 'crop';
             if (typeof otherSide === 'undefined') {
-                cropImage.src = 'http://mtgodownload1.onlinegaming.wizards.com/mtgov3/Graphics/Cards/Pics/' + edition.mtgoImageId + '_typ_reg_sty_010.jpg';
+                cropImage.src = CROP_IMAGE_BASE_URL + edition.mtgoImageId + '_typ_reg_sty_010.jpg';
             } else {
-                cropImage.src = 'http://mtgodownload1.onlinegaming.wizards.com/mtgov3/Graphics/Cards/Pics/' + (edition.mtgoImageId || otherSide.editions[i].mtgoImageId) + '_typ_flip_sty_013.jpg';
+                cropImage.src = CROP_IMAGE_BASE_URL + (edition.mtgoImageId || otherSide.editions[i].mtgoImageId) + '_typ_flip_sty_013.jpg';
                 if (flip) {
                     cropImage.className += ' flip-vertical';
                 }
             }
             cropImage.onerror = function () {
                 cropImage.onerror = null;
-                cropImage.src = 'http://mtgodownload1.onlinegaming.wizards.com/mtgov3/Graphics/Cards/Pics/' + edition.mtgoImageId + '_typ_reg_sty_001.jpg';
+                cropImage.src = CROP_IMAGE_BASE_URL + edition.mtgoImageId + '_typ_reg_sty_001.jpg';
             };
             cropImage.onload = function () {
                 cropImage.onload = null;
@@ -196,7 +197,7 @@ define(['jquery'], function ($) {
 
         newElement = document.createElement('img');
         newElement.className = 'symbol';
-        newElement.src = 'http://gatherer.wizards.com/handlers/image.ashx?size=small&type=symbol&set=' + edition.expansionCode + '&rarity=' + edition.rarity[0];
+        newElement.src = 'http://gatherer.wizards.com/handlers/image.ashx?size=large&type=symbol&set=' + edition.expansionCode + '&rarity=' + edition.rarity[0].replace("B", "L");
         container.appendChild(newElement);
 
         if (cost) {
